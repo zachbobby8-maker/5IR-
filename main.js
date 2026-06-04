@@ -74,3 +74,4 @@ function initHeaderNodeTracker() {
     nodesEl.textContent = `${nodesCount.toFixed(3)}M NODES`;
   }, 2500);
 }
+
