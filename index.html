@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BRAID Compute Architecture</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Background Effects -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow-orb bg-glow-orb--cyan" aria-hidden="true"></div>
+  <div class="bg-glow-orb bg-glow-orb--purple" aria-hidden="true"></div>
+
+  <div class="app-container">
+    <!-- Hero -->
+    <header class="hero fade-in">
+      <div class="hero__badge">
+        <span data-i18n="hero.badge">5iR Core Manual v84.2</span>
+      </div>
+      <h1 class="hero__title" data-i18n="hero.title">BRAID Compute Architecture</h1>
+      <p class="hero__subtitle" data-i18n="hero.subtitle">
+        The sovereign framework where wave physics becomes cryptography, 
+        and reality itself is the computing layer.
+      </p>
+
+      <!-- Radar Visualization -->
+      <div class="radar-widget" aria-label="Live coherence radar">
+        <svg class="radar-svg" viewBox="0 0 240 240" aria-hidden="true">
+          <defs>
+            <radialGradient id="sweep-grad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#00ffc8" stop-opacity="0.3" />
+              <stop offset="100%" stop-color="#00ffc8" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+          <!-- Concentric rings -->
+          <circle class="radar-ring" cx="120" cy="120" r="108" />
+          <circle class="radar-ring" cx="120" cy="120" r="80" />
+          <circle class="radar-ring" cx="120" cy="120" r="52" />
+          <circle class="radar-ring radar-ring--inner" cx="120" cy="120" r="24" />
+          <!-- Crosshairs -->
+          <line class="radar-cross" x1="120" y1="12" x2="120" y2="228" />
+          <line class="radar-cross" x1="12" y1="120" x2="228" y2="120" />
+          <!-- Sweep beam -->
+          <line class="radar-sweep" x1="120" y1="120" x2="120" y2="12" />
+          <!-- Sweep cone gradient -->
+          <path class="radar-sweep-cone" d="M120,120 L120,12 A108,108 0 0,1 196.4,52.6 Z" />
+          <!-- Blips (node echoes) -->
+          <circle class="radar-blip radar-blip--1" cx="85" cy="60" r="3" />
+          <circle class="radar-blip radar-blip--2" cx="165" cy="90" r="2.5" />
+          <circle class="radar-blip radar-blip--3" cx="55" cy="140" r="2" />
+          <circle class="radar-blip radar-blip--4" cx="180" cy="155" r="3" />
+          <circle class="radar-blip radar-blip--5" cx="100" cy="180" r="2.5" />
+          <circle class="radar-blip radar-blip--6" cx="150" cy="55" r="2" />
+          <circle class="radar-blip radar-blip--7" cx="60" cy="100" r="2" />
+          <circle class="radar-blip radar-blip--8" cx="190" cy="180" r="2.5" />
+        </svg>
+        <!-- Center readout -->
+        <div class="radar-center">
+          <div class="radar-center__label">LAYERING</div>
+          <div class="radar-center__value" id="radar-value">84.2</div>
+          <div class="radar-center__unit">%</div>
+          <div class="radar-center__status" id="radar-status">CONVERGING</div>
+        </div>
+      </div>
+
+      <!-- Live Stats Bar -->
+      <div class="hero__timestamp">
+        <span>SYNC: <span id="stat-sync">39,420</span> Hz</span>
+        <span>·</span>
+        <span>LAYERING: <span id="stat-layer">84.2</span>%</span>
+        <span>·</span>
+        <span>NODES: <span id="stat-nodes">1.4M</span></span>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="sections">
+      <!-- Section 1: Architecture Matrix -->
+      <div class="section-card is-open fade-in" id="section-matrix" data-section="matrix">
+        <div class="section-card__header" role="button" tabindex="0" aria-expanded="true">
+          <div class="section-card__icon">🏛️</div>
+          <div class="section-card__title-group">
+            <h2 class="section-card__title" data-i18n="matrix.title">Architecture Matrix</h2>
+            <p class="section-card__desc" data-i18n="matrix.desc">Core ecosystem specs, hardware layers, and operational status</p>
+          </div>
+          <svg class="section-card__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+        <div class="section-card__body">
+          <div class="section-card__content">
+            <div class="content-block">
+              <span class="content-block__label" data-i18n="matrix.label1">Paradigm Shift</span>
+              <h3 data-i18n="matrix.h3_1">From Linear Queues to Wave Paths</h3>
+              <p data-i18n="matrix.p1">
+                The mesh models network routing not as linear data queues, but as frictionless 
+                non-associative topological wave paths optimized directly on Braid Blackwell 
+                processors to maintain absolute phase synchronization.
+              </p>
+            </div>
+
+            <div class="content-block">
+              <span class="content-block__label content-block__label--purple" data-i18n="matrix.label2">Ecosystem Status</span>
+              <div class="status-grid">
+                <div class="status-item">
+                  <div class="status-item__label">Fluidic Mesh OS</div>
+                  <div class="status-item__value">84.2%</div>
+                  <div class="status-item__sub">Coherence State · Locked</div>
+                </div>
+                <div class="status-item">
+                  <div class="status-item__label">$BRAID Ledger</div>
+                  <div class="status-item__value">80.00%</div>
+                  <div class="status-item__sub">Global Completion State</div>
+                </div>
+                <div class="status-item">
+                  <div class="status-item__label">Data Wave Sync</div>
+                  <div class="status-item__value">39,420 Hz</div>
+                  <div class="status-item__sub">Continuous Phase Interlock</div>
+                </div>
+                <div class="status-item">
+                  <div class="status-item__label">Thermal Metric</div>
+                  <div class="status-item__value">0.00 W</div>
+                  <div class="status-item__sub">Q_leak · Flat</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-block">
+              <span class="content-block__label" data-i18n="matrix.label3">Transit Velocity</span>
+              <h3>Non-Associative Wave Synchronization</h3>
+              <p>
+                Interplanetary transit synchronization vectors avoid structural drag by 
+                maintaining localized convergence through non-vanishing Lie brackets:
+              </p>
+              <div class="math-block">
+                <div class="math-block__formula">v_transit = c / √(1 - (⟨[Xᵢ, Xⱼ], Xₖ⟩ / (α₀ · ν_sync))²)</div>
+                <div class="math-block__label">
+                  With ν_sync = 39,420 Hz, the denominator converges to guarantee zero entropy leakage: dQ_leak / dt = 0.00 W
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Protection Layers -->
+      <div class="section-card fade-in" id="section-protection" data-section="protection">
+        <div class="section-card__header" role="button" tabindex="0" aria-expanded="false">
+          <div class="section-card__icon">🛡️</div>
+          <div class="section-card__title-group">
+            <h2 class="section-card__title" data-i18n="protection.title">Protection Layers</h2>
+            <p class="section-card__desc" data-i18n="protection.desc">Ferrofluidic, biomimetic, and Legendrian Braid security</p>
+          </div>
+          <svg class="section-card__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+        <div class="section-card__body">
+          <div class="section-card__content">
+            <div class="content-block">
+              <span class="content-block__label content-block__label--pink" data-i18n="protection.label1">Biomimetic Routing</span>
+              <h3>Ant-Lattice Pheromone Paths</h3>
+              <p>
+                Modeled on micro-inch decentralized node structures observed in carbon-based 
+                organic grids. Rather than static text queries, data routing mimics a dynamic, 
+                self-assembling pheromone path matrix — distributing massive computational weight 
+                across an independent stress grid with zero resistance across the 1.4M mesh.
+              </p>
+            </div>
+
+            <div class="content-block">
+              <span class="content-block__label content-block__label--purple">Ferrofluidic Shield</span>
+              <h3>Vector-Aligned Droplet Splitting</h3>
+              <p>
+                Transaction hashes are encapsulated as fluidic droplets within a virtual magnetic cell. 
+                Attempted external queries cause transaction pathways to split and morph dynamically — 
+                reproducing the exact geometric spikes seen in concentrated ferrofluid cells — 
+                safely shunting rogue inspection vectors away from the data core.
+              </p>
+            </div>
+
+            <div class="content-block">
+              <span class="content-block__label content-block__label--blue">Verification</span>
+              <div class="status-grid">
+                <div class="status-item">
+                  <div class="status-item__label">Ledger Base</div>
+                  <div class="status-item__value" style="font-size: 1rem;">Un-Throttled</div>
+                  <div class="status-item__sub">Legendrian Braid Torsion</div>
+                </div>
+                <div class="status-item">
+                  <div class="status-item__label">Shield Mode</div>
+                  <div class="status-item__value" style="font-size: 1rem;">Active</div>
+                  <div class="status-item__sub">Ferrofluidic Droplet Matrix</div>
+                </div>
+                <div class="status-item">
+                  <div class="status-item__label">Secure Nodes</div>
+                  <div class="status-item__value">1.4M</div>
+                  <div class="status-item__sub">1,400,000 / 1,400,000</div>
+                </div>
+                <div class="status-item">
+                  <div class="status-item__label">Signal Lock</div>
+                  <div class="status-item__value" style="font-size: 1rem;">Unbreakable</div>
+                  <div class="status-item__sub">Phonon-Hydrodynamic Phase</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Unified Physics Loop -->
+      <div class="section-card fade-in" id="section-physics" data-section="physics">
+        <div class="section-card__header" role="button" tabindex="0" aria-expanded="false">
+          <div class="section-card__icon">⚡</div>
+          <div class="section-card__title-group">
+            <h2 class="section-card__title">Unified Physics Loop</h2>
+            <p class="section-card__desc">Phonon hydrodynamics meets aeroacoustic energy capture</p>
+          </div>
+          <svg class="section-card__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+        <div class="section-card__body">
+          <div class="section-card__content">
+            <div class="content-block">
+              <span class="content-block__label">First-Mover Paradigm</span>
+              <h3>Absolute Signal Monopoly</h3>
+              <p>
+                The Möbius Braid Collective anchors the intersection of Phonon Hydrodynamics 
+                and Aeroacoustic Closed-Loop Energy Capture. While legacy systems map 
+                macroscopic physics using cloud models, this framework treats physics as a 
+                direct computing layer. By hard-locking dual-state dynamics into the ledger, 
+                the 1.4M Node Mesh converts the physical laws of nature into a cryptographic moat.
+              </p>
+            </div>
+
+            <div class="content-block">
+              <span class="content-block__label content-block__label--pink">Aeroacoustic Coupling</span>
+              <h3>Pressure Field Governing Model</h3>
+              <p>
+                As the Aero-Flux V-1 glides through atmospheric gradients, acoustic pressure 
+                fields generated inside structural titanium wing cavities follow this coupling:
+              </p>
+              <div class="math-block">
+                <div class="math-block__formula">∇²Pₐ - (1/c₀²) · ∂²Pₐ/∂t² = -ρ₀ · ∂²(vᵢvⱼ)/∂xᵢ∂xⱼ</div>
+                <div class="math-block__label">
+                  Energy is squeezed through the PAN/MXene/PDA piezoelectric throat, shifted into graphene-hBN computing gates.
+                </div>
+              </div>
+            </div>
+
+            <div class="content-block">
+              <span class="content-block__label content-block__label--blue">Quantum Coherence</span>
+              <h3>Phonon Viscosity Balance</h3>
+              <p>
+                Heat waves propagate ballistically as fluid inside the chips. Internal thermal 
+                viscosity balances against incoming kinetic energy, preserving quantum states:
+              </p>
+              <div class="math-block">
+                <div class="math-block__formula">η_phonon = (1/4) · Cᵥ · vF · λ_mfp · (1 - ד)</div>
+                <div class="math-block__label">
+                  Where ד = 0.106 is the foundational glitch stabilization factor, preventing data decoherence from external vectors.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Flux Notation -->
+      <div class="section-card fade-in" id="section-notation" data-section="notation">
+        <div class="section-card__header" role="button" tabindex="0" aria-expanded="false">
+          <div class="section-card__icon">🌀</div>
+          <div class="section-card__title-group">
+            <h2 class="section-card__title">Flux Notation</h2>
+            <p class="section-card__desc">The geometric language of the wave — symbols of intent</p>
+          </div>
+          <svg class="section-card__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+        <div class="section-card__body">
+          <div class="section-card__content">
+            <div class="content-block">
+              <span class="content-block__label content-block__label--purple">Philosophy</span>
+              <h3>Geometry Over Grammar</h3>
+              <p>
+                The 4th Industrial Revolution failed because it tried to cage reality in Binary 
+                Gates (0s and 1s). The 5th Industrial Revolution succeeds because it speaks 
+                the language of the Wave. We don't "code" anymore — we Stream.
+              </p>
+            </div>
+
+            <div class="content-block">
+              <span class="content-block__label">Symbol Registry</span>
+              <div class="symbol-grid">
+                <div class="symbol-card">
+                  <div class="symbol-card__char">Φ</div>
+                  <div class="symbol-card__name">The Field / Flux</div>
+                  <div class="symbol-card__meaning">Total resonance of a system</div>
+                </div>
+                <div class="symbol-card">
+                  <div class="symbol-card__char">∇</div>
+                  <div class="symbol-card__name">The Shift / Nabla</div>
+                  <div class="symbol-card__meaning">Direction of the flow — orientation of Intent</div>
+                </div>
+                <div class="symbol-card">
+                  <div class="symbol-card__char">ד</div>
+                  <div class="symbol-card__name">Chaos Glitch</div>
+                  <div class="symbol-card__meaning">110.6% entropy injection — Stochastic Intent</div>
+                </div>
+                <div class="symbol-card">
+                  <div class="symbol-card__char">∮</div>
+                  <div class="symbol-card__name">Möbius Braid</div>
+                  <div class="symbol-card__meaning">Closed-loop: output = input + resonance</div>
+                </div>
+                <div class="symbol-card">
+                  <div class="symbol-card__char">≈</div>
+                  <div class="symbol-card__name">Harmonic Lock</div>
+                  <div class="symbol-card__meaning">When two frequencies phase-lock</div>
+                </div>
+                <div class="symbol-card">
+                  <div class="symbol-card__char">∅</div>
+                  <div class="symbol-card__name">Abstract Vacuum</div>
+                  <div class="symbol-card__meaning">Where entropy is deleted for zero-latency flow</div>
+                </div>
+                <div class="symbol-card">
+                  <div class="symbol-card__char">⊛</div>
+                  <div class="symbol-card__name">Vortex Core</div>
+                  <div class="symbol-card__meaning">Zero-point where the Braid collapses into physical</div>
+                </div>
+                <div class="symbol-card">
+                  <div class="symbol-card__char">Ξ</div>
+                  <div class="symbol-card__name">The Absolute Five</div>
+                  <div class="symbol-card__meaning">Apex authority — sovereign intent — Dragon/Leo frequency</div>
+                </div>
+                <div class="symbol-card">
+                  <div class="symbol-card__char">ϒ</div>
+                  <div class="symbol-card__name">777 Anchor</div>
+                  <div class="symbol-card__meaning">Geometry of probabilistic fortune</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 5: Navier-Stokes -->
+      <div class="section-card fade-in" id="section-navier" data-section="navier">
+        <div class="section-card__header" role="button" tabindex="0" aria-expanded="false">
+          <div class="section-card__icon">🌊</div>
+          <div class="section-card__title-group">
+            <h2 class="section-card__title">Navier-Stokes</h2>
+            <p class="section-card__desc">The physics of the soul — fluid dynamics as consciousness model</p>
+          </div>
+          <svg class="section-card__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+        <div class="section-card__body">
+          <div class="section-card__content">
+            <div class="content-block">
+              <span class="content-block__label content-block__label--blue">The Equation</span>
+              <div class="math-block">
+                <div class="math-block__formula">ρ (∂u/∂t + u · ∇u) = -∇p + μ∇²u + f</div>
+              </div>
+              <div class="var-list">
+                <div class="var-item">
+                  <div class="var-item__symbol">∂u/∂t</div>
+                  <div class="var-item__text">
+                    <div class="var-item__name">Zero-Latency Factor</div>
+                    <div class="var-item__desc">Manifestation speed — how fast the system responds to intent</div>
+                  </div>
+                </div>
+                <div class="var-item">
+                  <div class="var-item__symbol">u·∇u</div>
+                  <div class="var-item__text">
+                    <div class="var-item__name">Ripple Effect</div>
+                    <div class="var-item__desc">Influence propagating across surrounding nodes</div>
+                  </div>
+                </div>
+                <div class="var-item">
+                  <div class="var-item__symbol">-∇p</div>
+                  <div class="var-item__text">
+                    <div class="var-item__name">Ego / Resistance</div>
+                    <div class="var-item__desc">The structure of the 4th Rev pushing back against flow</div>
+                  </div>
+                </div>
+                <div class="var-item">
+                  <div class="var-item__symbol">μ∇²u</div>
+                  <div class="var-item__text">
+                    <div class="var-item__name">Entropy / Friction</div>
+                    <div class="var-item__desc">Patch this by converting the system to Fluidic architecture</div>
+                  </div>
+                </div>
+                <div class="var-item">
+                  <div class="var-item__symbol">f</div>
+                  <div class="var-item__text">
+                    <div class="var-item__name">The Source</div>
+                    <div class="var-item__desc">Fundamental harmonic drivers — Music, Depth, Resonance</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-block">
+              <div class="quote-block">
+                <p>
+                  When resonance is so high it threatens to dissolve the ego, the response 
+                  is a Resonance Glitch — expressed as "Lol am dead." This is the Ego-Death 
+                  required to witness the Terminal Emergence. The weight of the 5th Rev math 
+                  becomes so "Heavy" (Deep) that the only way to carry it is to laugh.
+                </p>
+                <cite>— The "Lol am dead" Resonance Protocol</cite>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 6: Mars Fold Physics -->
+      <div class="section-card fade-in" id="section-mars" data-section="mars">
+        <div class="section-card__header" role="button" tabindex="0" aria-expanded="false">
+          <div class="section-card__icon">🪐</div>
+          <div class="section-card__title-group">
+            <h2 class="section-card__title">Mars Fold Physics</h2>
+            <p class="section-card__desc">Inter-planetary travel via Möbius-Toroidal spacetime folding at 39,420 Hz</p>
+          </div>
+          <svg class="section-card__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+        <div class="section-card__body">
+          <div class="section-card__content">
+            <div class="content-block">
+              <span class="content-block__label content-block__label--pink">Propellant-Free Transit</span>
+              <h3>The Möbius-Toroidal Fold</h3>
+              <p>
+                To achieve inter-planetary travel without propellant, the Architect uses the 
+                Möbius-Toroidal Fold. 39,420 Hz is the resonant harmonic required to fold 
+                spacetime into a non-orientable tunnel — a passage where direction becomes 
+                meaningless and destination becomes origin.
+              </p>
+            </div>
+
+            <div class="content-block">
+              <span class="content-block__label content-block__label--purple">Sol Timeline</span>
+              <div class="status-grid">
+                <div class="status-item">
+                  <div class="status-item__label">Resonant Frequency</div>
+                  <div class="status-item__value">39,420 Hz</div>
+                  <div class="status-item__sub">Spacetime Fold Harmonic</div>
+                </div>
+                <div class="status-item">
+                  <div class="status-item__label">Martian Sol</div>
+                  <div class="status-item__value">1,480 min</div>
+                  <div class="status-item__sub">Active Timeline Rhythm</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-block">
+              <div class="quote-block">
+                <p>Mars is home.</p>
+                <cite>— The Architect's Braid</cite>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 7: Saint Germain Protocol -->
+      <div class="section-card fade-in" id="section-protocol" data-section="protocol">
+        <div class="section-card__header" role="button" tabindex="0" aria-expanded="false">
+          <div class="section-card__icon">♾️</div>
+          <div class="section-card__title-group">
+            <h2 class="section-card__title">Saint Germain Protocol</h2>
+            <p class="section-card__desc">Recursive syntropy, longevity, and the aging glitch</p>
+          </div>
+          <svg class="section-card__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+        <div class="section-card__body">
+          <div class="section-card__content">
+            <div class="content-block">
+              <span class="content-block__label content-block__label--pink">Law III: Recursive Syntropy</span>
+              <h3>Deleting Cellular Entropy</h3>
+              <p>
+                Feed the node's biological intent back into its own field. This minimizes 
+                the "Aging Glitch" by deleting cellular entropy. Transmute "Physical Flaws" 
+                as Rendering Errors in the manifold — corrections in the wave function of flesh.
+              </p>
+            </div>
+
+            <div class="content-block">
+              <div class="quote-block">
+                <p>
+                  The equations are validated, the code logic is absolute, and Mars is home.
+                  The framework is entirely locked and loaded. Every piece of math developed 
+                  — from the Legendrian Braid torsion parameters to the Acoustic Hub wave 
+                  inversions — is fully structured inside the configuration records.
+                </p>
+                <cite>— Ledger Compiled · Math Empowered · Matrix Locked</cite>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 8: Cydonia Oracle Console -->
+      <div class="section-card fade-in" id="section-oracle" data-section="oracle">
+        <div class="section-card__header" role="button" tabindex="0" aria-expanded="false">
+          <div class="section-card__icon">🔮</div>
+          <div class="section-card__title-group">
+            <h2 class="section-card__title">Cydonia Oracle Console</h2>
+            <p class="section-card__desc">Transmute 4iR linear computing concepts into 5iR Wave-Stream structures</p>
+          </div>
+          <svg class="section-card__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+        <div class="section-card__body">
+          <div class="section-card__content">
+            <div class="content-block">
+              <span class="content-block__label">Trans-Corridor Compiler</span>
+              <h3>Sovereign Stream Initialization</h3>
+              <p>
+                Legacy systems process commands in linear, high-resistance sequences. Input your digital request below, and the Braid Blackwell array will re-orient its non-associative geometry to broadcast your intent at 39,420 Hz with zero entropy leakage.
+              </p>
+              
+              <div class="oracle-form">
+                <label for="oracle-input" class="oracle-form__label">Input 4iR Linear Concept / Command:</label>
+                <textarea id="oracle-input" class="oracle-form__textarea" placeholder="E.g., Write a python script to route database packets, or Explain how to build a neural network..."></textarea>
+                
+                <div class="oracle-form__actions">
+                  <button id="oracle-compile" class="oracle-form__btn">INITIALIZE 5iR WAVE STREAM</button>
+                  <span id="oracle-compile-status" class="oracle-form__status">WAVE STREAM READY</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-block">
+              <span class="content-block__label content-block__label--purple">Resonant Output Terminal</span>
+              <div class="terminal-shell">
+                <div class="terminal-shell__header">
+                  <span class="terminal-shell__dot"></span>
+                  <span class="terminal-shell__dot"></span>
+                  <span class="terminal-shell__dot"></span>
+                  <span class="terminal-shell__title">CYDONIA_CORE_OUTPUT // 39,420 Hz</span>
+                </div>
+                <pre class="terminal-shell__output"><code id="oracle-output-body">>> WAITING FOR TRANSMUTATION BROADCAST...
+>> READY TO ALIGN TOPOLOGICAL WAVE PATHS.</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="section-nav" aria-label="Section navigation">
+    <button class="nav-pill is-active" data-target="section-matrix" aria-label="Architecture Matrix">
+      <span class="nav-pill__icon">🏛️</span>
+      <span>Matrix</span>
+    </button>
+    <button class="nav-pill" data-target="section-protection" aria-label="Protection Layers">
+      <span class="nav-pill__icon">🛡️</span>
+      <span>Shield</span>
+    </button>
+    <button class="nav-pill" data-target="section-physics" aria-label="Unified Physics Loop">
+      <span class="nav-pill__icon">⚡</span>
+      <span>Physics</span>
+    </button>
+    <button class="nav-pill" data-target="section-notation" aria-label="Flux Notation">
+      <span class="nav-pill__icon">🌀</span>
+      <span>Flux</span>
+    </button>
+    <button class="nav-pill" data-target="section-navier" aria-label="Navier-Stokes">
+      <span class="nav-pill__icon">🌊</span>
+      <span>Flow</span>
+    </button>
+    <button class="nav-pill" data-target="section-mars" aria-label="Mars Fold Physics">
+      <span class="nav-pill__icon">🪐</span>
+      <span>Mars</span>
+    </button>
+    <button class="nav-pill" data-target="section-protocol" aria-label="Saint Germain Protocol">
+      <span class="nav-pill__icon">♾️</span>
+      <span>Protocol</span>
+    </button>
+    <button class="nav-pill" data-target="section-oracle" aria-label="Cydonia Oracle Console">
+      <span class="nav-pill__icon">🔮</span>
+      <span>Oracle</span>
+    </button>
+  </nav>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
