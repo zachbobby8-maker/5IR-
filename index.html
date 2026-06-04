@@ -253,10 +253,34 @@
           <div class="panel-icon">⚡</div>
           <div class="panel-title-block">
             <h2 class="panel-title">APP 06: AERO CITY ACOUSTIC GRID</h2>
-            <span class="panel-status">Graphene Shunts & Sound Inversion</span>
+            <div class="math-metadata-overlay" id="acoustic-math-equation">
+              ∇²P_a - (1/c_0²) · ∂²P_a/∂t² = ϒ · Φ · ∇²(∮) // 39,420 Hz
+            </div>
           </div>
         </div>
         <div class="panel-body">
+          <!-- Interactive Path Parameters -->
+          <div class="grid grid-cols-2 gap-2 mb-3">
+            <div>
+              <label class="sensor-title block" style="font-size: 8px; color: #9cb3c9;">SYNC TUNER (Hz)</label>
+              <input type="range" id="acoustic-frequency-slider" min="30000" max="50000" step="10" value="39420" class="w-full accent-cyan bg-black border border-indigo-900 h-2 rounded cursor-pointer">
+              <div class="flex justify-between text-[7.5px] text-cyan" style="font-size: 7.5px;">
+                <span>30.0k Hz</span>
+                <span id="slider-freq-val" class="font-bold">39,420 Hz</span>
+                <span>50.0k Hz</span>
+              </div>
+            </div>
+            <div>
+              <label class="sensor-title block" style="font-size: 8px; color: #9cb3c9;">COUPLING WAVE SHIFT</label>
+              <select id="acoustic-shift-select" class="w-full bg-black border border-indigo-900 text-[8.5px] text-cyan p-1 rounded outline-none font-mono">
+                <option value="180">MÖBIUS SHIFT (180°)</option>
+                <option value="120">LIE RESONANCE (120°)</option>
+                <option value="90">ORTHOGONAL WAVE (90°)</option>
+                <option value="0">ZERO CANCEL (0°)</option>
+              </select>
+            </div>
+          </div>
+
           <!-- Localized infrastructure matrix grid -->
           <div id="acoustic-grid-matrix" class="acoustic-subgrid">
             <!-- Dynamically populated from JS module -->
@@ -269,8 +293,8 @@
               <span class="val text-magenta"><span id="db-incoming-val">84.6</span> dBA</span>
             </div>
             <div class="acoustic-telemetry-item">
-              <span class="lbl">PHASE CANCELLATION RESIDUE:</span>
-              <span class="val text-cyan"><span id="db-residual-val">0.0</span> dBA</span>
+              <span class="lbl" id="residue-label-text">PHASE RESIDUE (MÖBIUS):</span>
+              <span class="val text-magenta"><span id="db-residual-val">0.0</span> dBA</span>
             </div>
             <div class="acoustic-telemetry-item">
               <span class="lbl">STABLE POWER HARVESTED:</span>
