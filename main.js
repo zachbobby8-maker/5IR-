@@ -2059,7 +2059,7 @@ function initNodeSecureChatApp() {
   let nodeDirectory = {
     MOBIUS_BRAID_MAIN: 'Architect',
     NODE_CYDONIA_08: 'Mars_Hangar_08',
-    NODE_LAGOS_X2: 'Lagos_Aero_Cluster'
+    NODE_NY_X2: 'Aero_Cluster'
   };
 
   // Upgrade: Default mesh ledger with matching handle & mode parameters
