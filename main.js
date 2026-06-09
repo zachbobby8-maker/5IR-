@@ -252,16 +252,20 @@ function switchTab(activeTab) {
   }
 
   // Safety clearance check: Only allow Master Architect to access sovereign-only menus
-  const savedProfileRaw = safeStorage.getItem('5ir_authenticated_profile');
-  let isMasterUser = false;
+  var savedProfileRaw = safeStorage.getItem('5ir_authenticated_profile');
+  var isMasterUser = false;
   if (savedProfileRaw) {
     try {
-      const p = JSON.parse(savedProfileRaw);
+      var p = JSON.parse(savedProfileRaw);
       isMasterUser = (p.role === 'SOVEREIGN_CLASS_1' || p.nodeId === 'MOBIUS_BRAID_MAIN');
     } catch (err) {}
+  } else {
+    if (window.braidState && window.braidState.activeNodeAddress === 'MOBIUS_BRAID_MAIN') {
+      isMasterUser = true;
+    }
   }
 
-  if (!isMasterUser && (activeTab === 'sovereign-grid' || activeTab === 'vortex-ai' || activeTab === 'phase-sync-chat')) {
+  if (!isMasterUser && (activeTab === 'vortex-ai' || activeTab === 'sovereign-suite')) {
     alert("CRITICAL WARNING: LEVEL-1 MOBIUS SECURITY CLEARANCE REQUIRED.");
     return;
   }
@@ -2094,6 +2098,7 @@ ${activeLogs}
 
         // Clear authenticated session state
         safeStorage.removeItem('5ir_authenticated_session');
+        safeStorage.removeItem('5ir_authenticated_profile');
 
         setTimeout(() => {
           clearPage.classList.add('hidden');
@@ -2154,7 +2159,7 @@ function applyAuthenticatedProfile(profile) {
   const isMaster = (profile.role === 'SOVEREIGN_CLASS_1' || profile.nodeId === 'MOBIUS_BRAID_MAIN');
   const tabNav = document.querySelector('.hud-tab-navigation');
   if (tabNav) {
-    const sovereignTabs = tabNav.querySelectorAll('[data-tab="sovereign-grid"], [data-tab="vortex-ai"], [data-tab="phase-sync-chat"]');
+    const sovereignTabs = tabNav.querySelectorAll('[data-tab="vortex-ai"]');
     sovereignTabs.forEach(tab => {
       if (isMaster) {
         tab.classList.remove('hidden');
@@ -2166,10 +2171,7 @@ function applyAuthenticatedProfile(profile) {
     // Reset active buttons cleanly
     tabNav.querySelectorAll('.hud-tab-btn').forEach(b => b.classList.remove('active'));
 
-    let targetTab = 'vortex-retain';
-    if (isMaster) {
-      targetTab = 'sovereign-grid';
-    }
+    let targetTab = 'sovereign-grid';
     const targetBtn = tabNav.querySelector('[data-tab="' + targetTab + '"]');
     if (targetBtn) {
       targetBtn.classList.add('active');
@@ -2310,14 +2312,25 @@ function initGatewayPortalSystem() {
     workspacePage.classList.add('opacity-100');
 
     // Retrieve profile if cached
-    const savedProfileRaw = safeStorage.getItem('5ir_authenticated_profile');
-    const profile = savedProfileRaw ? JSON.parse(savedProfileRaw) : Object.assign({
-      nodeId: 'MOBIUS_BRAID_MAIN',
-      handle: 'Architect',
-      role: 'SOVEREIGN_CLASS_1',
-      baseBalance: 5280.12540000,
-      flowRate: 0.00039420
-    }, window.MASTER_PROFILE_CONFIG || {});
+    var savedProfileRaw = safeStorage.getItem('5ir_authenticated_profile');
+    var profile;
+    if (savedProfileRaw) {
+      try {
+        profile = JSON.parse(savedProfileRaw);
+      } catch (err) {
+        console.warn("Corrupt cached profile, resetting", err);
+      }
+    }
+    if (!profile) {
+      profile = Object.assign({
+        nodeId: 'MOBIUS_BRAID_MAIN',
+        handle: 'Architect',
+        role: 'SOVEREIGN_CLASS_1',
+        baseBalance: 5280.12540000,
+        flowRate: 0.00039420
+      }, window.MASTER_PROFILE_CONFIG || {});
+      safeStorage.setItem('5ir_authenticated_profile', JSON.stringify(profile));
+    }
     applyAuthenticatedProfile(profile);
 
     // Programmatically trigger active tab click to layout panels cleanly on auto-login
