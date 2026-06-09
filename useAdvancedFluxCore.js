@@ -15,7 +15,8 @@ class AdvancedFluxCore {
     };
 
     this.logHistory = [
-      '[FLUX_INIT] Initializing 5iR non-associative topological wave core...'
+      '[FLUX_INIT] Initializing 5iR non-associative topological wave core...',
+      '[HW_SPEC_002] The Weaved Flux Braid coupled. 24-strand Braided Graphene-Polymer active.'
     ];
 
     this.listeners = [];
