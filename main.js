@@ -32,6 +32,8 @@ const LOCAL_TRANSLATIONS = {
   "system.coherence": "COHERENCE",
   "system.lead": "Sovereign Lead",
   "system.query_id": "QUERY ID",
+  "gateway.btn_sovereign": "[VERIFY_SOVEREIGN_CREDENTIALS]",
+  "gateway.btn_demo": "⚡ [ENGAGE_PUBLIC_DEMO_NODE] (ONE-CLICK ACCESS)",
   "app1.title": "APP 01: \"VORTEX-RETAIN\" SKELETAL MATRIX SIMULATOR",
   "app1.age_lbl": "USER AGE (YEARS)",
   "app1.exercise_lbl": "EXERCISE FREQUENCY (HOURS/WEEK)",
@@ -200,6 +202,21 @@ function bootstrapApp() {
   } catch (err) {
     console.error("Advanced Flux core init fault:", err);
   }
+  try {
+    initSpatialScannerApp();
+  } catch (err) {
+    console.error("App 15 (Spatial-Scanner) fault:", err);
+  }
+  try {
+    initGlowSovereignDashboard();
+  } catch (err) {
+    console.error("Glow Sovereign Dashboard fault:", err);
+  }
+  try {
+    initLegendrianGridApp();
+  } catch (err) {
+    console.error("App 16 (Legendrian-Grid) fault:", err);
+  }
 };
 
 if (document.readyState === 'loading') {
@@ -257,20 +274,16 @@ function switchTab(activeTab) {
   if (savedProfileRaw) {
     try {
       var p = JSON.parse(savedProfileRaw);
-      isMasterUser = (p.role === 'SOVEREIGN_CLASS_1' || p.nodeId === 'MOBIUS_BRAID_MAIN');
+      isMasterUser = (p.role === 'SOVEREIGN_CLASS_1' && p.nodeId === 'MOBIUS_BRAID_MAIN');
     } catch (err) {}
-  } else {
-    if (window.braidState && window.braidState.activeNodeAddress === 'MOBIUS_BRAID_MAIN') {
-      isMasterUser = true;
-    }
   }
 
-  if (!isMasterUser && (activeTab === 'sovereign-suite')) {
-    alert("CRITICAL WARNING: LEVEL-1 MOBIUS SECURITY CLEARANCE REQUIRED.");
+  if (!isMasterUser && (activeTab === 'sovereign-suite' || activeTab === 'sovereign-grid' || activeTab === 'vortex-ai')) {
+    alert("CRITICAL WARNING: LEVEL-1 MOBIUS SECURITY CLEARANCE REQUIRED FOR THIS APPARATUS.");
     return;
   }
 
-  if (activeTab === 'vortex-ai') {
+  if (activeTab === 'vortex-ai' && isMasterUser) {
     // Transition directly to the gorgeous Page 3 Clear Deck view!
     const launchBtn = document.getElementById('launch-clear-page-btn');
     if (launchBtn) {
@@ -2178,6 +2191,11 @@ ${activeLogs}
 function applyAuthenticatedProfile(profile) {
   if (!profile) return;
   
+  var isMasterUser = (profile.role === 'SOVEREIGN_CLASS_1' && profile.nodeId === 'MOBIUS_BRAID_MAIN');
+  if (!isMasterUser && window.braidState && window.braidState.activeNodeAddress === 'MOBIUS_BRAID_MAIN') {
+    isMasterUser = true;
+  }
+
   // Apply Asymmetric engine state evaluation
   if (window.asymmetricEngine && typeof window.asymmetricEngine.evaluateAsymmetricState === 'function') {
     window.asymmetricEngine.evaluateAsymmetricState(profile);
@@ -2191,25 +2209,55 @@ function applyAuthenticatedProfile(profile) {
   if (sovereignHandle) sovereignHandle.textContent = profile.handle || profile.nodeId;
   
   if (profileTitleEl) profileTitleEl.textContent = profile.handle || profile.nodeId;
-  if (profileSubEl) profileSubEl.textContent = profile.role === 'SOVEREIGN_CLASS_1' ? 'Sovereign Lead' : 'Node Contributor';
+  if (profileSubEl) profileSubEl.textContent = isMasterUser ? 'Sovereign Lead' : 'Node Contributor';
 
-  // Dynamic Clearance Filter: Ensure premium tabs are visible for everyone
+  // Dynamic Clearance Filter: Sovereign Grid and Vortex-AI Deck tabs are hidden/locked for non-master (demo and standard users)
   const tabNav = document.querySelector('.hud-tab-navigation');
   if (tabNav) {
-    const sovereignTabs = tabNav.querySelectorAll('[data-tab="vortex-ai"], [data-tab="phase-sync-chat"]');
-    sovereignTabs.forEach(tab => {
-      tab.classList.remove('hidden');
-    });
+    const sovereignGridTab = tabNav.querySelector('[data-tab="sovereign-grid"]');
+    const vortexAiTab = tabNav.querySelector('[data-tab="vortex-ai"]');
+    
+    if (isMasterUser) {
+      if (sovereignGridTab) sovereignGridTab.classList.remove('hidden');
+      if (vortexAiTab) vortexAiTab.classList.remove('hidden');
+    } else {
+      if (sovereignGridTab) sovereignGridTab.classList.add('hidden');
+      if (vortexAiTab) vortexAiTab.classList.add('hidden');
+    }
 
     // Reset active buttons cleanly
     tabNav.querySelectorAll('.hud-tab-btn').forEach(b => b.classList.remove('active'));
 
-    let targetTab = 'sovereign-grid';
+    let targetTab = isMasterUser ? 'sovereign-grid' : 'vortex-retain';
+    lastActiveTab = targetTab;
     const targetBtn = tabNav.querySelector('[data-tab="' + targetTab + '"]');
     if (targetBtn) {
       targetBtn.classList.add('active');
-      lastActiveTab = targetTab;
     }
+  }
+
+  // Lock controls on the Advanced Flux Platform Monitor for standard/demo users
+  const fluxToggleBtn = document.getElementById('flux-toggle-torsion-btn');
+  const fluxScaleBtn = document.getElementById('flux-scale-nodes-btn');
+  const fluxCoherenceSlider = document.getElementById('flux-coherence-slider');
+  const coherenceCard = fluxCoherenceSlider ? fluxCoherenceSlider.closest('.resonance-micro-card') : null;
+  
+  if (isMasterUser) {
+    if (fluxToggleBtn) fluxToggleBtn.classList.remove('hidden');
+    if (fluxScaleBtn) fluxScaleBtn.classList.remove('hidden');
+    if (fluxCoherenceSlider) fluxCoherenceSlider.disabled = false;
+    if (coherenceCard) coherenceCard.classList.remove('opacity-50', 'pointer-events-none');
+  } else {
+    // Standard user can only view their metrics (read-only mode)
+    if (fluxToggleBtn) fluxToggleBtn.classList.add('hidden');
+    if (fluxScaleBtn) fluxScaleBtn.classList.add('hidden');
+    if (fluxCoherenceSlider) {
+      fluxCoherenceSlider.disabled = true;
+      fluxCoherenceSlider.value = 0.946;
+      const fluxCore = window.useAdvancedFluxCore ? window.useAdvancedFluxCore() : null;
+      if (fluxCore) fluxCore.dispatchFluxOverride('ADJUST_COHERENCE', { targetValue: 0.946 });
+    }
+    if (coherenceCard) coherenceCard.classList.add('opacity-50', 'pointer-events-none');
   }
 
   // 2. Update APP 07 Node Chat selection
@@ -2288,6 +2336,142 @@ function initGatewayPortalSystem() {
   const toLoginBtn = document.getElementById('gateway-to-login-btn');
 
   if (!portalPage || !workspacePage) return;
+
+  // Dynamic rotating passcode initialization
+  const auxControls = document.querySelector('.auth-aux-controls');
+  if (auxControls && !document.getElementById('dynamic-passcode-status-label')) {
+    const rotateSpan = document.createElement('span');
+    rotateSpan.id = 'dynamic-passcode-status-label';
+    rotateSpan.className = 'text-grey font-bold uppercase tracking-wider text-[8px] animate-pulse';
+    rotateSpan.innerHTML = `ROTATING KEY: <span class="text-amber-400 font-extrabold" id="dynamic-passcode-val">-----</span> (<span id="dynamic-passcode-timer">--:--</span>)`;
+    auxControls.appendChild(rotateSpan);
+  }
+
+  if (secKeyInput) {
+    secKeyInput.addEventListener('input', () => {
+      secKeyInput.removeAttribute('data-is-autofilled');
+    });
+  }
+
+  function updateDynamicPasscodeUI() {
+    const timeMs = Date.now();
+    const intervalMs = 30 * 60 * 1000;
+    const blockIndex = Math.floor(timeMs / intervalMs);
+    const remainingMs = intervalMs - (timeMs % intervalMs);
+    
+    const passVal = ((blockIndex * 179 + 39420) % 90000) + 10000;
+    const dynamicPass = String(passVal);
+    
+    const mins = Math.floor(remainingMs / 60000);
+    const secs = Math.floor((remainingMs % 60000) / 1000);
+    const timeStr = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+    const timerEl = document.getElementById('dynamic-passcode-timer');
+    const valEl = document.getElementById('dynamic-passcode-val');
+
+    if (timerEl) timerEl.textContent = timeStr;
+    if (valEl) {
+      if (secKeyInput && secKeyInput.getAttribute('data-is-autofilled') === 'true') {
+        valEl.textContent = `${dynamicPass} (UNLOCKED)`;
+        valEl.className = "text-[#39ff14] font-extrabold";
+      } else {
+        valEl.textContent = "🔒 SHIELDED";
+        valEl.className = "text-amber-400 font-extrabold";
+      }
+    }
+    
+    if (secKeyInput && secKeyInput.getAttribute('data-is-autofilled') === 'true') {
+      secKeyInput.value = dynamicPass;
+    }
+  }
+
+  setInterval(updateDynamicPasscodeUI, 1000);
+  setTimeout(updateDynamicPasscodeUI, 100);
+
+  // SECURE GATEWAY SEAL VERIFICATION SHORTCUT: Click to decrypt, double-click to auto-fill
+  const sealVector = document.getElementById('gateway-seal-vector');
+  if (sealVector) {
+    sealVector.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      const timeMs = Date.now();
+      const intervalMs = 30 * 60 * 1000;
+      const blockIndex = Math.floor(timeMs / intervalMs);
+      const passVal = ((blockIndex * 179 + 39420) % 90000) + 10000;
+      const dynamicPass = String(passVal);
+
+      // Play high-tech sweep
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          const audioCtx = new AudioContextClass();
+          const osc = audioCtx.createOscillator();
+          const gainNode = audioCtx.createGain();
+          osc.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+          
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(394.2, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(1182.6, audioCtx.currentTime + 0.2);
+          gainNode.gain.setValueAtTime(0.04, audioCtx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+          
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.2);
+        }
+      } catch (e) {}
+
+      // Visual flash
+      sealVector.classList.add('animate-pulse');
+      setTimeout(() => sealVector.classList.remove('animate-pulse'), 400);
+
+      appendGatewayLog(`>> [DECRYPT] INTERROGATING MÖBIUS COHERENCE KEY VECTOR...`, "violet");
+      setTimeout(() => {
+        appendGatewayLog(`>> [DECRYPT] SUCCESS! ACTIVE 30m PASSCODE IS: [ ${dynamicPass} ]`, "cyan");
+        appendGatewayLog(`>> [DECRYPT] DOUBLE-TAP THE MÖBIUS SEAL TO AUTO-FILL CREDENTIALS FIELD`, "violet");
+      }, 300);
+    });
+
+    sealVector.addEventListener('dblclick', (e) => {
+      e.preventDefault();
+      
+      const timeMs = Date.now();
+      const intervalMs = 30 * 60 * 1000;
+      const blockIndex = Math.floor(timeMs / intervalMs);
+      const passVal = ((blockIndex * 179 + 39420) % 90000) + 10000;
+      const dynamicPass = String(passVal);
+
+      // Confirmation sound
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          const audioCtx = new AudioContextClass();
+          const freqs = [591.3, 1182.6];
+          freqs.forEach((freq, idx) => {
+            setTimeout(() => {
+              const o = audioCtx.createOscillator();
+              const g = audioCtx.createGain();
+              o.connect(g);
+              g.connect(audioCtx.destination);
+              o.type = 'sine';
+              o.frequency.setValueAtTime(freq, audioCtx.currentTime);
+              g.gain.setValueAtTime(0.05, audioCtx.currentTime);
+              g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+              o.start();
+              o.stop(audioCtx.currentTime + 0.15);
+            }, idx * 60);
+          });
+        }
+      } catch (e) {}
+
+      if (secKeyInput) {
+        secKeyInput.value = dynamicPass;
+        secKeyInput.setAttribute('data-is-autofilled', 'true');
+        updateDynamicPasscodeUI();
+        appendGatewayLog(`>> [AUTOFILL] Passcode shunted directly into credentials field!`, "cyan");
+      }
+    });
+  }
 
   function appendGatewayLog(text, type) {
     if (!logContainer) return;
@@ -2399,6 +2583,15 @@ function initGatewayPortalSystem() {
         return;
       }
 
+      const lowerNodeId = nodeIdVal.toLowerCase();
+      const lowerNickname = nicknameVal.toLowerCase();
+      if (lowerNodeId.includes('mobius') || lowerNodeId.includes('architect') || lowerNodeId.includes('sovereign') || lowerNodeId.includes('lead') ||
+          lowerNickname.includes('mobius') || lowerNickname.includes('architect') || lowerNickname.includes('sovereign') || lowerNickname.includes('lead')) {
+        appendGatewayLog(">> REGISTRATION ERROR: CHOSEN CREDENTIALS INTRUDE ON PROTECTED COMMAND SIGNATURES!", "magenta");
+        alert("CRITICAL SECURITY VIOLATION: Cannot register credentials containing protected Sovereign nomenclature (Möbius, Architect, Sovereign, Lead).");
+        return;
+      }
+
       const uniqueUserKey = btoa(nodeIdVal + passwordVal).substring(0, 12);
       
       const freshNodeProfile = {
@@ -2458,18 +2651,13 @@ function initGatewayPortalSystem() {
 
       let resolvedProfile = null;
 
-      // Master Bypass Check A
-      if (archId === 'MOBIUS_BRAID_MAIN' && secKey === '39420') {
-        resolvedProfile = Object.assign({
-          nodeId: 'MOBIUS_BRAID_MAIN',
-          handle: 'Architect',
-          role: 'SOVEREIGN_CLASS_1',
-          baseBalance: 5280.12540000,
-          flowRate: 0.00039420
-        }, window.MASTER_PROFILE_CONFIG || {});
-      }
-      // Master Bypass Check B (Legacy Default Values)
-      else if (archId === 'MOBIUS.BRAID' && secKey === '0x39420_SECURE_LATTICE') {
+      const timeMs = Date.now();
+      const intervalMs = 30 * 60 * 1000;
+      const blockIndex = Math.floor(timeMs / intervalMs);
+      const dynamicPass = String(((blockIndex * 179 + 39420) % 90000) + 10000);
+
+      // Master Bypass Check (Rotating passcode only - secure against standard guesses)
+      if ((archId === 'MOBIUS_BRAID_MAIN' || archId === 'MOBIUS.BRAID') && secKey === dynamicPass) {
         resolvedProfile = Object.assign({
           nodeId: 'MOBIUS_BRAID_MAIN',
           handle: 'Architect',
@@ -2529,6 +2717,94 @@ function initGatewayPortalSystem() {
 
           // Set the values dynamically across the apps!
           applyAuthenticatedProfile(resolvedProfile);
+
+          // Programmatically trigger active tab click to layout panels cleanly on login success
+          setTimeout(() => {
+            const tabNav = document.querySelector('.hud-tab-navigation');
+            if (tabNav) {
+              const activeBtn = tabNav.querySelector('[data-tab="' + lastActiveTab + '"]') || tabNav.querySelector('.hud-tab-btn');
+              if (activeBtn) {
+                activeBtn.click();
+              }
+            }
+          }, 100);
+
+          setTimeout(() => {
+            workspacePage.classList.remove('opacity-0');
+            workspacePage.classList.add('opacity-100');
+            window.dispatchEvent(new Event('resize'));
+          }, 50);
+        }, 600);
+      }, 1500);
+    });
+  }
+
+  // One-click Demo Login Driver
+  const demoBtn = document.getElementById('gateway-demo-btn');
+  if (demoBtn) {
+    demoBtn.addEventListener('click', () => {
+      // Sound feedback
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          const audioCtx = new AudioContextClass();
+          const osc = audioCtx.createOscillator();
+          const gainNode = audioCtx.createGain();
+          osc.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(1000, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(1500, audioCtx.currentTime + 0.1);
+          gainNode.gain.setValueAtTime(0.04, audioCtx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.1);
+        }
+      } catch (e) {}
+
+      demoBtn.disabled = true;
+      demoBtn.textContent = "[ESTABLISHING PUBLIC SHUNT...]";
+      if (decryptBtn) decryptBtn.disabled = true;
+
+      appendGatewayLog(">> COMPILING OPEN-SOURCE SANDBOX PROFILE PARAMS...", "cyan");
+
+      const guestProfile = {
+        nodeId: 'NODE_GUEST_CONTRIBUTOR',
+        handle: 'Guest Contributor',
+        role: 'HIGH_FREQUENCY_NODE',
+        baseBalance: 10.00000000,
+        flowRate: 0.00000050
+      };
+
+      setTimeout(() => {
+        appendGatewayLog(`>> ID VERIFIED: ${guestProfile.nodeId} (PUBLIC HANDSHAKE APPROVED)`, "cyan");
+      }, 300);
+
+      setTimeout(() => {
+        appendGatewayLog(`>> SECURITY SHUNT VALUE: 0xGUEST_MEMBER SECURED`, "violet");
+        appendGatewayLog(">> COHERENCE SHUNT METRIC: 94.6% MATCHED STANDARDS", "cyan");
+      }, 700);
+
+      setTimeout(() => {
+        appendGatewayLog(">> GUEST NODE REGISTERED IN THE 1.40M MESH...", "system");
+        appendGatewayLog(">> INITIALIZING PUBLIC WORKSPACE HUD...", "cyan");
+      }, 1100);
+
+      setTimeout(() => {
+        portalPage.style.opacity = '0';
+        portalPage.style.transform = 'scale(0.97)';
+        portalPage.style.pointerEvents = 'none';
+
+        setTimeout(() => {
+          portalPage.classList.add('hidden');
+          workspacePage.classList.remove('hidden');
+
+          // Securely record authenticated session state & profile details
+          safeStorage.setItem('5ir_authenticated_session', 'true');
+          safeStorage.setItem('5ir_authenticated_profile', JSON.stringify(guestProfile));
+
+          // Set the values dynamically across the apps!
+          applyAuthenticatedProfile(guestProfile);
 
           // Programmatically trigger active tab click to layout panels cleanly on login success
           setTimeout(() => {
@@ -3880,10 +4156,9 @@ function initSuperfluidResonanceApp() {
   const ideLogs = document.getElementById('resonance-ide-logs');
   
   const canvas = document.getElementById('resonance-wave-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas ? canvas.getContext('2d') : null;
   
-  let radioFreq = 39000;
+  let radioFreq = 39420;
   let flowRate = 0.00039420;
   let currentBalance = 100.00000000;
   let isBraiding = false;
@@ -3987,6 +4262,139 @@ function initSuperfluidResonanceApp() {
       syncAllResonanceSliders(Number(e.target.value));
     });
   }
+
+  // --- UPGRADED STANDALONE ISOLATED RADIO WAVE STATE ENGINE (RadioWaveMetricsPanel) ---
+  let radioMetrics = {
+    carrierFrequency: 39420,
+    signalDecayFloor: 0.00,
+    lieBracketConvergence: 1.00000000,
+    topologicalStealthStatus: 'ACTIVE_SUB_HARMONIC',
+    antennaInductionCoupling: 100.0,
+    currentWaveShift: 0
+  };
+
+  let activeFrequencyChannel = 'CH_04_CYDONIA';
+  let radioEventLogs = [
+    '[INIT] Topological radio module attached to 24-strand flux braid...'
+  ];
+
+  function runRadioWaveStep() {
+    const timeSeed = Date.now() / 1000;
+    const dynamicFluctuation = Math.sin(timeSeed * 2.5) * 0.000012;
+    const nextConvergence = 1.00000000 + dynamicFluctuation;
+    const nextWaveShift = (radioMetrics.currentWaveShift + 2) % 360;
+
+    radioMetrics.lieBracketConvergence = nextConvergence;
+    radioMetrics.currentWaveShift = nextWaveShift;
+    radioMetrics.signalDecayFloor = 0.00;
+
+    const freqDisplayNode = document.getElementById('radio-frequency-display');
+    const decayDisplayNode = document.getElementById('radio-decay-display');
+    const convergenceDisplayNode = document.getElementById('radio-convergence-display');
+    const wavePathNode = document.getElementById('radio-wave-svg-path');
+    const stealthDisplayNode = document.getElementById('radio-stealth-status');
+
+    if (freqDisplayNode) {
+      freqDisplayNode.textContent = `${radioMetrics.carrierFrequency.toLocaleString()} Hz`;
+    }
+    if (decayDisplayNode) {
+      decayDisplayNode.textContent = `${radioMetrics.signalDecayFloor.toFixed(2)} W`;
+    }
+    if (convergenceDisplayNode) {
+      convergenceDisplayNode.textContent = radioMetrics.lieBracketConvergence.toFixed(8);
+    }
+    if (stealthDisplayNode) {
+      stealthDisplayNode.textContent = radioMetrics.topologicalStealthStatus;
+      stealthDisplayNode.style.color = radioMetrics.topologicalStealthStatus === 'ACTIVE_SUB_HARMONIC' ? '#39ff14' : '#ff0055';
+    }
+
+    if (wavePathNode) {
+      const waveHeight = Math.sin(radioMetrics.currentWaveShift * Math.PI / 180) * 20;
+      const pathD = `M 0 30 Q 50 ${30 + waveHeight}, 100 30 T 200 30`;
+      wavePathNode.setAttribute('d', pathD);
+      wavePathNode.setAttribute('stroke', radioMetrics.topologicalStealthStatus === 'ACTIVE_SUB_HARMONIC' ? '#00f2fe' : '#ff0055');
+      wavePathNode.style.filter = `drop-shadow(0 0 4px ${radioMetrics.topologicalStealthStatus === 'ACTIVE_SUB_HARMONIC' ? '#00f2fe' : '#ff0055'})`;
+    }
+  }
+
+  // Ticker for isolated radio parameters fluctuation
+  const radioPulseTicker = setInterval(runRadioWaveStep, 150);
+
+  const processFrequencySweep = (targetChannel, frequencyOffset) => {
+    activeFrequencyChannel = targetChannel;
+    const updatedFreq = 39420 + frequencyOffset;
+    
+    radioMetrics.carrierFrequency = updatedFreq;
+    radioMetrics.topologicalStealthStatus = frequencyOffset === 0 ? 'ACTIVE_SUB_HARMONIC' : 'WARNING_SPECTRUM_DRIFT';
+
+    const btnCydonia = document.getElementById('radio-btn-cydonia');
+    const btnLunar = document.getElementById('radio-btn-lunar');
+    const linkBadge = document.getElementById('radio-link-badge');
+
+    if (linkBadge) {
+      linkBadge.textContent = `LINK: ${targetChannel}`;
+    }
+
+    if (btnCydonia) {
+      if (activeFrequencyChannel === 'CH_04_CYDONIA') {
+        btnCydonia.style.backgroundColor = '#5850ec';
+        btnCydonia.style.border = '1px solid #00f2fe';
+      } else {
+        btnCydonia.style.backgroundColor = '#010206';
+        btnCydonia.style.border = '1px solid #1c2d5a';
+      }
+    }
+
+    if (btnLunar) {
+      if (activeFrequencyChannel === 'LUNAR_GRID_X') {
+        btnLunar.style.backgroundColor = '#5850ec';
+        btnLunar.style.border = '1px solid #00f2fe';
+      } else {
+        btnLunar.style.backgroundColor = '#010206';
+        btnLunar.style.border = '1px solid #1c2d5a';
+      }
+    }
+
+    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+    const logMsg = `[${timestamp}] SWEEP: Shifted channel link to ${targetChannel} (${updatedFreq} Hz)`;
+    radioEventLogs = [logMsg, ...radioEventLogs.slice(0, 4)];
+
+    renderRadioLogs();
+
+    // Propagate the shift back to the global resonance indicators
+    syncAllResonanceSliders(updatedFreq);
+  };
+
+  const renderRadioLogs = () => {
+    const logsContainer = document.getElementById('radio-event-logs-container');
+    if (!logsContainer) return;
+
+    logsContainer.innerHTML = radioEventLogs.map(log => {
+      const isSweep = log.includes('SWEEP');
+      const color = isSweep ? '#00f2fe' : '#a1b5cc';
+      return `<div style="color: ${color}; font-weight: 800; font-size: 7.5pt; font-family: monospace;">${log}</div>`;
+    }).join('');
+    logsContainer.scrollTop = logsContainer.scrollHeight;
+  };
+
+  // Wire standalone buttons
+  const btnCydonia = document.getElementById('radio-btn-cydonia');
+  const btnLunar = document.getElementById('radio-btn-lunar');
+
+  if (btnCydonia) {
+    btnCydonia.addEventListener('click', () => {
+      processFrequencySweep('CH_04_CYDONIA', 0);
+    });
+  }
+
+  if (btnLunar) {
+    btnLunar.addEventListener('click', () => {
+      processFrequencySweep('LUNAR_GRID_X', -420);
+    });
+  }
+
+  // Initial logs paint
+  renderRadioLogs();
 
   // --- LIVE SUPERFLUID BALANCE CALCULATOR HOOK INTEGRATION ---
   let activeNodeAddress = 'MOBIUS_BRAID_MAIN';
@@ -4111,6 +4519,7 @@ function initSuperfluidResonanceApp() {
 
   // Canvas waveform resize handling
   function resizeWaveCanvas() { 
+    if (!canvas) return;
     const parent = canvas.parentElement;
     if (parent) {
       const w = parent.clientWidth || 300;
@@ -4121,13 +4530,14 @@ function initSuperfluidResonanceApp() {
       }
     }
   }
-  resizeWaveCanvas();
-  window.addEventListener('resize', resizeWaveCanvas);
+  if (canvas) {
+    resizeWaveCanvas();
+    window.addEventListener('resize', resizeWaveCanvas);
+  }
 
   // Waveform drawing calculation animation loop
   function drawResonanceField() {
-    // Canvas might be hidden, so only animate if tab is radio or panel is visible
-    if (canvas.offsetParent !== null) {
+    if (canvas && canvas.offsetParent !== null) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       timeTick += 0.03;
 
@@ -4135,7 +4545,6 @@ function initSuperfluidResonanceApp() {
       const isPhaseLocked = (radioFreq === 39420);
 
       if (isPhaseLocked) {
-        // Beautiful phase locked cyan waveform
         const isLightMode = document.body.classList.contains('bg-light');
         ctx.strokeStyle = isLightMode ? '#0284c7' : '#00f2fe';
         ctx.beginPath();
@@ -4146,7 +4555,6 @@ function initSuperfluidResonanceApp() {
         }
         ctx.stroke();
       } else { 
-        // High entropy standard noise static lines
         ctx.strokeStyle = 'rgba(156, 179, 201, 0.25)';
         ctx.beginPath();
         for (let i = 0; i < canvas.width; i += 4) {
@@ -4156,9 +4564,13 @@ function initSuperfluidResonanceApp() {
         ctx.stroke();
       }
     }
-    requestAnimationFrame(drawResonanceField);
+    if (canvas) {
+      requestAnimationFrame(drawResonanceField);
+    }
   }
-  drawResonanceField();
+  if (canvas) {
+    drawResonanceField();
+  }
 }
 
 /**
@@ -4419,7 +4831,8 @@ function initAssetInventoryApp() {
       ],
       HARDWARE: [
         { id: 'cydonia_cruiser', name: 'The Cydonia Braid Cruiser', qty: '1 Units', status: 'HANGAR_04_LOCKED', details: 'Features a seamless fluidic chrome Vortex Manifold displaying non-associative geometry and a non-moving Phonon-Polariton tracker headlight.' },
-        { id: 'blackwell_cluster', name: 'Braid Blackwell Ultra B300', qty: '32 Nodes', status: 'UN_THROTTLED', details: 'Hardware-accelerated processing engine driving the 1.4M distributed network mesh logic.' }
+        { id: 'blackwell_cluster', name: 'Braid Blackwell Ultra B300', qty: '32 Nodes', status: 'UN_THROTTLED', details: 'Hardware-accelerated processing engine driving the 1.4M distributed network mesh logic.' },
+        { id: 'flux_braid_spec', name: '5iR-HW-002 Flux Braid', qty: '1 Array', status: 'WEAVE_LOCKED', details: '24-Strand Braided Graphene-Polymer with Hexagonal Interlace Pattern. Sustains superconducting loop within Möbius shell with zero resistance and dQ_leak/dt = 0.00W flat heat loss.' }
       ],
       APPAREL: [
         { id: 'look_04_suit', name: 'Look 04 Space Suit Matrix', qty: '2 Sets', status: 'STABILIZED_0.00W', details: 'Graphene Nanofiber tactical base weave equipped with layered multi-bag utility pockets and signature Cyano-Luminescent piping.' },
@@ -4468,7 +4881,7 @@ function initAssetInventoryApp() {
             <div class="text-[7.5px] text-[#9cb3c9]/80 mt-1 uppercase">ALLOCATION INDEX: ${item.id}</div>
           </div>
           <div class="text-right font-mono">
-            <div class="text-[9.5px] text-[#39ff14] font-bold">${item.qty}</div>
+            <div class="text-[9.5px] text-[#39ff14] font-bold" id="inv-qty-${item.id}">${item.qty}</div>
             <div class="text-[6.5px] bg-slate-900 text-[#00f2fe] px-1.5 py-0.5 rounded mt-1 inline-block uppercase font-bold tracking-wide">${item.status}</div>
           </div>
         </div>
@@ -4529,10 +4942,22 @@ function initAssetInventoryApp() {
   renderInventoryList();
 
   // Continuous loop to update quantities in real-time under active CURRENCY tab
+  let lastMinedBalance = -1;
   function continuousInventoryUpdate() {
     if (document.getElementById('app-asset-inventory') && !document.getElementById('app-asset-inventory').classList.contains('hidden')) {
       if (activeTab === 'CURRENCY') {
-        renderInventoryList();
+        const liveBalance = (window.braidState && typeof window.braidState.currentMinedBalance === 'number')
+          ? window.braidState.currentMinedBalance
+          : 5280.1254;
+        if (liveBalance !== lastMinedBalance) {
+          lastMinedBalance = liveBalance;
+          const qtyBraid = document.getElementById('inv-qty-braid_core');
+          const qtyBtc = document.getElementById('inv-qty-btc_bridge');
+          const qtySol = document.getElementById('inv-qty-sol_edge');
+          if (qtyBraid) qtyBraid.textContent = liveBalance.toFixed(4);
+          if (qtyBtc) qtyBtc.textContent = (liveBalance * 0.0000142).toFixed(6);
+          if (qtySol) qtySol.textContent = (liveBalance * 0.00582).toFixed(4);
+        }
       }
     }
     requestAnimationFrame(continuousInventoryUpdate);
@@ -4780,6 +5205,15 @@ function initPhaseSyncChatApp() {
   });
 }
 
+// Append this constant to your FluxTelemetryDashboard layout script files
+const HARDWARE_MATERIAL_SPEC = {
+  identifier: "5iR-HW-002",
+  coreFilament: "24-Strand Braided Graphene-Polymer",
+  geometry: "Hexagonal Interlace Pattern",
+  resistanceFloor: "0.00000000 Ohms [Superconducting Loop]",
+  thermalProfile: "dQ_leak/dt = 0.00W Flat"
+};
+
 function initAdvancedFluxApp() {
   const fluxVelocityEl = document.getElementById('flux-velocity-display');
   const fluxPhaseEl = document.getElementById('flux-phase-display');
@@ -4798,6 +5232,19 @@ function initAdvancedFluxApp() {
 
   // Subscribe to the Advanced Flux Core instance
   const fluxCore = window.useAdvancedFluxCore();
+  
+  // Set physical specs in DOM dynamically on load
+  const specIdEl = document.getElementById('flux-spec-id');
+  const specFilamentEl = document.getElementById('flux-spec-filament');
+  const specGeometryEl = document.getElementById('flux-spec-geometry');
+  const specResistanceEl = document.getElementById('flux-spec-resistance');
+  const specThermalEl = document.getElementById('flux-spec-thermal');
+  
+  if (specIdEl) specIdEl.textContent = HARDWARE_MATERIAL_SPEC.identifier;
+  if (specFilamentEl) specFilamentEl.textContent = HARDWARE_MATERIAL_SPEC.coreFilament;
+  if (specGeometryEl) specGeometryEl.textContent = HARDWARE_MATERIAL_SPEC.geometry;
+  if (specResistanceEl) specResistanceEl.textContent = HARDWARE_MATERIAL_SPEC.resistanceFloor;
+  if (specThermalEl) specThermalEl.textContent = HARDWARE_MATERIAL_SPEC.thermalProfile;
 
   function renderFluxUI(state, logs) {
     if (fluxVelocityEl) fluxVelocityEl.textContent = state.activeLatticeVelocity.toFixed(8);
@@ -4857,5 +5304,728 @@ function initAdvancedFluxApp() {
       fluxCore.dispatchFluxOverride('ADJUST_COHERENCE', { targetValue: val });
     });
   }
+}
+
+/**
+ * UPGRADED HIGH-LUMINESCENCE NEON PERSONAL DASHBOARD CONTROLLER (GlowSovereignDashboard)
+ */
+function initGlowSovereignDashboard() {
+  const terminalLogsEl = document.getElementById('sovereign-terminal-logs');
+  const chatMessagesEl = document.getElementById('sovereign-chat-messages');
+  const chatFormEl = document.getElementById('sovereign-chat-form');
+  const chatInputEl = document.getElementById('sovereign-chat-input');
+  const cipherSaltInput = document.getElementById('sovereign-cipher-salt');
+  const alertsContainer = document.getElementById('sovereign-alerts-container');
+  const alertsTitle = document.getElementById('sovereign-alerts-title');
+  const alertFeedEl = document.getElementById('sovereign-alert-feed');
+
+  if (!terminalLogsEl || !chatMessagesEl || !alertFeedEl) return;
+
+  // Master alert trigger arrays
+  let alertFeed = [];
+  let cipherSalt = '39420';
+  let chatMessages = [
+    { id: 1, sender: "King Droid", node: "CORE_SYSTEM_LOG", rawText: "Fluidic OS synchronization protocol active.", cipherText: "U0YyUkNfTUFQUklYXzM5NDIw", decrypted: true },
+    { id: 2, sender: "Mars_Hangar_08", node: "NODE_0x7B9A2F", rawText: "Lattice-Lock updated across 1.4M mesh.", cipherText: "T0xFUl9MVU1FX_SAFE", decrypted: false }
+  ];
+
+  // Terminal background logs ticker state variables
+  let terminalLogs = [
+    '>> [SYSTEM_INIT] Sovereign state core online.',
+    '>> [HARMONICS] Tuning loop reference to 39,420 Hz.'
+  ];
+
+  // Bit-shifting XOR encryption helper
+  const executeXorCipher = (text, key) => {
+    if (!text || !key) return '';
+    let result = '';
+    for (let i = 0; i < text.length; i++) {
+      const charCode = text.charCodeAt(i) ^ key.charCodeAt(i % key.length);
+      result += String.fromCharCode(charCode);
+    }
+    return btoa(encodeURIComponent(result)).substring(0, 16);
+  };
+
+  // Utility to fire native system security alerts instantly
+  function triggerSecurityAlert(messageString) {
+    const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+    const alertObject = `[${timestamp}] ALERT: ${messageString}`;
+    
+    alertFeed = [alertObject, ...alertFeed.slice(0, 4)];
+    terminalLogs = [`>> ALERT_TRIGGERED: ${messageString}`, ...terminalLogs.slice(0, 15)];
+    
+    renderLogs();
+    renderAlerts();
+    
+    // Simulate simple diagnostic console notification chirp audio
+    try {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (AudioContextClass) {
+        const audioCtx = new AudioContextClass();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime); // High-frequency secure chime chirp
+        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.15);
+      }
+    } catch (e) {
+      console.warn("Audio Context blocked.");
+    }
+  }
+
+  function renderLogs() {
+    terminalLogsEl.innerHTML = terminalLogs.map(log => {
+      const isAlert = log.includes('ALERT_TRIGGERED');
+      const style = isAlert ? 'color: #ff0055; font-weight: bold;' : 'color: #a1b5cc;';
+      return `<div style="${style}">${log}</div>`;
+    }).join('');
+    terminalLogsEl.scrollTop = terminalLogsEl.scrollHeight;
+  }
+
+  function renderAlerts() {
+    if (alertFeed.length > 0) {
+      alertsContainer.classList.add('alert-glow-active');
+      if (alertsTitle) {
+        alertsTitle.style.color = '#ff0055';
+        alertsTitle.style.borderLeftColor = '#ff0055';
+      }
+      alertFeedEl.innerHTML = alertFeed.map(alert => `
+        <div style="background-color: #000000; border-left: 3px solid #ff0055; padding: 6px; font-size: 7.5pt; color: #ffffff; line-height: 1.3; border-radius: 2px; margin-bottom: 6px;">
+          ${alert}
+        </div>
+      `).join('');
+    } else {
+      alertsContainer.classList.remove('alert-glow-active');
+      if (alertsTitle) {
+        alertsTitle.style.color = '#a1b5cc';
+        alertsTitle.style.borderLeftColor = '#1c2d5a';
+      }
+      alertFeedEl.innerHTML = `
+        <div class="h-full flex flex-col justify-center items-center text-center p-4" style="margin-top: 50px;">
+          <span style="font-size: 7.5pt; color: #a1b5cc; font-style: italic;">[ALL MESH LANES HOLDING SECURE]</span>
+          <span style="font-size: 6.5pt; color: #39ff14; font-weight: bold; margin-top: 4px;" class="animate-pulse">SYNC COHERENCE FLAT AT 94.6%</span>
+        </div>
+      `;
+    }
+  }
+
+  function renderChat() {
+    chatMessagesEl.innerHTML = chatMessages.map(msg => {
+      const isOwnMessage = msg.sender.includes('Architect') || msg.sender === 'MOBIUS_BRAID_MAIN';
+      const color = isOwnMessage ? '#00f2fe' : '#a1b5cc';
+      return `
+        <div class="border-b border-dashed border-[#1c2d5a]/40 pb-1.5">
+          <div class="flex justify-between items-center text-[7px] mb-0.5">
+            <span style="color: ${color}; font-weight: bold;">${msg.sender} <span style="opacity: 0.4;">[${msg.node}]</span></span>
+            <button onclick="window.handleSovereignToggleDecryption(${msg.id})" class="bg-transparent border-none text-[#5850ec] hover:text-[#00f2fe] cursor-pointer underline text-[7px] font-mono">[${msg.decrypted ? 'MASK' : 'DECRYPT'}]</button>
+          </div>
+          <div style="font-size: 8px; color: ${msg.decrypted ? '#ffffff' : '#ff0055'}; word-break: break-all;">
+            ${msg.decrypted ? msg.rawText : `[ENCRYPTED_DATA_PACKET]: ${msg.cipherText}`}
+          </div>
+        </div>
+      `;
+    }).join('');
+    chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+  }
+
+  window.handleSovereignToggleDecryption = function(id) {
+    chatMessages = chatMessages.map(msg => {
+      if (msg.id === id) {
+        const nextState = !msg.decrypted;
+        if (nextState) {
+          triggerSecurityAlert(`Decrypted transaction payload exposed on Node ID: ${msg.node}`);
+        }
+        return { ...msg, decrypted: nextState };
+      }
+      return msg;
+    });
+    renderChat();
+  };
+
+  if (cipherSaltInput) {
+    cipherSaltInput.addEventListener('input', () => {
+      cipherSalt = cipherSaltInput.value || '39420';
+    });
+  }
+
+  if (chatFormEl) {
+    chatFormEl.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const textVal = chatInputEl ? chatInputEl.value.trim() : '';
+      if (!textVal) return;
+
+      if (chatInputEl) chatInputEl.value = '';
+
+      // Get authenticated details
+      let handle = "Architect";
+      let node = "MOBIUS_BRAID_MAIN";
+      const savedProfileRaw = safeStorage.getItem('5ir_authenticated_profile');
+      if (savedProfileRaw) {
+        try {
+          const profile = JSON.parse(savedProfileRaw);
+          handle = profile.handle || "Architect";
+          node = profile.nodeId || "MOBIUS_BRAID_MAIN";
+        } catch (err) {}
+      }
+
+      const computedCipher = executeXorCipher(textVal, cipherSalt);
+      const msgPacket = {
+        id: Date.now(),
+        sender: handle,
+        node: node,
+        rawText: textVal,
+        cipherText: computedCipher,
+        decrypted: true
+      };
+
+      chatMessages = [...chatMessages, msgPacket];
+      terminalLogs = [`>> TRANSMIT_PACKET: Data string successfully shunted across mesh.`, ...terminalLogs.slice(0, 15)];
+      
+      renderChat();
+      renderLogs();
+
+      // Trigger simulated beep audio feedback on send
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          const audioCtx = new AudioContextClass();
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(450, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.15);
+          gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.15);
+        }
+      } catch (e) {}
+
+      // Autonomous zombie reply generation loop after 1200ms
+      setTimeout(() => {
+        const zombieRawText = "Telemetry verified. Superconducting loop holding flat at 0.00W.";
+        const zombieMsg = {
+          id: Date.now() + 1,
+          sender: "Zombie_Node_42",
+          node: "NODE_0x8F1C3E",
+          rawText: zombieRawText,
+          cipherText: executeXorCipher(zombieRawText, cipherSalt),
+          decrypted: false
+        };
+        chatMessages = [...chatMessages, zombieMsg];
+        renderChat();
+        triggerSecurityAlert(`Encrypted packet intercept incoming from decentralized node: ${zombieMsg.node}`);
+      }, 1200);
+    });
+  }
+
+  // Initial renders
+  renderLogs();
+  renderAlerts();
+  renderChat();
+}
+
+/**
+ * APPLICATION 15: "SPATIAL SCANNER" IMAGE VECTOR CORES
+ * Dual-coordinate spatial lens simulator analyzing physical vs. orbital properties.
+ * Calibrated specifically for high-frequency synchronization loops.
+ */
+function initSpatialScannerApp() {
+  const earthBtn = document.getElementById('scanner-mode-earth-btn');
+  const spaceBtn = document.getElementById('scanner-mode-space-btn');
+  const executeBtn = document.getElementById('scanner-execute-btn');
+  const lensContainer = document.getElementById('scanner-lens-container');
+  const crosshair = document.getElementById('scanner-crosshair');
+  const line = document.getElementById('scanner-line');
+  const coherenceVal = document.getElementById('scanner-coherence-val');
+  const frictionVal = document.getElementById('scanner-friction-val');
+  const gridVal = document.getElementById('scanner-grid-val');
+  const matrixLog = document.getElementById('scanner-matrix-log');
+
+  if (!executeBtn) return;
+
+  let scanMode = 'EARTH_TACTICAL'; // EARTH_TACTICAL vs SPACE_ORBITAL
+  let isScanning = false;
+
+  // Translation helper
+  const translateKey = (key, defaultText) => {
+    return window.braidI18n?.t(key) || defaultText;
+  };
+
+  // Sound feedback synthesizer
+  function playBeep(frequency, duration) {
+    try {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return;
+      const audioCtx = new AudioContextClass();
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+      gainNode.gain.setValueAtTime(0.03, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    } catch (e) {}
+  }
+
+  // Update button classes visually
+  function updateModeButtons() {
+    if (scanMode === 'EARTH_TACTICAL') {
+      if (earthBtn) {
+        earthBtn.className = 'scanner-toggle-btn text-[7pt] font-extrabold font-mono text-white px-2.5 py-1 rounded transition-all bg-[#5850ec] border border-[#00f2fe]';
+      }
+      if (spaceBtn) {
+        spaceBtn.className = 'scanner-toggle-btn text-[7pt] font-extrabold font-mono text-white px-2.5 py-1 rounded transition-all bg-[#000000] border border-[#1c2d5a]';
+      }
+    } else {
+      if (earthBtn) {
+        earthBtn.className = 'scanner-toggle-btn text-[7pt] font-extrabold font-mono text-white px-2.5 py-1 rounded transition-all bg-[#000000] border border-[#1c2d5a]';
+      }
+      if (spaceBtn) {
+        spaceBtn.className = 'scanner-toggle-btn text-[7pt] font-extrabold font-mono text-white px-2.5 py-1 rounded transition-all bg-[#5850ec] border border-[#00f2fe]';
+      }
+    }
+  }
+
+  earthBtn?.addEventListener('click', () => {
+    if (isScanning) return;
+    scanMode = 'EARTH_TACTICAL';
+    updateModeButtons();
+    playBeep(900, 0.08);
+    if (matrixLog) {
+      matrixLog.textContent = translateKey('app15.log_earth_mode', '[MODE_SHIFT]: Earth tactical tracking configured.');
+    }
+  });
+
+  spaceBtn?.addEventListener('click', () => {
+    if (isScanning) return;
+    scanMode = 'SPACE_ORBITAL';
+    updateModeButtons();
+    playBeep(900, 0.08);
+    if (matrixLog) {
+      matrixLog.textContent = translateKey('app15.log_space_mode', '[MODE_SHIFT]: Deep-space radiometric mesh configured.');
+    }
+  });
+
+  executeBtn?.addEventListener('click', () => {
+    if (isScanning) return;
+    
+    isScanning = true;
+    executeBtn.disabled = true;
+    executeBtn.textContent = translateKey('app15.btn_processing', '[PROCESSING_GEOMETRY...]');
+    
+    if (matrixLog) {
+      matrixLog.textContent = translateKey('app15.log_scanning', '>> INITIALIZING TOPOLOGICAL RE-SHAPE SWEEP...');
+    }
+
+    // Toggle scanning style states
+    if (line) {
+      line.classList.remove('hidden');
+      line.classList.add('animate-scanline');
+    }
+    if (crosshair) {
+      crosshair.textContent = '⌖ [SCANNING]';
+      crosshair.style.color = '#ff0055'; // alertRed
+      crosshair.style.textShadow = '0 0 12px #ff0055';
+    }
+    if (lensContainer) {
+      lensContainer.style.borderColor = '#ff0055';
+    }
+
+    playBeep(500, 0.3);
+
+    setTimeout(() => {
+      isScanning = false;
+      executeBtn.disabled = false;
+      executeBtn.textContent = translateKey('app15.btn_execute', '[EXECUTE_TOPOLOGICAL_SCAN]');
+
+      if (line) {
+        line.classList.add('hidden');
+        line.classList.remove('animate-scanline');
+      }
+      if (crosshair) {
+        crosshair.textContent = '⌖';
+        crosshair.style.color = '#00f2fe'; // lumeCyan
+        crosshair.style.textShadow = '0 0 8px rgba(0, 242, 254, 0.53)';
+      }
+      if (lensContainer) {
+        lensContainer.style.borderColor = '#1c2d5a';
+      }
+
+      playBeep(1200, 0.15);
+
+      if (scanMode === 'EARTH_TACTICAL') {
+        if (coherenceVal) coherenceVal.textContent = '94.6%';
+        if (frictionVal) frictionVal.textContent = translateKey('app15.earth_friction', '0.00 Ohms [Architect Profile Locked]');
+        if (gridVal) gridVal.textContent = translateKey('app15.earth_env', 'DIOR / LOOK_04 FABRIC MESH VALIDATED');
+        if (matrixLog) {
+          matrixLog.textContent = translateKey('app15.log_earth_success', '>> SUCCESS: High-prestige Earth profile vectors synchronized.');
+        }
+      } else {
+        if (coherenceVal) coherenceVal.textContent = '98.4%';
+        if (frictionVal) frictionVal.textContent = translateKey('app15.space_friction', '0.00 Watts [Thermal Leak Flat]');
+        if (gridVal) gridVal.textContent = translateKey('app15.space_env', 'NEW CYDONIA RADIOMETRIC PROFILE ACTIVE');
+        if (matrixLog) {
+          matrixLog.textContent = translateKey('app15.log_space_success', '>> SUCCESS: Orbital coordinate matrix locked down.');
+        }
+      }
+    }, 1500);
+  });
+
+  // Set initial buttons styling
+  updateModeButtons();
+}
+
+/**
+ * APPLICATION 16: LEGENDRIAN ALGORITHM WORK GRID
+ * Implements dynamic randomized contract selection (3 slots from pool of 6), anti-cheat rotation patterns, exploit checks, and auto-batch rotation.
+ */
+function initLegendrianGridApp() {
+  const jobsList = document.getElementById('legendrian-jobs-list');
+  const idePlaceholder = document.getElementById('legendrian-ide-placeholder');
+  const ideForm = document.getElementById('legendrian-ide-form');
+  const activeJobIdDisplay = document.getElementById('legendrian-active-job-id');
+  const statusDisplay = document.getElementById('legendrian-vortex-status');
+  const codeEditor = document.getElementById('legendrian-code-editor');
+  const consoleFeedback = document.getElementById('legendrian-console-feedback');
+  const submitBtn = document.getElementById('legendrian-submit-btn');
+
+  if (!jobsList) return;
+
+  // Master Pool of all algorithmic engineering tasks (6 tasks)
+  const MASTER_JOB_POOL = [
+    { id: 'JOB_A1', title: 'Phase-Shift 39.42 kHz Sub-Harmonic', reward: 45.00, description: 'Inject a topological wave modifier into local node loops to hide transmission routes.', baseBoilerplate: 'function computeBraidShift() {\n  // Sync: 39420Hz\n' },
+    { id: 'JOB_B2', title: 'Calibrate Hexagonal Flux Braid Topology', reward: 60.00, description: 'Model the geometric surface area matrix for 24-strand graphene filaments to enforce zero-entropy parameters.', baseBoilerplate: 'const ALPHA_0 = 39420;\n// dQ_leak/dt = 0.00W\n' },
+    { id: 'JOB_C3', title: 'Stabilize Lie Bracket Transit Convergence', reward: 90.00, description: 'Resolve non-vanishing mathematical denominators to prevent data wave scattering.', baseBoilerplate: 'function resolveLieBracket(X, Y) {\n' },
+    { id: 'JOB_D4', title: 'Sinter Cryptographic Wrapper Signatures', reward: 55.00, description: 'Compile incoming wallet state vectors into a Unique 5iR QR Token Matrix without storage leakage.', baseBoilerplate: 'function sinterWalletWrapper(balance) {\n' },
+    { id: 'JOB_E5', title: 'Flush Ferrofluidic Droplet Splitting Matrix', reward: 70.00, description: 'Configure Virtual Magnetic cells to split paths when encountering rogue inspection sniffing passes.', baseBoilerplate: 'function splitFerrofluidDroplet(vector) {\n' },
+    { id: 'JOB_F6', title: 'Synchronize Phonon-Polariton Trackers', reward: 85.00, description: 'Deploy non-moving lighthouse calculations to track road surface lattices with zero friction bounds.', baseBoilerplate: 'function syncPolaritonLighthouse() {\n' }
+  ];
+
+  // Persist completedJobIds in safeStorage
+  let completedJobIds = new Set();
+  try {
+    const savedCompleted = safeStorage.getItem('legendrian_completed_jobs');
+    if (savedCompleted) {
+      completedJobIds = new Set(JSON.parse(savedCompleted));
+    }
+  } catch (err) {
+    console.warn("Could not read completed job IDs:", err);
+  }
+
+  let activeJobs = [];
+  let activeJob = null;
+  let vortexStatus = 'AWAITING_SUBMISSION';
+  let antiCheatSeed = '';
+
+  function playSound(type) {
+    try {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return;
+      const audioCtx = new AudioContextClass();
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+
+      if (type === 'click') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1000, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.05);
+        gainNode.gain.setValueAtTime(0.02, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
+      } else if (type === 'success') {
+        const freqs = [394.2, 591.3, 788.4, 1182.6];
+        freqs.forEach((freq, idx) => {
+          setTimeout(() => {
+            const o = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            o.connect(g);
+            g.connect(audioCtx.destination);
+            o.type = 'sine';
+            o.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            g.gain.setValueAtTime(0.04, audioCtx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+            o.start();
+            o.stop(audioCtx.currentTime + 0.3);
+          }, idx * 80);
+        });
+      } else if (type === 'failure') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+        osc.frequency.linearRampToValueAtTime(110, audioCtx.currentTime + 0.25);
+        gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.25);
+      }
+    } catch (e) {}
+  }
+
+  // Select and generate 3 active jobs from master pool
+  function generateNewJobBatch() {
+    // Get those that are not completed
+    let availablePool = MASTER_JOB_POOL.filter(job => !completedJobIds.has(job.id));
+    
+    // If solved all or less than 3 remain, loop back and flush
+    if (availablePool.length < 3) {
+      completedJobIds.clear();
+      safeStorage.setItem('legendrian_completed_jobs', JSON.stringify([]));
+      availablePool = MASTER_JOB_POOL;
+    }
+
+    // Shuffle and pick 3
+    const shuffled = [...availablePool].sort(() => 0.5 - Math.random());
+    activeJobs = shuffled.slice(0, 3).map(job => {
+      const passSig = `0x${Math.random().toString(16).substring(2, 6).toUpperCase()}`;
+      return {
+        ...job,
+        antiCheatPass: passSig,
+        boilerplate: `${job.baseBoilerplate}  // Anti-Cheat Pass: ${passSig}\n}`
+      };
+    });
+
+    activeJob = null;
+    vortexStatus = 'AWAITING_SUBMISSION';
+
+    // Hide IDE if open and show placeholder
+    if (idePlaceholder) idePlaceholder.classList.remove('hidden');
+    if (ideForm) ideForm.classList.add('hidden');
+
+    renderJobsList();
+    updateCompletedCountDisplay();
+    updateVortexStatusUI();
+  }
+
+  function renderJobsList() {
+    jobsList.innerHTML = activeJobs.map(job => {
+      const isSolved = completedJobIds.has(job.id);
+      const isSelected = activeJob && activeJob.id === job.id;
+      
+      const borderClass = isSolved 
+        ? 'border-[#39ff14] bg-[#39ff14]/5 opacity-60 cursor-not-allowed' 
+        : (isSelected ? 'border-[#00f2fe] bg-[#02050f]' : 'border-[#1c2d5a]');
+        
+      const textTitleColor = isSolved 
+        ? 'text-[#39ff14]' 
+        : (isSelected ? 'text-[#00f2fe]' : 'text-white');
+        
+      const titlePrefix = isSolved ? '✓ [COMPLETED] ' : '';
+
+      return `
+        <div class="bg-black/90 border ${borderClass} p-3 rounded-md cursor-pointer transition-all hover:border-[#00f2fe]/40" 
+             onclick="${isSolved ? '' : `window.selectLegendrianJob('${job.id}')`}">
+          <div class="flex justify-between items-center text-[8.5pt] font-mono font-bold mb-1">
+            <span class="${textTitleColor}">${titlePrefix}${job.title}</span>
+            <span class="${isSolved ? 'text-gray-500' : 'text-[#39ff14]'} text-[8pt] font-extrabold flex-shrink-0">+${job.reward.toFixed(2)} $BRAID</span>
+          </div>
+          <p class="text-[7.5pt] text-[#a1b5cc]/80 leading-relaxed font-mono m-0">${job.description}</p>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function updateCompletedCountDisplay() {
+    const compValEl = document.getElementById('legendrian-completed-val');
+    if (compValEl) {
+      compValEl.textContent = `${completedJobIds.size} CONTRACTS`;
+    }
+  }
+
+  window.selectLegendrianJob = (jobId) => {
+    const job = activeJobs.find(j => j.id === jobId);
+    if (!job) return;
+
+    activeJob = job;
+    vortexStatus = 'AWAITING_SUBMISSION';
+    playSound('click');
+
+    if (idePlaceholder) idePlaceholder.classList.add('hidden');
+    if (ideForm) ideForm.classList.remove('hidden');
+
+    if (activeJobIdDisplay) activeJobIdDisplay.textContent = job.id;
+    if (codeEditor) {
+      codeEditor.value = job.boilerplate;
+      codeEditor.disabled = false;
+    }
+    
+    updateVortexStatusUI();
+    setConsoleFeedback(`[SYSTEM]: Core workspace configured. Salt parameter locked to ${antiCheatSeed || '0x39420'}`);
+    renderJobsList();
+  };
+
+  function updateVortexStatusUI() {
+    if (!statusDisplay) return;
+    statusDisplay.textContent = `STATUS: ${vortexStatus}`;
+    
+    if (vortexStatus === 'SUCCESS') {
+      statusDisplay.className = 'text-[#39ff14] font-extrabold tracking-wider uppercase';
+      if (codeEditor) codeEditor.disabled = true;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = '[TRANSMISSION APPROVED]';
+        submitBtn.className = 'w-full py-2.5 bg-zinc-800 text-gray-500 font-mono text-[9px] font-bold cursor-not-allowed rounded uppercase tracking-wider border border-zinc-700';
+      }
+    } else if (vortexStatus === 'FAILED') {
+      statusDisplay.className = 'text-[#ff0055] font-extrabold tracking-wider uppercase animate-pulse';
+      if (codeEditor) codeEditor.disabled = false;
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '[RE-TRANSMIT TO VORTEX AI]';
+        submitBtn.className = 'w-full py-2.5 bg-[#ff0055] hover:bg-rose-500 text-white font-mono text-[9px] font-bold cursor-pointer rounded uppercase tracking-wider';
+      }
+    } else if (vortexStatus === 'SCANNING') {
+      statusDisplay.className = 'text-yellow-400 font-extrabold tracking-wider uppercase animate-pulse';
+      if (codeEditor) codeEditor.disabled = true;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = '[VORTEX_AI_ANALYZING_CORE_MATRICES...]';
+        submitBtn.className = 'w-full py-2.5 bg-yellow-950/40 border border-yellow-500/40 text-yellow-400 font-mono text-[9px] font-bold cursor-not-allowed rounded uppercase tracking-wider animate-pulse';
+      }
+    } else {
+      statusDisplay.className = 'text-cyan font-bold tracking-wider uppercase';
+      if (codeEditor) codeEditor.disabled = false;
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '[TRANSMIT_TO_VORTEX_AI_CHECK]';
+        submitBtn.className = 'w-full py-2.5 bg-[#5850ec] hover:bg-[#00f2fe] hover:text-black text-white font-mono text-[9px] font-bold cursor-pointer rounded uppercase tracking-wider';
+      }
+    }
+  }
+
+  function setConsoleFeedback(text, isError = false) {
+    if (!consoleFeedback) return;
+    const colorClass = isError ? 'text-[#ff0055] font-bold' : (vortexStatus === 'SUCCESS' ? 'text-[#39ff14]' : 'text-[#a1b5cc]');
+    consoleFeedback.innerHTML = `<div class="${colorClass}">${text}</div>`;
+  }
+
+  // Set up 60s dynamic anti-cheat seed rotational loop
+  function startAntiCheatDaemon() {
+    setInterval(() => {
+      const freshSeed = `SEED_0x${Math.random().toString(16).substring(2, 6).toUpperCase()}`;
+      antiCheatSeed = freshSeed;
+      if (activeJob && vortexStatus === 'AWAITING_SUBMISSION') {
+        setConsoleFeedback(`[ANTI_CHEAT_DAEMON]: Validation hash seed rotated to ${freshSeed}. Code syntax updated.`);
+      }
+    }, 60000);
+  }
+
+  if (ideForm) {
+    ideForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!activeJob || vortexStatus === 'SCANNING' || vortexStatus === 'SUCCESS') return;
+
+      const codeVal = codeEditor ? codeEditor.value : '';
+      if (!codeVal.trim()) {
+        alert("Workspace editor empty! Code base shunts are missing.");
+        return;
+      }
+
+      vortexStatus = 'SCANNING';
+      updateVortexStatusUI();
+      playSound('click');
+      setConsoleFeedback('[VORTEX_AI_CORE]: Auditing validation string patterns against dynamic structural parameters...');
+
+      setTimeout(() => {
+        const charactersAdded = codeVal.length - activeJob.boilerplate.length;
+        const hasAntiCheatPass = codeVal.includes('// Anti-Cheat Pass:');
+
+        if (charactersAdded > 45 && hasAntiCheatPass) {
+          vortexStatus = 'SUCCESS';
+          updateVortexStatusUI();
+          playSound('success');
+          setConsoleFeedback(`[VORTEX_AI_VERDICT]: VALIDATED. Token payment authorized: +${activeJob.reward.toFixed(2)} $BRAID added to ledger index.`);
+
+          // 1. Add reward to global window state
+          if (window.braidState) {
+            window.braidState.currentMinedBalance += activeJob.reward;
+          }
+
+          // 2. Persist updated baseBalance inside active node vault storage
+          const nodeAddress = window.braidState?.activeNodeAddress || 'MOBIUS_BRAID_MAIN';
+          const storageKey = `5ir_vault_${nodeAddress}`;
+          const rawVault = safeStorage.getItem(storageKey);
+          if (rawVault) {
+            try {
+              const parsed = JSON.parse(rawVault);
+              parsed.baseBalance = (parsed.baseBalance || 100.00000000) + activeJob.reward;
+              parsed.lastSyncTimestamp = Date.now() / 1000;
+              safeStorage.setItem(storageKey, JSON.stringify(parsed));
+            } catch (err) {
+              console.warn("Could not sync vault balance storage:", err);
+            }
+          }
+
+          // 3. Save progress to completed list
+          completedJobIds.add(activeJob.id);
+          try {
+            safeStorage.setItem('legendrian_completed_jobs', JSON.stringify([...completedJobIds]));
+          } catch (e) {}
+
+          // Trigger dynamic balance indicator update
+          const balValEl = document.getElementById('legendrian-balance-val');
+          if (balValEl && window.braidState) {
+            balValEl.textContent = `${window.braidState.currentMinedBalance.toFixed(8)} $BRAID`;
+          }
+
+          renderJobsList();
+          updateCompletedCountDisplay();
+
+          // Notify any other balance metrics panels
+          const shiftEvent = new CustomEvent('5ir-node-address-shifted', { detail: { nodeAddress } });
+          window.dispatchEvent(shiftEvent);
+
+          // Check if all 3 current active slots are solved
+          const currentBatchIds = activeJobs.map(j => j.id);
+          const solvedCountInBatch = currentBatchIds.filter(id => completedJobIds.has(id)).length;
+
+          if (solvedCountInBatch >= 3) {
+            setTimeout(() => {
+              setConsoleFeedback('[ROTATION_TRIGGERED]: All active slots completed! Flushing workspace matrix and generating next random set...');
+              generateNewJobBatch();
+            }, 2000);
+          }
+
+        } else {
+          vortexStatus = 'FAILED';
+          updateVortexStatusUI();
+          playSound('failure');
+          if (charactersAdded <= 45) {
+            setConsoleFeedback('[VORTEX_AI_VERDICT]: REJECTED. Script integrity checks failed. Modification length insufficient to unlock Legendrian Braid paths. (Write at least 45 characters of custom solution code inside the template!)', true);
+          } else {
+            setConsoleFeedback('[VORTEX_AI_VERDICT]: REJECTED. Anti-Cheat header comment was removed or tampered with. Please preserve "// Anti-Cheat Pass:" line.', true);
+          }
+        }
+      }, 1500);
+
+    });
+  }
+
+  // Smooth continuous high-frequency flow sync for balance indicator
+  function syncLegendrianBalance() {
+    if (document.getElementById('app-legendrian-grid') && !document.getElementById('app-legendrian-grid').classList.contains('hidden')) {
+      const balanceSpan = document.getElementById('legendrian-balance-val');
+      if (balanceSpan && window.braidState) {
+        balanceSpan.textContent = `${window.braidState.currentMinedBalance.toFixed(8)} $BRAID`;
+      }
+    }
+    requestAnimationFrame(syncLegendrianBalance);
+  }
+  requestAnimationFrame(syncLegendrianBalance);
+
+  // Initial setup on boot
+  generateNewJobBatch();
+  startAntiCheatDaemon();
 }
 })();
