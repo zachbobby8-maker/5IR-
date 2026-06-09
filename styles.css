@@ -981,7 +981,11 @@ body.bg-light {
   min-height: 100vh;
   padding: 20px;
   background-color: var(--color-void);
-  background-image: \n    radial-gradient(circle at 50% 50%, rgba(18, 14, 3, 0.95) 0%, var(--color-void) 100%),\n    linear-gradient(rgba(255, 215, 0, 0.015) 1px, transparent 1px),\n    linear-gradient(90deg, rgba(255, 215, 0, 0.015) 1px, transparent 1px);\n  background-size: 100% 100%, 40px 40px, 40px 40px;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(18, 14, 3, 0.95) 0%, var(--color-void) 100%),
+    linear-gradient(rgba(255, 215, 0, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 215, 0, 0.015) 1px, transparent 1px);
+  background-size: 100% 100%, 40px 40px, 40px 40px;
   position: relative;
   z-index: 100;
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1236,7 +1240,12 @@ body.bg-light {
    ========================================================== */
 .vortex-clear-deck {
   background-color: #fffbf0;
-  background-image: \n    radial-gradient(circle at 10% 20%, rgba(217, 119, 6, 0.08) 0%, transparent 40%),\n    radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.08) 0%, transparent 40%),\n    linear-gradient(rgba(217, 119, 6, 0.03) 1px, transparent 1px),\n    linear-gradient(90deg, rgba(217, 119, 6, 0.03) 1px, transparent 1px);\n  background-size: 100% 100%, 100% 100%, 20px 20px, 20px 20px;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(217, 119, 6, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.08) 0%, transparent 40%),
+    linear-gradient(rgba(217, 119, 6, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(217, 119, 6, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 20px 20px, 20px 20px;
   color: #2b1f02;
   min-height: 100vh;
   padding: 24px;
