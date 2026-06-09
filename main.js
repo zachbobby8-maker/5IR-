@@ -265,7 +265,7 @@ function switchTab(activeTab) {
     }
   }
 
-  if (!isMasterUser && (activeTab === 'vortex-ai' || activeTab === 'sovereign-suite')) {
+  if (!isMasterUser && (activeTab === 'sovereign-suite')) {
     alert("CRITICAL WARNING: LEVEL-1 MOBIUS SECURITY CLEARANCE REQUIRED.");
     return;
   }
@@ -1383,9 +1383,24 @@ function initVortexAiApp() {
     const clearAdminKeyInput = document.getElementById('clear-vortex-admin-key-input');
 
     function updateRateLimitUI() {
-      const statusText = vortexIsLockedOut 
-        ? `[LOCKED_OUT // COOLDOWN: ${vortexCountdownTimer}s]` 
-        : `[OPEN_SOURCE_STREAM: ${3 - vortexRequestCount}/3 FREE]`;
+      var savedProfileRaw = safeStorage.getItem('5ir_authenticated_profile');
+      var isMasterUser = false;
+      if (savedProfileRaw) {
+        try {
+          var p = JSON.parse(savedProfileRaw);
+          isMasterUser = (p.role === 'SOVEREIGN_CLASS_1' || p.nodeId === 'MOBIUS_BRAID_MAIN');
+        } catch (err) {}
+      } else {
+        if (window.braidState && window.braidState.activeNodeAddress === 'MOBIUS_BRAID_MAIN') {
+          isMasterUser = true;
+        }
+      }
+
+      const statusText = isMasterUser
+        ? "[MOBIUS_BYPASS // UNLIMITED_STREAM]"
+        : (vortexIsLockedOut 
+          ? `[LOCKED_OUT // COOLDOWN: ${vortexCountdownTimer}s]` 
+          : `[OPEN_SOURCE_STREAM: ${3 - vortexRequestCount}/3 FREE]`);
 
       if (rateLimitStatus) {
         rateLimitStatus.textContent = statusText;
@@ -1868,6 +1883,12 @@ IMPORTANT: Keep answers short (1-3 sentences maximum) to prevent vertical overfl
           } else {
             throw new Error();
           }
+        } else if (response.status === 429) {
+          const json = await response.json();
+          responseText = json.message || "[WASP] Free tier compute cycles depleted. Cooldown engaged.";
+          vortexIsLockedOut = true;
+          startLockoutTimer();
+          fallbackToFrontendSDK = false;
         } else {
           throw new Error();
         }
@@ -1905,12 +1926,29 @@ IMPORTANT: Keep answers short (1-3 sentences maximum) to prevent vertical overfl
       await streamText('droid', `>> KING_DROID_M4: ${responseText}`);
       conversationHistory.push({ role: 'assistant', content: responseText });
 
-      // Increment requests count
-      vortexRequestCount++;
-      if (vortexRequestCount >= 3) {
-        vortexIsLockedOut = true;
-        appendLog('system', ">> [ALERT] 3 Free token requests consumed. System thread throttled. Please input an authorized Admin Key string or await terminal cooldown.");
-        startLockoutTimer();
+      // Increment requests count for standard users
+      var savedProfileRaw = safeStorage.getItem('5ir_authenticated_profile');
+      var isMasterUser = false;
+      if (savedProfileRaw) {
+        try {
+          var p = JSON.parse(savedProfileRaw);
+          isMasterUser = (p.role === 'SOVEREIGN_CLASS_1' || p.nodeId === 'MOBIUS_BRAID_MAIN');
+        } catch (err) {}
+      } else {
+        if (window.braidState && window.braidState.activeNodeAddress === 'MOBIUS_BRAID_MAIN') {
+          isMasterUser = true;
+        }
+      }
+
+      if (!isMasterUser) {
+        vortexRequestCount++;
+        if (vortexRequestCount >= 3) {
+          vortexIsLockedOut = true;
+          appendLog('system', ">> [ALERT] 3 Free token requests consumed. System thread throttled. Please input an authorized Admin Key string or await terminal cooldown.");
+          startLockoutTimer();
+        } else {
+          updateRateLimitUI();
+        }
       } else {
         updateRateLimitUI();
       }
@@ -2155,17 +2193,12 @@ function applyAuthenticatedProfile(profile) {
   if (profileTitleEl) profileTitleEl.textContent = profile.handle || profile.nodeId;
   if (profileSubEl) profileSubEl.textContent = profile.role === 'SOVEREIGN_CLASS_1' ? 'Sovereign Lead' : 'Node Contributor';
 
-  // Dynamic Clearance Filter: Hide premium tabs from standard users, route them to standard deck
-  const isMaster = (profile.role === 'SOVEREIGN_CLASS_1' || profile.nodeId === 'MOBIUS_BRAID_MAIN');
+  // Dynamic Clearance Filter: Ensure premium tabs are visible for everyone
   const tabNav = document.querySelector('.hud-tab-navigation');
   if (tabNav) {
-    const sovereignTabs = tabNav.querySelectorAll('[data-tab="vortex-ai"]');
+    const sovereignTabs = tabNav.querySelectorAll('[data-tab="vortex-ai"], [data-tab="phase-sync-chat"]');
     sovereignTabs.forEach(tab => {
-      if (isMaster) {
-        tab.classList.remove('hidden');
-      } else {
-        tab.classList.add('hidden');
-      }
+      tab.classList.remove('hidden');
     });
 
     // Reset active buttons cleanly
