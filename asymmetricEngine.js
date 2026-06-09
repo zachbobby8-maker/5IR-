@@ -260,6 +260,17 @@
 
     if (!logsContainer) return;
 
+    function verifyMasterActiveSession() {
+      try {
+        const savedProfile = safeStorage.getItem('5ir_authenticated_profile');
+        if (!savedProfile) return false;
+        const p = JSON.parse(savedProfile);
+        return p.nodeId === 'MOBIUS_BRAID_MAIN' && p.role === 'SOVEREIGN_CLASS_1';
+      } catch (e) {
+        return false;
+      }
+    }
+
     // Local logger for Sovereign Suite
     function addSovereignLog(text, colorClass = 'text-amber-400') {
       const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
@@ -279,6 +290,10 @@
     // Force 100x multiplier button
     if (forceYieldBtn) {
       forceYieldBtn.addEventListener('click', () => {
+        if (!verifyMasterActiveSession()) {
+          alert("CRITICAL WARNING: LEVEL-1 MOBIUS SECURITY CLEARANCE REQUIRED TO DEPLOY VECTOR MULTIPLIER.");
+          return;
+        }
         state.scalarMultiplier = state.scalarMultiplier === 100 ? 500 : 100;
         addSovereignLog(`[SCALAR_FORCED] Elevated hash calculation multipliers to ${state.scalarMultiplier}x scalar!`, 'text-[#39ff14]');
         
@@ -298,6 +313,10 @@
     // Bypass KYC checks globally
     if (bypassKycBtn) {
       bypassKycBtn.addEventListener('click', () => {
+        if (!verifyMasterActiveSession()) {
+          alert("CRITICAL WARNING: LEVEL-1 MOBIUS SECURITY CLEARANCE REQUIRED TO BYPASS KYC NODES.");
+          return;
+        }
         addSovereignLog("[BYPASS] Triggering network-wide open sandbox bypass protocols... OK", 'text-cyan');
         const kycCheckbox = document.getElementById('legal-kyc-check');
         if (kycCheckbox) {
@@ -316,6 +335,10 @@
     // Whitepaper compile sequence
     if (compileBtn) {
       compileBtn.addEventListener('click', () => {
+        if (!verifyMasterActiveSession()) {
+          alert("CRITICAL WARNING: LEVEL-1 MOBIUS SECURITY CLEARANCE REQUIRED TO COMPILE COMPILATION BINARY.");
+          return;
+        }
         if (state.isCompilingWhitepaper) return;
 
         state.isCompilingWhitepaper = true;
