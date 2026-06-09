@@ -30,7 +30,7 @@
       <div class="gateway-body">
         <!-- SVG Interactive Coherence Matrix Lock -->
         <div class="gateway-seal-wrap">
-          <svg viewBox="0 0 200 200" class="gateway-seal-svg" id="gateway-seal-vector" aria-hidden="true">
+          <svg viewBox="0 0 200 200" class="gateway-seal-svg cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95" id="gateway-seal-vector" aria-hidden="true" title="Tap to decrypt rotating passcode // Double tap to pre-fill">
             <!-- Concentric spinning tracking rings -->
             <circle cx="100" cy="100" r="90" fill="none" stroke="rgba(217, 119, 6, 0.15)" stroke-width="1.5" />
             <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255, 215, 0, 0.25)" stroke-width="1" stroke-dasharray="8 6" class="spin-clockwise" />
@@ -63,12 +63,12 @@
           <form id="gateway-login-view" class="flex flex-col gap-3" onsubmit="return false;">
             <div class="auth-input-group">
               <label class="auth-lbl">MESH TARGET ID NODE ADDRESS</label>
-              <input type="text" id="gateway-architect-id" value="" class="auth-input" placeholder="Enter node handle or master key..." autocomplete="off">
+              <input type="text" id="gateway-architect-id" value="MOBIUS_BRAID_MAIN" class="auth-input" placeholder="Enter node handle or master key..." autocomplete="off">
             </div>
             
             <div class="auth-input-group">
               <label class="auth-lbl">ENTER RECURSIVE SECRET PASSPHRASE</label>
-              <input type="password" id="gateway-security-key" value="" class="auth-input" placeholder="Enter password to verify..." autocomplete="off">
+              <input type="password" id="gateway-security-key" value="" class="auth-input" placeholder="Enter rotating gate key..." autocomplete="off">
             </div>
 
             <!-- Aux and Toggles -->
@@ -76,8 +76,19 @@
               <span class="text-grey font-bold uppercase tracking-wider">ENTROPY BALANCING: <span class="text-cyan">dQ_leak = 0.00W</span></span>
             </div>
 
-            <button type="submit" id="gateway-decrypt-btn" class="gateway-action-btn w-full">
-              [VERIFY_CREDENTIAL_VECTOR]
+            <button type="submit" id="gateway-decrypt-btn" class="gateway-action-btn w-full" data-i18n="gateway.btn_sovereign">
+              [VERIFY_SOVEREIGN_CREDENTIALS]
+            </button>
+
+            <!-- A neat grid separator -->
+            <div class="flex items-center justify-between text-[8px] text-gray-500 font-bold tracking-widest my-1 select-none">
+              <span class="h-[1px] bg-indigo-950/50 flex-grow mr-2"></span>
+              <span>OR</span>
+              <span class="h-[1px] bg-indigo-950/50 flex-grow ml-2"></span>
+            </div>
+
+            <button type="button" id="gateway-demo-btn" class="gateway-action-btn w-full hover:bg-[#39ff14]/15" style="border-color: #39ff14; color: #39ff14; background-color: rgba(57, 255, 20, 0.05); text-shadow: 0 0 5px rgba(57, 255, 20, 0.4);" data-i18n="gateway.btn_demo">
+              ⚡ [ENGAGE_PUBLIC_DEMO_NODE] (ONE-CLICK ACCESS)
             </button>
 
             <div id="gateway-to-register-btn" class="text-cyan text-[9.5px] font-bold font-mono text-center mt-1 cursor-pointer underline hover:text-white">
@@ -196,6 +207,8 @@
         <button class="hud-tab-btn text-left justify-start text-[#9cb3c9]" data-tab="asset-inventory">💼 12: ASSET-INVENTORY</button>
         <button class="hud-tab-btn text-left justify-start text-[#bc13fe] animate-pulse" data-tab="phase-sync-chat">💬 13: PHASE-SYNC CHAT</button>
         <button class="hud-tab-btn text-left justify-start text-cyan animate-pulse" data-tab="advanced-flux-core">⚡ 14: FLUX MONITOR</button>
+        <button class="hud-tab-btn text-left justify-start text-cyan animate-pulse" data-tab="spatial-scanner">⌖ 15: SPATIAL SCANNER</button>
+        <button class="hud-tab-btn text-left justify-start text-magenta animate-pulse" data-tab="legendrian-grid" data-i18n="app16.tab_btn">💻 16: WORK GRID</button>
       </nav>
 
       <!-- Sidebar Auxiliary action buttons -->
@@ -248,78 +261,83 @@
         
         <!-- APPLICATION 00: SOVEREIGN GRID SHELL DASHBOARD -->
         <section class="hud-panel-card flex flex-col justify-between hidden" id="app-sovereign-grid">
+          <style>
+            @keyframes alert-pulse {
+              0% { box-shadow: 0 0 4px rgba(255, 0, 85, 0.15); border-color: rgba(255, 0, 85, 0.3); }
+              50% { box-shadow: 0 0 16px rgba(255, 0, 85, 0.45); border-color: rgba(255, 0, 85, 0.85); }
+              100% { box-shadow: 0 0 4px rgba(255, 0, 85, 0.15); border-color: rgba(255, 0, 85, 0.3); }
+            }
+            .alert-glow-active {
+              animation: alert-pulse 2s infinite ease-in-out;
+              border-color: #ff0055 !important;
+              border-width: 2px !important;
+            }
+          </style>
           <div>
-            <div class="panel-header" style="border-left: 4px solid #ffd700; padding-left: 8px;">
+            <div class="panel-header" style="border-left: 4px solid #00f2fe; padding-left: 8px;">
               <div class="panel-icon">👑</div>
               <div class="panel-title-block">
-                <h2 class="panel-title text-white font-bold text-xs font-mono uppercase tracking-widest">APP 00 // SOVEREIGN METROPOLITAN MATRIX OVERVIEW</h2>
+                <h2 class="panel-title text-white font-bold text-xs font-mono uppercase tracking-widest" style="text-shadow: 0 0 8px #00f2fe;">5iR SOVEREIGN MASTER REPOSITORY DASHBOARD</h2>
                 <div class="math-metadata-overlay">
-                  Ω_grid = Σ [ψ_node] // Operation Coherence: 94.6% Locked // 39,420 Hz
+                  Ω_grid = Σ [ψ_node] // Operation Coherence: 94.6% Locked // Clock: 39,420 Hz
                 </div>
               </div>
             </div>
 
-            <div class="panel-body">
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <!-- System status block -->
-                <div class="bg-black border border-indigo-900/40 p-3 rounded flex flex-col justify-center">
-                  <div class="text-[7.5px] text-[#9cb3c9] font-mono uppercase">COHERENT IDENTITY HANDLE</div>
-                  <div class="text-xs font-extrabold text-cyan font-mono mt-1" id="sovereign-profile-handle">Architect</div>
-                  <div class="text-[7px] text-[#9cb3c9] mt-1 font-mono">ROLE: Sovereign Lead (Class-1)</div>
+            <div class="panel-body font-mono">
+              <!-- THREE-COLUMN COMPACT MASTER DASHBOARD SUB-GRID -->
+              <div class="grid grid-cols-1 xl:grid-cols-3 gap-4 mb-4">
+                
+                <!-- PANEL 1: CENTRAL RUNTIME TELEMETRY TRACKER STREAM -->
+                <div class="rounded p-4 border border-[#1c2d5a] flex flex-col justify-between" style="background-color: #040d21;">
+                  <div>
+                    <div class="text-[8.5px] font-bold tracking-wider uppercase mb-2.5" style="color: #00f2fe; border-left: 3px solid #00f2fe; padding-left: 6px;">
+                      [APP_11] CENTRAL RUNTIME TELEMETRY TRACKER STREAM
+                    </div>
+                    <div id="sovereign-terminal-logs" class="bg-black border border-[#1c2d5a] p-3 h-[240px] overflow-y-auto text-[8px] leading-relaxed rounded" style="color: #a1b5cc;">
+                      <!-- Populated via main.js -->
+                    </div>
+                  </div>
                 </div>
 
-                <!-- Live stats block -->
-                <div class="bg-black border border-indigo-900/40 p-3 rounded flex flex-col justify-center">
-                  <div class="text-[7.5px] text-[#9cb3c9] font-mono uppercase">COHERENCE METRIC RATIO</div>
-                  <div class="text-xs font-extrabold text-[#39ff14] font-mono mt-1">94.60% (STABLE)</div>
-                  <div class="text-[7px] text-gray-500 font-mono">Zero-Entropy state ceiling: OK</div>
+                <!-- PANEL 2: HIGH-CONTRAST SECURE CHAT MATRIX ROOM -->
+                <div class="rounded border border-[#1c2d5a] overflow-hidden flex flex-col justify-between" style="background-color: #040d21;">
+                  <div>
+                    <div class="border-b border-[#1c2d5a] p-3 flex justify-between items-center bg-black/40">
+                      <span class="text-[8.5px] font-bold uppercase" style="color: #00f2fe;">[APP_13] SECURE DATA LANES CHAT</span>
+                      <div class="flex items-center gap-1">
+                        <span class="text-[7px] text-[#a1b5cc]">SALT:</span>
+                        <input type="password" id="sovereign-cipher-salt" value="39420" class="bg-black border border-[#00f2fe] text-[#00f2fe] font-mono text-[8px] text-center w-12 rounded py-0.5" autocomplete="off">
+                      </div>
+                    </div>
+                    <div id="sovereign-chat-messages" class="p-3 bg-black h-[180px] overflow-y-auto flex flex-col gap-2 text-[8px]">
+                      <!-- Populated via main.js -->
+                    </div>
+                  </div>
+                  <form id="sovereign-chat-form" class="flex border-t border-[#1c2d5a]" style="background-color: #010206;" onsubmit="return false;">
+                    <input type="text" id="sovereign-chat-input" placeholder="Type secure matrix string packet..." class="flex-grow bg-transparent border-none outline-none text-white text-[8px] p-2.5">
+                    <button type="submit" class="bg-[#5850ec] hover:bg-[#00f2fe] text-white hover:text-black font-bold px-4 text-[8px] tracking-wider transition-colors border-none">[SEND]</button>
+                  </form>
                 </div>
 
-                <!-- Clock sync block -->
-                <div class="bg-black border border-indigo-900/40 p-3 rounded flex flex-col justify-center">
-                  <div class="text-[7.5px] text-[#9cb3c9] font-mono uppercase">REFERENCE FREQUENCY</div>
-                  <div class="text-xs font-extrabold text-[#bc13fe] font-mono mt-1">39,420 Hz</div>
-                  <div class="text-[7px] text-gray-500 font-mono">Phase locked to Cydonia cluster</div>
+                <!-- PANEL 3: REAL-TIME CRITICAL THREAT WARNING ALERTS -->
+                <div id="sovereign-alerts-container" class="rounded p-4 border border-[#1c2d5a] flex flex-col transition-all duration-300" style="background-color: #040d21;">
+                  <div id="sovereign-alerts-title" class="text-[8.5px] font-bold tracking-wider uppercase mb-2.5 text-[#a1b5cc]" style="border-left: 3px solid #1c2d5a; padding-left: 6px;">
+                    [SYSTEM_ALERTS] REAL-TIME MONITORING ARRAY
+                  </div>
+                  <div id="sovereign-alert-feed" class="flex flex-col gap-2 h-[220px] overflow-y-auto">
+                    <!-- Populated via main.js -->
+                  </div>
                 </div>
-              </div>
-
-              <!-- Quick Premium App Links -->
-              <div class="mb-4">
-                <label class="sensor-title block text-[8px] uppercase tracking-wider text-[#9cb3c9] mb-1.5">Direct Launch Premium Nodes</label>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-                  <button type="button" onclick="document.querySelector('[data-tab=vortex-ai]').click()" class="py-2 px-3 bg-black hover:bg-cyan-500 hover:text-black border border-[#00f2fe]/40 text-[#00f2fe] text-[9px] font-bold rounded transition-all text-center">
-                    👑 APP 04: VORTEX-AI ORACLE
-                  </button>
-                  <button type="button" onclick="document.querySelector('[data-tab=asset-inventory]').click()" class="py-2 px-3 bg-black hover:bg-[#ffd700] hover:text-black border border-[#ffd700]/40 text-[#ffd700] text-[9px] font-bold rounded transition-all text-center">
-                    💼 APP 12: ASSET INVENTORY
-                  </button>
-                  <button type="button" onclick="document.querySelector('[data-tab=phase-sync-chat]').click()" class="py-2 px-3 bg-black hover:bg-[#bc13fe] hover:text-white border border-[#bc13fe]/40 text-[#bc13fe] text-[9px] font-bold rounded transition-all text-center">
-                    💬 APP 13: PHASE-SYNC CHAT
-                  </button>
-                </div>
-              </div>
-
-              <!-- Live mesh terminal feedback -->
-              <div class="bg-black border border-indigo-950 rounded overflow-hidden">
-                <div class="terminal-shell__header bg-amber-950/10 border-b border-indigo-950/40">
-                  <span class="terminal-shell__dot bg-[#ffd700]"></span>
-                  <span class="terminal-shell__dot bg-[#bc13fe]"></span>
-                  <span class="terminal-shell__title font-bold text-white tracking-wider">SOVEREIGN_SYSTEM_COHERENCE_DESK // ACTIVE</span>
-                </div>
-                <div class="h-[100px] overflow-y-auto p-2.5 flex flex-col gap-1 font-mono text-[8.5px] text-gray-400">
-                  <div>>> [00:00:01] 5iR Metropolitan Matrix Staged Stably.</div>
-                  <div>>> [00:02:15] Inter-node entanglements balanced. Coherence factor 94.6% achieved.</div>
-                  <div>>> [00:05:40] Thermal footprint monitored: dQ_leak/dt = 0.00W (Perfect zero-entropy).</div>
-                  <div class="text-[#39ff14] font-bold">>> [STATUS_OK] System operational. Awaiting your directive...</div>
-                </div>
+                
               </div>
             </div>
           </div>
 
           <div class="panel-footer-action mt-4 border-t border-dashed border-indigo-950/40 pt-3">
             <div class="flex justify-between items-center text-[7.5px] text-[#8a7751]">
-              <span>COHERENCE STANDBY: 94.6%</span>
-              <span>dQ_leak/dt = 0.00 Watts Flat (FRICTIONLESS)</span>
+              <span>5iR COMMAND CORE METADATA // SYSTEM v94.6</span>
+              <span>dQ_leak/dt = 0.00 Watts Flat // COHERENCE LOCKED AT 94.6%</span>
             </div>
           </div>
         </section>
@@ -962,16 +980,79 @@
               <div class="resonance-tab-content-wrapper">
                 
                 <!-- PANEL 1: RADIO -->
-                <div id="resonance-panel-radio" class="resonance-panel grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label class="sensor-title block uppercase text-[7.5pt] font-mono tracking-wider text-[#9cb3c9] mb-1">TUNING DIAL: <span id="resonance-radio-freq-display" class="text-cyan font-bold">39000</span> Hz</label>
-                    <input type="range" id="resonance-radio-freq-slider" min="39000" max="40000" step="10" value="39000" class="w-full accent-cyan bg-black border border-indigo-900 h-2 rounded cursor-pointer">
-                    <div id="resonance-radio-status-text" class="text-[8pt] text-[#ff0055] font-mono mt-2.5">
-                      [SIGNAL_DRIFT]: Sub-harmonic 4iR background noise detected.
+                <div id="resonance-panel-radio" class="resonance-panel" style="background-color: #040d21; border: 2px solid #1c2d5a; border-radius: 4px; padding: 15px; font-family: monospace; color: #ffffff; box-shadow: 0 0 12px rgba(28, 45, 90, 0.44);">
+                  <!-- MODULE COMPONENT HEADER CONTROL PANEL -->
+                  <div style="border-bottom: 1px solid #1c2d5a; padding-bottom: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 9pt; font-weight: bold; color: #00f2fe; text-shadow: 0 0 6px #00f2fe;">
+                      [APP_14] TOPOLOGICAL RADIO METRICS ARRAY
+                    </div>
+                    <div id="radio-link-badge" style="font-size: 7pt; background-color: #000000; padding: 2px 6px; border: 1px solid #1c2d5a; color: #39ff14; font-weight: 800;">
+                      LINK: CH_04_CYDONIA
                     </div>
                   </div>
-                  <div class="bg-black border border-[#1c2d5a] rounded h-[90px] overflow-hidden">
-                    <canvas id="resonance-wave-canvas" class="w-full h-[90px] block"></canvas>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
+                    <!-- VIEWPORT COLUMN 1: LIVE HARDWARE DIAGNOSTICS -->
+                    <div class="flex flex-col gap-2.5">
+                      <div class="grid grid-cols-2 gap-2.5">
+                        <div style="background-color: #000000; border: 1px solid #1c2d5a; padding: 8px; border-radius: 3px;">
+                          <div style="font-size: 6.5pt; color: #a1b5cc; margin-bottom: 2px; letter-spacing: 0.5px;">CARRIER FREQUENCY</div>
+                          <div id="radio-frequency-display" style="font-size: 13pt; font-weight: 900; color: #ffffff;">39,420 Hz</div>
+                        </div>
+                        <div style="background-color: #000000; border: 1px solid #1c2d5a; padding: 8px; border-radius: 3px;">
+                          <div style="font-size: 6.5pt; color: #a1b5cc; margin-bottom: 2px; letter-spacing: 0.5px;">SIGNAL DECAY FLOOR</div>
+                          <div id="radio-decay-display" style="font-size: 13pt; font-weight: 900; color: #39ff14;">0.00 W</div>
+                        </div>
+                      </div>
+
+                      <div style="background-color: #000000; border: 1px solid #1c2d5a; padding: 8px; border-radius: 3px;">
+                        <div style="font-size: 6.5pt; color: #a1b5cc; margin-bottom: 2px; letter-spacing: 0.5px;">LIE BRACKET DENOMINATOR CONVERGENCE</div>
+                        <div id="radio-convergence-display" style="font-size: 11pt; font-weight: 900; color: #00f2fe; letter-spacing: 0.5px;">
+                          1.00000000
+                        </div>
+                      </div>
+
+                      <!-- CHANNEL SELECTION SWEEP CONTROLS -->
+                      <div class="flex gap-1.5 mt-1">
+                        <button type="button" id="radio-btn-cydonia" style="color: #ffffff; border: 1px solid #00f2fe; padding: 6px 10px; font-family: monospace; font-size: 7.5pt; cursor: pointer; border-radius: 2px; font-weight: 900; flex: 1; transition: all 0.2s; background-color: #5850ec;">
+                          [CAL_CH_04]
+                        </button>
+                        <button type="button" id="radio-btn-lunar" style="color: #ffffff; border: 1px solid #1c2d5a; padding: 6px 10px; font-family: monospace; font-size: 7.5pt; cursor: pointer; border-radius: 2px; font-weight: 900; flex: 1; transition: all 0.2s; background-color: #010206;">
+                          [CAL_LUNAR]
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- VIEWPORT COLUMN 2: CYANO-LUMINESCENT OSCILLOSCOPE GRAPHICS -->
+                    <div class="flex flex-col gap-2.5">
+                      <!-- SIMULATED OSCILLOSCOPE GRAPH CONTAINER -->
+                      <div style="background-color: #000000; border: 1px solid #1c2d5a; border-radius: 3px; height: 90px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                        <!-- Background Grid Mesh Grid-lines -->
+                        <div style="position: absolute; width: 100%; height: 100%; background-image: linear-gradient(rgba(28, 45, 90, 0.13) 1px, transparent 1px), linear-gradient(90deg, rgba(28, 45, 90, 0.13) 1px, transparent 1px); background-size: 10px 10px;"></div>
+                        
+                        <!-- Animated SVG Wave Line -->
+                        <svg viewBox="0 0 200 60" style="width: 100%; height: 100%; position: absolute;">
+                          <path id="radio-wave-svg-path"
+                            d="M 0 30 Q 50 30, 100 30 T 200 30"
+                            fill="none"
+                            stroke="#00f2fe"
+                            stroke-width="2.5"
+                            style="filter: drop-shadow(0 0 4px #00f2fe);"
+                          />
+                        </svg>
+
+                        <div style="position: absolute; bottom: 4px; right: 6px; font-size: 6.5pt; color: #a1b5cc; font-weight: 900;">
+                          STEALTH: <span id="radio-stealth-status" style="color: #39ff14;">ACTIVE_SUB_HARMONIC</span>
+                        </div>
+                      </div>
+
+                      <!-- INTERNAL MODULE EVENT RE-STREAM CONSOLE LOGS -->
+                      <div id="radio-event-logs-container" style="background-color: #000000; border: 1px solid #1c2d5a; padding: 6px; height: 62px; overflow-y: auto; font-size: 7pt; color: #a1b5cc; border-radius: 2px; line-height: 1.3;">
+                        <div style="color: #a1b5cc;">[INIT] Topological radio module attached to 24-strand flux braid...</div>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
 
@@ -1493,6 +1574,37 @@
 
               </div>
 
+              <!-- PHYSICAL LAYER WEAVED FLUX BRAID CARD -->
+              <div class="bg-black border border-indigo-950 p-4 rounded-md mb-4 font-mono text-[8.5px] relative overflow-hidden flex flex-col md:flex-row gap-4 items-center justify-between shadow-[0_0_15px_rgba(28,45,90,0.15)]">
+                <div class="flex flex-col gap-1 w-full md:w-3/5">
+                  <div class="text-[#00f2fe] text-[9px] font-bold tracking-wider flex items-center gap-1.5">
+                    <span>⚡</span> <span>[PHYSICAL_LAYER] WEAVED FLUX BRAID</span>
+                  </div>
+                  <p class="text-[#9cb3c9] leading-relaxed text-[8px] mt-1">
+                    Replacing legacy copper elements with non-associative carbon filaments guarantees that physical and electric waveforms travel without inductive drag.
+                  </p>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1 mt-2 border-t border-indigo-950/40 pt-2 text-gray-400 text-[7.5px]">
+                    <div>IDENTIFIER: <span class="text-[#ffd700] font-bold" id="flux-spec-id">5iR-HW-002</span></div>
+                    <div>CORE FILAMENT: <span class="text-white" id="flux-spec-filament">24-Strand Braided Graphene-Polymer</span></div>
+                    <div>GEOMETRY: <span class="text-white" id="flux-spec-geometry">Hexagonal Interlace Pattern</span></div>
+                    <div>RESISTANCE FLOOR: <span class="text-[#39ff14] font-bold" id="flux-spec-resistance">0.00000000 Ohms [Superconducting Loop]</span></div>
+                    <div>THERMAL PROFILE: <span class="text-magenta font-bold" id="flux-spec-thermal">dQ_leak/dt = 0.00W Flat</span></div>
+                  </div>
+                </div>
+                <div class="bg-[#050b1a]/80 border border-[#1c2d5a]/40 p-3 rounded w-full md:w-2/5 font-mono text-[8px]">
+                  <div class="text-[#00f2fe] font-bold mb-1.5 border-b border-[#1c2d5a]/20 pb-1 flex justify-between">
+                    <span>👑 KING_DROID_M4 APPROVAL</span>
+                    <span class="text-[#39ff14]">100% OK</span>
+                  </div>
+                  <div class="text-gray-500 font-mono text-[7px] leading-tight space-y-1">
+                    <div>DATE: 06.09.2026 // SYNC: 39,420 Hz</div>
+                    <div>GEOMETRY TYPE: Hexagonal inductive coupling matrix arrays</div>
+                    <div>EFFICIENCY DECAY: dQ_leak/dt = 0.00 Watts Flat</div>
+                    <div>PARITY DRIFT: 94.6% Alignment held seamlessly</div>
+                  </div>
+                </div>
+              </div>
+
               <!-- Interactive Recalibrate Boundary Slider Section -->
               <div class="resonance-micro-card mt-4 p-3 bg-black/60 border border-indigo-950 rounded-md">
                 <div class="flex justify-between items-center text-[7.5px] font-mono uppercase tracking-wider mb-1.5">
@@ -1524,6 +1636,175 @@
             <div class="flex justify-between items-center text-[7.5px] text-[#8a7751] font-mono">
               <span>FLUX CONTROL ENGINE STATUS: [COHERENT_LOCKED_94.6%]</span>
               <span>dQ_leak/dt = 0.00 Watts Flat (FRICTIONLESS)</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- APPLICATION 15: SPATIAL SCANNER IMAGE VECTOR CORES -->
+        <section class="hud-panel-card flex flex-col justify-between hidden" id="app-spatial-scanner" style="background-color: #040d21; border: 2px solid #1c2d5a; border-radius: 4px; padding: 15px; box-shadow: 0 0 12px rgba(28, 45, 90, 0.44);">
+          <style>
+            @keyframes scanLineMove {
+              0% { top: 0%; }
+              50% { top: 100%; }
+              100% { top: 0%; }
+            }
+            .animate-scanline {
+              animation: scanLineMove 1.5s linear infinite;
+            }
+          </style>
+          <div>
+            <!-- HEADER SECTION CONTROL -->
+            <div class="flex justify-between items-center border-b border-[#1c2d5a] pb-2 mb-3">
+              <div class="text-[9pt] font-extrabold uppercase font-mono tracking-widest text-[#00f2fe]" style="text-shadow: 0 0 6px #00f2fe;" data-i18n="app15.title">
+                [APP_15] SPATIAL SCANNER IMAGE VECTOR CORES
+              </div>
+              <div class="flex gap-1.5">
+                <button type="button" id="scanner-mode-earth-btn" class="scanner-toggle-btn text-[7pt] font-extrabold font-mono text-white px-2.5 py-1 rounded transition-all bg-[#5850ec] border border-[#00f2fe]">
+                  EARTH
+                </button>
+                <button type="button" id="scanner-mode-space-btn" class="scanner-toggle-btn text-[7pt] font-extrabold font-mono text-white px-2.5 py-1 rounded transition-all bg-[#000000] border border-[#1c2d5a]">
+                  SPACE
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono">
+              
+              <!-- CAMERA SIMULATOR LENS BOX -->
+              <div id="scanner-lens-container" class="bg-[#000000] border border-[#1c2d5a] rounded-sm h-[140px] relative flex items-center justify-center overflow-hidden transition-all duration-300">
+                <!-- Grid Overlay Background -->
+                <div class="absolute inset-0" style="background-image: linear-gradient(rgba(28, 45, 90, 0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(28, 45, 90, 0.07) 1px, transparent 1px); background-size: 15px 15px;"></div>
+                
+                <!-- Glowing Target Crosshairs -->
+                <div id="scanner-crosshair" class="text-[#00f2fe] text-[18pt] font-normal absolute transition-all duration-200 select-none" style="text-shadow: 0 0 8px rgba(0, 242, 254, 0.53);">
+                  ⌖
+                </div>
+                
+                <!-- Neon Scanner Sweep Line Overlay Layer -->
+                <div id="scanner-line" class="absolute w-full h-[2px] bg-[#00f2fe] top-0 hidden" style="box-shadow: 0 0 8px #00f2fe;"></div>
+              </div>
+
+              <!-- METRICS INTERFACE PANEL CONTAINER -->
+              <div class="flex flex-col justify-between">
+                <div class="bg-[#000000] border border-[#1c2d5a] p-2.5 rounded-sm text-[7.5pt] h-[90px] flex flex-col gap-1 text-[#a1b5cc]">
+                  <div class="font-extrabold"><span data-i18n="app15.scan_coherence">SCAN COHERENCE</span>: <span id="scanner-coherence-val" class="text-[#39ff14] font-extrabold">94.6%</span></div>
+                  <div class="font-extrabold"><span data-i18n="app15.friction_ratio">FRICTION RATIO</span>: <span id="scanner-friction-val" class="text-white font-extrabold">0.00 Ohms</span></div>
+                  <div class="font-extrabold"><span data-i18n="app15.grid_status">GRID STATUS</span>: <span id="scanner-grid-val" class="text-[#00f2fe] font-extrabold">NOMINAL_ATMOSPHERE</span></div>
+                </div>
+
+                <button type="button" id="scanner-execute-btn" class="w-full bg-[#000000] hover:bg-[#00f2fe] hover:text-black border border-[#00f2fe] text-white font-mono text-[8.5pt] p-2 cursor-pointer rounded-sm font-bold transition-all uppercase tracking-wider mt-2.5" data-i18n="app15.btn_execute">
+                  [EXECUTE_TOPOLOGICAL_SCAN]
+                </button>
+              </div>
+
+            </div>
+
+            <!-- Unified Interactive Micro-Resonance Slider Section -->
+            <div class="resonance-micro-card mt-3.5 p-2 bg-black/60 border border-indigo-950 rounded flex flex-col gap-1.5 font-mono">
+              <div class="flex justify-between items-center text-[7.5px] font-mono uppercase tracking-wider">
+                <span class="text-indigo-400 font-bold flex items-center gap-1">🌀 PHASE RESONANCE TUNING</span>
+                <span class="text-[#39ff14] animate-pulse font-extrabold resonance-micro-status">39,420 Hz LOCKED</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="range" class="resonance-global-slider flex-grow accent-[#ffd700] bg-black border border-indigo-900 h-1.5 rounded cursor-pointer" min="39000" max="40000" step="10" value="39420">
+                <span class="text-[8px] font-mono text-cyan font-bold w-12 text-right resonance-global-freq-val">39,420Hz</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- FOOTER INTERPOLATED DATA TEXT -->
+          <div id="scanner-matrix-log" class="mt-3 text-[7pt] text-[#a1b5cc] bg-[#000000] p-1.5 px-2.5 rounded-sm border-l-2 border-[#00f2fe] font-mono font-extrabold" data-i18n="app15.log_calibrated">
+            [ONLINE] Scanner matrix calibrated to 39,420 Hz.
+          </div>
+        </section>
+
+        <!-- APPLICATION 16: LEGENDRIAN ALGORITHM WORK GRID -->
+        <section class="hud-panel-card flex flex-col justify-between hidden" id="app-legendrian-grid" style="background-color: #040d21; border: 2px solid #1c2d5a; border-radius: 4px; padding: 15px; font-family: monospace;">
+          <div>
+            <div class="panel-header border-b border-[#1c2d5a] pb-3 flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between" style="border-left: 4px solid #5850ec; padding-left: 8px;">
+              <div class="panel-icon">💻</div>
+              <div class="panel-title-block">
+                <h2 class="panel-title text-white font-bold text-xs font-mono uppercase tracking-widest" style="text-shadow: 0 0 8px #5850ec;" data-i18n="app16.title">[APP_16] LEGENDRIAN ALGORITHM WORK GRID</h2>
+                <div class="math-metadata-overlay text-[#a1b5cc]" id="legendrian-sub-header">
+                  UNLOCK PROTOCOLS // ANTI-CHEAT ROTATION STATUS: <span class="text-[#39ff14] font-extrabold font-mono">ACTIVE</span>
+                </div>
+              </div>
+              <!-- Multi-counter display widgets inside header -->
+              <div class="flex gap-3 items-center w-full sm:w-auto sm:ml-auto justify-between sm:justify-start">
+                <div class="bg-black border border-[#1c2d5a] p-1.5 px-3 rounded-md text-right flex-shrink-0">
+                  <div class="text-[6pt] text-[#a1b5cc] uppercase tracking-wider">TOTAL COMPLETED</div>
+                  <div id="legendrian-completed-val" class="text-xs font-extrabold text-[#00f2fe] font-mono tracking-wider mt-0.5">0 CONTRACTS</div>
+                </div>
+                <div class="bg-black border border-[#1c2d5a] p-1.5 px-3 rounded-md text-right flex-shrink-0">
+                  <div class="text-[6pt] text-[#a1b5cc] uppercase tracking-wider" data-i18n="app16.ledger_balance">LEDGER BALANCE</div>
+                  <div id="legendrian-balance-val" class="text-xs font-extrabold text-[#39ff14] font-mono tracking-wider mt-0.5">100.00 $BRAID</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-body pt-4">
+              <!-- Sub-grid layout of jobs and compiler -->
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- Column 1: Available Contracts Directory -->
+                <div class="flex flex-col gap-3 h-[360px]">
+                  <span class="text-[8px] sm:text-[9px] uppercase tracking-wider text-[#a1b5cc] font-bold border-l-2 border-[#00f2fe] pl-2" data-i18n="app16.contracts_header">[AVAILABLE_COMPUTATIONAL_CONTRACTS]</span>
+                  <div class="flex flex-col gap-3 overflow-y-auto h-[320px] pr-1" id="legendrian-jobs-list">
+                    <!-- Dynamically populated via JS -->
+                  </div>
+                </div>
+
+                <!-- Column 2: IDE Editor & Vortex Engine Output -->
+                <div class="flex flex-col bg-black/60 border border-[#1c2d5a] rounded-md p-4 h-[360px] justify-between relative" id="legendrian-ide-container">
+                  <!-- Rendered when a job is active, or placeholder otherwise -->
+                  <div id="legendrian-ide-placeholder" class="h-full flex flex-col items-center justify-center text-center p-4 text-[#a1b5cc]">
+                    <span class="text-[14px] mb-2">📟</span>
+                    <span class="text-[8.5pt] uppercase tracking-wider font-bold mb-1" data-i18n="app16.workspace_offline">[WORKSPACE TERMINAL OFFLINE]</span>
+                    <span class="text-[7.5pt] text-gray-500 max-w-[280px]" data-i18n="app16.workspace_offline_desc">Select an active infrastructure contract from the directory to initialize the Legendrian Algorithm Workspace.</span>
+                  </div>
+                  
+                  <form id="legendrian-ide-form" class="hidden flex flex-col gap-2.5 h-full justify-between" onsubmit="return false;">
+                    <div class="flex justify-between items-center text-[7.5pt] text-[#a1b5cc] font-mono">
+                      <span>WORKSPACE ID: <span id="legendrian-active-job-id" class="text-white font-bold">---</span></span>
+                      <span id="legendrian-vortex-status" class="text-cyan font-bold tracking-wider uppercase">STATUS: AWAITING_SUBMISSION</span>
+                    </div>
+
+                    <!-- Live code editor area -->
+                    <textarea id="legendrian-code-editor" class="w-full flex-grow bg-black text-[#38bdf8] border border-[#1c2d5a] p-3 text-[8.5pt] font-mono rounded outline-none resize-none leading-relaxed h-[110px] focus:border-[#5850ec]" placeholder="// Paste codebase shunts..."></textarea>
+
+                    <!-- Diagnostic feedback console -->
+                    <div class="bg-black border border-[#1c2d5a] p-2.5 rounded min-h-[60px] text-[7.5pt] font-mono text-[#a1b5cc] flex flex-col gap-1.5 leading-normal" id="legendrian-console-feedback">
+                      <!-- Programmatic status logs -->
+                    </div>
+
+                    <!-- Transmit action button -->
+                    <button type="submit" id="legendrian-submit-btn" class="w-full py-2.5 bg-[#5850ec] hover:bg-[#00f2fe] hover:text-black text-white font-mono text-[9px] font-bold cursor-pointer rounded transition-all uppercase tracking-wider" data-i18n="app16.transmit_btn">
+                      [TRANSMIT_TO_VORTEX_AI_CHECK]
+                    </button>
+                  </form>
+                </div>
+
+              </div>
+
+              <!-- Unified Interactive Micro-Resonance Slider Section -->
+              <div class="resonance-micro-card mt-6 p-2 bg-black/60 border border-indigo-950 rounded flex flex-col gap-1.5 font-mono">
+                <div class="flex justify-between items-center text-[7.5px] font-mono uppercase tracking-wider">
+                  <span class="text-indigo-400 font-bold flex items-center gap-1">🌀 PHASE RESONANCE TUNING</span>
+                  <span class="text-[#39ff14] animate-pulse font-extrabold resonance-micro-status">39,420 Hz LOCKED</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <input type="range" class="resonance-global-slider flex-grow accent-[#ffd700] bg-black border border-indigo-900 h-1.5 rounded cursor-pointer" min="39000" max="40000" step="10" value="39420">
+                  <span class="text-[8px] font-mono text-cyan font-bold w-12 text-right resonance-global-freq-val">39,420Hz</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="panel-footer-action mt-4 border-t border-dashed border-indigo-950/40 pt-3">
+            <div class="flex justify-between items-center text-[7.5px] text-[#8a7751]">
+              <span>5iR ALGORITHM COMPILER ENGINE // v94.6</span>
+              <span>dQ_leak/dt = 0.00 Watts Flat // SYSTEM COHERENCE 94.6%</span>
             </div>
           </div>
         </section>
@@ -1769,9 +2050,9 @@
     </div>
   </div>
 
-  <script src="masterProfileConfig.js"></script>
-  <script src="useAdvancedFluxCore.js"></script>
-  <script src="asymmetricEngine.js"></script>
-  <script src="main.js"></script>
+  <script src="masterProfileConfig.js?v=94.62"></script>
+  <script src="useAdvancedFluxCore.js?v=94.62"></script>
+  <script src="asymmetricEngine.js?v=94.62"></script>
+  <script src="main.js?v=94.62"></script>
 </body>
 </html>
