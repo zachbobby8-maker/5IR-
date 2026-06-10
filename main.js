@@ -278,7 +278,7 @@ function switchTab(activeTab) {
     } catch (err) {}
   }
 
-  if (!isMasterUser && (activeTab === 'sovereign-suite' || activeTab === 'sovereign-grid' || activeTab === 'vortex-ai')) {
+  if (!isMasterUser && (activeTab === 'sovereign-suite' || activeTab === 'sovereign-grid' || activeTab === 'vortex-ai' || activeTab === 'advanced-flux-core')) {
     alert("CRITICAL WARNING: LEVEL-1 MOBIUS SECURITY CLEARANCE REQUIRED FOR THIS APPARATUS.");
     return;
   }
@@ -2211,18 +2211,21 @@ function applyAuthenticatedProfile(profile) {
   if (profileTitleEl) profileTitleEl.textContent = profile.handle || profile.nodeId;
   if (profileSubEl) profileSubEl.textContent = isMasterUser ? 'Sovereign Lead' : 'Node Contributor';
 
-  // Dynamic Clearance Filter: Sovereign Grid and Vortex-AI Deck tabs are hidden/locked for non-master (demo and standard users)
+  // Dynamic Clearance Filter: Sovereign Grid, Vortex-AI Deck, and Flux Monitor tabs are hidden/locked for non-master (demo and standard users)
   const tabNav = document.querySelector('.hud-tab-navigation');
   if (tabNav) {
     const sovereignGridTab = tabNav.querySelector('[data-tab="sovereign-grid"]');
     const vortexAiTab = tabNav.querySelector('[data-tab="vortex-ai"]');
+    const fluxCoreTab = tabNav.querySelector('[data-tab="advanced-flux-core"]');
     
     if (isMasterUser) {
       if (sovereignGridTab) sovereignGridTab.classList.remove('hidden');
       if (vortexAiTab) vortexAiTab.classList.remove('hidden');
+      if (fluxCoreTab) fluxCoreTab.classList.remove('hidden');
     } else {
       if (sovereignGridTab) sovereignGridTab.classList.add('hidden');
       if (vortexAiTab) vortexAiTab.classList.add('hidden');
+      if (fluxCoreTab) fluxCoreTab.classList.add('hidden');
     }
 
     // Reset active buttons cleanly
@@ -3053,6 +3056,79 @@ function initDeployerHubApp() {
       } finally {
         downloadAllBtn.disabled = false;
         downloadAllBtn.textContent = '📥 DOWNLOAD LIVE ZIP BUNDLE';
+      }
+    });
+  }
+
+  // Interactive Download Guard interceptor logic
+  const guardTriggerBtn = document.getElementById('download-guard-trigger-btn');
+  const guardStatusLog = document.getElementById('download-guard-status-log');
+
+  if (guardTriggerBtn && guardStatusLog) {
+    guardTriggerBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      // Determine if they are the Master Architect
+      var savedProfileRaw = safeStorage.getItem('5ir_authenticated_profile');
+      var isMasterUser = false;
+      if (savedProfileRaw) {
+        try {
+          var p = JSON.parse(savedProfileRaw);
+          isMasterUser = (p.role === 'SOVEREIGN_CLASS_1' && p.nodeId === 'MOBIUS_BRAID_MAIN');
+        } catch (err) {}
+      } else {
+        if (window.braidState && window.braidState.activeNodeAddress === 'MOBIUS_BRAID_MAIN') {
+          isMasterUser = true;
+        }
+      }
+      
+      if (isMasterUser) {
+        guardStatusLog.textContent = '>> [SUCCESS] Sovereign Architect signature validated. Initializing secure Sinter OS Compiler binary stream...';
+        guardStatusLog.className = 'text-[7.5pt] text-[#39ff14] font-mono leading-tight';
+        
+        // Success sound synthesis
+        try {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) {
+            const audioCtx = new AudioContextClass();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.15);
+            gainNode.gain.setValueAtTime(0.04, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.15);
+          }
+        } catch (e) {}
+      } else {
+        guardStatusLog.textContent = '>> [INTERCEPT] REJECTED. Download privilege level mismatch. Low integrity signature (< 0.5).';
+        guardStatusLog.className = 'text-[7.5pt] text-[#ff0055] font-mono leading-tight animate-pulse';
+        
+        // Buzz warning sound synthesis (matching DownloadGuard sawtooth)
+        try {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) {
+            const audioCtx = new AudioContextClass();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(220, audioCtx.currentTime); // Low warning buzz sound
+            gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.2);
+          }
+        } catch (e) {}
       }
     });
   }
@@ -5302,6 +5378,183 @@ function initAdvancedFluxApp() {
     fluxCoherenceSlider.addEventListener('input', (e) => {
       const val = parseFloat(e.target.value);
       fluxCore.dispatchFluxOverride('ADJUST_COHERENCE', { targetValue: val });
+    });
+  }
+
+  // --- DYNAMIC DATABASE TELEMETRY & SANDBOX CONTROLLER INTERACTION ---
+  function updateDbStatsUI() {
+    const indexer = window.sinterDatabaseIndexer;
+    if (!indexer) return;
+
+    const stats = indexer.getStats();
+    
+    const sinteredEl = document.getElementById('db-stat-sintered');
+    const latencyEl = document.getElementById('db-stat-latency');
+    const purgedEl = document.getElementById('db-stat-purged-alert');
+    const listEl = document.getElementById('db-active-indices-list');
+
+    if (sinteredEl) sinteredEl.textContent = stats.totalSinteredDocuments.toLocaleString();
+    if (latencyEl) latencyEl.textContent = stats.queryLookupLatency;
+    if (purgedEl) purgedEl.textContent = `SECURITY: PURGED ${stats.evictedTrackingAttempts} LOW-INTEGRITY TRACKER SIGNATURES (< 0.5) NATIVELY`;
+
+    // Render active local documents list inside Map Index
+    if (listEl) {
+      const records = indexer.getAllRecords();
+      listEl.innerHTML = records.map(rec => {
+        const isMaster = rec.role === 'ROOT_ARCHITECT';
+        const color = isMaster ? '#ffd700' : (rec.integrityRating < 0.5 ? '#ff0055' : '#00f2fe');
+        return `
+          <div class="flex justify-between items-center text-[7.5px] border-b border-[#1c2d5a]/20 py-0.5 last:border-b-0">
+            <span class="truncate max-w-[120px]" style="color: ${color}">[${rec.handle}]</span>
+            <span class="text-gray-500 text-[6.5px]">${rec.compositeId.substring(0, 16)}...</span>
+            <span class="font-bold shrink-0" style="color: ${rec.integrityRating < 0.5 ? '#ff0055' : '#39ff14'}">${rec.integrityRating.toFixed(2)}🌟</span>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  // Poll database statistics continuously
+  setInterval(updateDbStatsUI, 1000);
+  setTimeout(updateDbStatsUI, 100);
+
+  // Event listeners for database sandbox playground actions
+  const btnSinter = document.getElementById('db-btn-sinter');
+  const btnSweep = document.getElementById('db-btn-sweep');
+  const btnQuery = document.getElementById('db-btn-query');
+  const feedbackEl = document.getElementById('db-action-feedback');
+
+  if (btnSinter) {
+    btnSinter.addEventListener('click', () => {
+      const indexer = window.sinterDatabaseIndexer;
+      if (!indexer) {
+        alert("Database indexing engine is not fully compiled yet.");
+        return;
+      }
+
+      const handleInput = document.getElementById('db-input-handle');
+      const integritySelect = document.getElementById('db-input-integrity');
+      
+      const handle = handleInput ? handleInput.value.trim() : '';
+      if (!handle) {
+        alert("Please enter a valid node handle to sinter.");
+        return;
+      }
+
+      const integrity = integritySelect ? parseFloat(integritySelect.value) : 1.0;
+      const isMaster = handle.toLowerCase().includes('architect') || handle.toLowerCase().includes('mobius');
+
+      const mockRecord = {
+        nodeId: `NODE_${Math.sin(Date.now()).toString(16).substring(3, 8).toUpperCase()}`,
+        handle: handle,
+        isMaster: isMaster,
+        braidBalance: isMaster ? 5280.1254 : Math.random() * 500,
+        activeTaskStatus: integrity < 0.5 ? 'SUSPENDED' : 'VALIDATING',
+        integrityRating: integrity
+      };
+
+      const result = indexer.insertAndIndexNodeRecord(mockRecord);
+      if (feedbackEl) {
+        feedbackEl.innerHTML = `<span class="text-[#39ff14] font-bold">[SINTERED]</span> Key compiled: <span class="text-[#00f2fe] select-all font-bold">${result.generatedKey}</span> (Entropy: ${result.entropyLeakage})`;
+      }
+      
+      if (handleInput) handleInput.value = '';
+      updateDbStatsUI();
+
+      // Sound feedback synth
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          const audioCtx = new AudioContextClass();
+          const osc = audioCtx.createOscillator();
+          const gainNode = audioCtx.createGain();
+          osc.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(1400, audioCtx.currentTime + 0.1);
+          gainNode.gain.setValueAtTime(0.04, audioCtx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.1);
+        }
+      } catch (e) {}
+    });
+  }
+
+  if (btnSweep) {
+    btnSweep.addEventListener('click', () => {
+      const indexer = window.sinterDatabaseIndexer;
+      if (!indexer) return;
+
+      const result = indexer.executeDatabaseMaintenanceSweep();
+      if (feedbackEl) {
+        feedbackEl.innerHTML = `<span class="text-[#ff0055] font-bold">[SWEEP]</span> Maintenance complete. ${result.evictionCount} corrupted tracking entries evicted instantly. (${result.systemState})`;
+      }
+      updateDbStatsUI();
+
+      // Warning alarm buzzer sound synthesis
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          const audioCtx = new AudioContextClass();
+          const osc = audioCtx.createOscillator();
+          const gainNode = audioCtx.createGain();
+          osc.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+          gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.25);
+        }
+      } catch (e) {}
+    });
+  }
+
+  if (btnQuery) {
+    btnQuery.addEventListener('click', () => {
+      const indexer = window.sinterDatabaseIndexer;
+      if (!indexer) return;
+
+      const queryInput = document.getElementById('db-input-query');
+      const targetHandle = queryInput ? queryInput.value.trim() : '';
+
+      if (!targetHandle) {
+        alert("Enter target handle to perform fast index lookup.");
+        return;
+      }
+
+      const result = indexer.fetchNodeByHandleIndex(targetHandle);
+      if (feedbackEl) {
+        if (result.error) {
+          feedbackEl.innerHTML = `<span class="text-[#ff0055] font-bold">[QUERY_FAILED]</span> ${result.error} (Integrity score: ${result.integrityCheck.toFixed(2)})`;
+        } else {
+          const doc = result.document;
+          feedbackEl.innerHTML = `<span class="text-[#00f2fe] font-bold">[MATCH_SECURED]</span> Key: <span class="text-white select-all font-bold">${doc.compositeId}</span><br>Role: ${doc.role} // Bal: ${doc.braidBalance.toFixed(2)} $BRAID // Integrity: ${doc.integrityRating}`;
+        }
+      }
+      
+      if (queryInput) queryInput.value = '';
+
+      // High-pitch ping sound feedback
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          const audioCtx = new AudioContextClass();
+          const osc = audioCtx.createOscillator();
+          const gainNode = audioCtx.createGain();
+          osc.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(1600, audioCtx.currentTime);
+          gainNode.gain.setValueAtTime(0.03, audioCtx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.15);
+        }
+      } catch (e) {}
     });
   }
 }
