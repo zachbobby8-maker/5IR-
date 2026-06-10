@@ -1,0 +1,46 @@
+{
+  "$schema": "https://5ir.dev/schemas/database-cluster-v1.json",
+  "component": "SinterClusterIndexer",
+  "version": "94.6.0",
+  "globalTelemetry": {
+    "targetSyncFrequencyHz": 39420,
+    "targetThermalLeakageWatts": 0.00,
+    "systemCoherenceFloor": 0.9460
+  },
+  "primaryStorageLayout": {
+    "engine": "MemoryLatticeKV",
+    "partitionKey": "shard_id",
+    "compositeRowKey": "namespace_role_[node_id]_hex_salt"
+  },
+  "advancedCompositeIndices": [
+    {
+      "indexName": "IDX_COMPOSITE_ANTI_CHEAT_ACTIVE_JOBS",
+      "fields": ["activeTaskStatus", "integrityRating", "braidBalance"],
+      "indexType": "BraidTrieTree",
+      "optimizationTarget": "Anti-Cheat Job Verification",
+      "perks": {
+        "preventSequentialScrapingLeaks": true,
+        "allowInstantWasmLookup": true
+      }
+    },
+    {
+      "indexName": "IDX_COMPOSITE_ARCHITECT_LOOKBOOK_METRICS",
+      "fields": ["handle", "profileMatchCoherence", "lastSyncTimestamp"],
+      "indexType": "HexagonalSparseArray",
+      "optimizationTarget": "Identity Validation & Lookbook Alignment",
+      "perks": {
+        "autoEvictDriftRecords": true,
+        "enforceStickySessionData": true
+      }
+    }
+  ],
+  "automatedPartitionShunting": {
+    "enabled": true,
+    "shuntingThreshold": 0.50,
+    "actions": {
+      "onLowIntegritySignal": "IMMEDIATE_EVICTION_FROM_ACTIVE_MEMORY_HEAPS",
+      "onStaticMacroDetection": "ROTATION_TRIGGER_FLUSH",
+      "alertRouting": "VortexGatekeeperDashboard"
+    }
+  }
+}
