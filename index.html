@@ -1365,6 +1365,26 @@
                 </button>
               </div>
 
+              <!-- DOWNLOAD GUARD INTERCEPTOR PANEL -->
+              <div id="download-guard-panel" class="mb-4 bg-[#040d21] border-2 border-[#ff0055] p-3.5 rounded font-mono shadow-[0_0_15px_rgba(255,0,85,0.2)]">
+                <div class="text-[9pt] font-extrabold text-[#ff0055] mb-2 tracking-wider flex items-center gap-1.5 animate-pulse">
+                  <span>🚨</span> <span>[ALERT] SINTER OS COMPILER DOWNLOAD PORTAL REQUESTED</span>
+                </div>
+                
+                <p class="text-[7.5pt] text-[#a1b5cc] m-0 mb-3 leading-relaxed">
+                  Warning: Requesting raw binary compilation shunts breaks local asymmetric session isolation. 5iR systems enforce cloud-edge WASM compilation templates exclusively to keep network leakage flat at zero watts.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                  <button id="download-guard-trigger-btn" type="button" class="bg-black hover:bg-[#ff0055] hover:text-white border border-[#ff0055] text-white py-2 px-3 text-[8pt] font-mono font-bold cursor-pointer transition-all rounded shrink-0">
+                    [GET_DOWNLOADABLE_SINTER_COMPILER.EXE]
+                  </button>
+                  <div id="download-guard-status-log" class="text-[7.5pt] text-cyan font-mono leading-tight">
+                    [GATE_READY] Monitoring compilation download vector entry points.
+                  </div>
+                </div>
+              </div>
+
               <!-- Collapsible files list -->
               <div class="space-y-2" id="deployer-files-list"></div>
 
@@ -1569,6 +1589,84 @@
                   </div>
                   <div class="flex-grow h-[135px] overflow-y-auto p-2.5 flex flex-col gap-1 font-mono text-[7.5pt] text-[#9cb3c9]" id="flux-logs-container">
                     <!-- Logs populated dynamically -->
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- DATABASE OPTIMIZATION & TELEMETRY TERMINAL SECTION -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 font-mono">
+                
+                <!-- Left Column: User Telemetry Terminal Widget -->
+                <div class="bg-[#040d21] border border-[#1c2d5a] p-4 rounded-md shadow-inner flex flex-col justify-between" id="db-telemetry-terminal-card">
+                  <div>
+                    <div class="flex justify-between items-center border-b border-[#1c2d5a] pb-2 mb-3">
+                      <span class="text-[#00f2fe] font-bold text-[8.5pt] tracking-wider uppercase">[DATABASE_INDEX_MONITOR] CORES STATUS</span>
+                      <span class="text-[#39ff14] text-[7.5pt] font-extrabold flex items-center gap-1.5 animate-pulse">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#39ff14]"></span> GRID_SYNC_OK
+                      </span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 mb-3 text-[7.5pt]">
+                      <div class="bg-black p-3 border border-[#1c2d5a] rounded">
+                        <div class="text-[#a1b5cc] uppercase tracking-wider font-bold">SINTERED DOCUMENTS</div>
+                        <div class="text-base md:text-xl font-extrabold text-white mt-1" id="db-stat-sintered">1,446,720</div>
+                      </div>
+                      <div class="bg-black p-3 border border-[#1c2d5a] rounded">
+                        <div class="text-[#a1b5cc] uppercase tracking-wider font-bold">QUERY LATENCY</div>
+                        <div class="text-base md:text-xl font-extrabold text-[#00f2fe] mt-1" id="db-stat-latency">0.0002 ms</div>
+                      </div>
+                    </div>
+
+                    <div class="bg-black p-2 rounded border border-[#1c2d5a] text-[7.5pt] mb-3 max-h-[85px] overflow-y-auto space-y-1 text-gray-400" id="db-active-indices-list">
+                      <!-- Active handles map pointers list -->
+                    </div>
+                  </div>
+
+                  <div class="mt-2 text-[6.5pt] text-[#ff0055] bg-black py-2 text-center border border-dashed border-[#ff0055] rounded font-bold uppercase tracking-wider" id="db-stat-purged-alert">
+                    SECURITY: PURGED 42 LOW-INTEGRITY TRACKER SIGNATURES (&lt; 0.5) NATIVELY
+                  </div>
+                </div>
+
+                <!-- Right Column: Interactive Database Actions & Sinter Console -->
+                <div class="bg-black border border-indigo-950 p-4 rounded-md flex flex-col justify-between min-h-[180px]">
+                  <div>
+                    <span class="text-[8.5px] uppercase tracking-wider text-[#ffd700] font-bold block mb-2 border-l-2 border-[#ffd700] pl-2">[DATABASE_MUTATION_SHUNTS]</span>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[8px] mb-3">
+                      <div>
+                        <label class="block text-gray-500 font-bold mb-1">TARGET NODE HANDLE</label>
+                        <input type="text" id="db-input-handle" class="w-full bg-black border border-indigo-900 text-[10px] text-cyan p-1.5 rounded outline-none font-mono" placeholder="e.g., Phantom_Core">
+                      </div>
+                      <div>
+                        <label class="block text-gray-500 font-bold mb-1">INTEGRITY WEIGHT</label>
+                        <select id="db-input-integrity" class="w-full bg-black border border-indigo-900 text-[10px] text-cyan p-1.5 rounded outline-none font-mono">
+                          <option value="1.0">1.00 [ROOT MASTER]</option>
+                          <option value="0.95">0.95 [STABLE NODE]</option>
+                          <option value="0.45">0.45 [LOW INTEGRITY SUSPECT]</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="flex gap-2 mb-2">
+                      <button type="button" id="db-btn-sinter" class="flex-1 py-1.5 bg-[#5850ec] hover:bg-cyan-500 hover:text-black border border-indigo-500 text-white text-[8px] font-bold rounded transition-all uppercase">
+                        [SINTER_RECORD]
+                      </button>
+                      <button type="button" id="db-btn-sweep" class="flex-1 py-1.5 bg-red-950 hover:bg-[#ff0055] hover:text-white border border-[#ff0055] text-red-400 text-[8px] font-bold rounded transition-all uppercase">
+                        [RUN_MAINTENANCE_SWEEP]
+                      </button>
+                    </div>
+
+                    <div class="flex gap-2">
+                      <input type="text" id="db-input-query" class="flex-grow bg-black border border-indigo-900 text-[9px] text-[#ffd700] p-1.5 rounded outline-none font-mono" placeholder="Query Node handle...">
+                      <button type="button" id="db-btn-query" class="px-3 bg-indigo-950 hover:bg-[#ffd700] hover:text-black text-cyan border border-indigo-500 text-[8px] font-bold rounded transition-all uppercase">
+                        [QUERY]
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="bg-black/60 border border-indigo-950/60 p-2.5 rounded text-[7.5px] text-gray-400 font-mono mt-2" id="db-action-feedback">
+                    [CONSOLE]: Database engine awaiting parameters.
                   </div>
                 </div>
 
@@ -2052,6 +2150,7 @@
 
   <script src="masterProfileConfig.js?v=94.62"></script>
   <script src="useAdvancedFluxCore.js?v=94.62"></script>
+  <script src="sinterDatabaseIndexer.js" type="module"></script>
   <script src="asymmetricEngine.js?v=94.62"></script>
   <script src="main.js?v=94.62"></script>
 </body>
