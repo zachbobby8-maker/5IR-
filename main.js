@@ -63,7 +63,43 @@ const LOCAL_TRANSLATIONS = {
   "profile.comp_assoc": "COMPILATION ASSOC:",
   "profile.assoc_val": "COHERENT MATRIX // 39,420 Hz",
   "profile.test_btn": "TEST LATTICE INTEGRITY",
-  "profile.footer": "dQ_leak = 0.00W // COHERENCE 94.6% STABLE"
+  "profile.footer": "dQ_leak = 0.00W // COHERENCE 94.6% STABLE",
+  
+  // Missing App 10 Compliance fallback translations
+  "app10.title": "APP 10: \"LEGAL-COMPLIANCE\" CORPORATE SHELL STAGING",
+  "app10.jurisdiction_lbl": "SELECT CORPORATE LANDING JURISDICTION",
+  "app10.kyc_lbl": "ENGAGE PASSIVE KYC NODE ID HANDSHAKES",
+  "app10.staging_btn": "[STAG_CORPORATE_FILING]",
+
+  // Missing App 15 Spatial Scanner fallback translations
+  "app15.title": "[APP_15] SPATIAL SCANNER IMAGE VECTOR CORES",
+  "app15.btn_earth": "EARTH",
+  "app15.btn_space": "SPACE",
+  "app15.scan_coherence": "SCAN COHERENCE",
+  "app15.friction_ratio": "FRICTION RATIO",
+  "app15.grid_status": "GRID STATUS",
+  "app15.btn_execute": "[EXECUTE_TOPOLOGICAL_SCAN]",
+  "app15.btn_processing": "[PROCESSING_GEOMETRY...]",
+  "app15.log_calibrated": "[ONLINE] Scanner matrix calibrated to 39,420 Hz.",
+  "app15.log_earth_mode": "[MODE_SHIFT]: Earth tactical tracking configured.",
+  "app15.log_space_mode": "[MODE_SHIFT]: Deep-space radiometric mesh configured.",
+  "app15.log_scanning": ">> INITIALIZING TOPOLOGICAL RE-SHAPE SWEEP...",
+  "app15.log_earth_success": ">> SUCCESS: High-prestige Earth profile vectors synchronized.",
+  "app15.log_space_success": ">> SUCCESS: Orbital coordinate matrix locked down.",
+  "app15.earth_friction": "0.00 Ohms [Architect Profile Locked]",
+  "app15.space_friction": "0.00 Watts [Thermal Leak Flat]",
+  "app15.earth_env": "DIOR / LOOK_04 FABRIC MESH VALIDATED",
+  "app15.space_env": "NEW CYDONIA RADIOMETRIC PROFILE ACTIVE",
+
+  // Missing App 16 Work Grid fallback translations
+  "app16.title": "[APP_16] LEGENDRIAN ALGORITHM WORK GRID",
+  "app16.tab_btn": "💻 16: WORK GRID",
+  "app16.ledger_balance": "LEDGER BALANCE",
+  "app16.contracts_header": "[AVAILABLE_COMPUTATIONAL_CONTRACTS]",
+  "app16.workspace_offline": "[WORKSPACE TERMINAL OFFLINE]",
+  "app16.workspace_offline_desc": "Select an active infrastructure contract from the directory to initialize the Legendrian Algorithm Workspace.",
+  "app16.transmit_btn": "[TRANSMIT_TO_VORTEX_AI_CHECK]",
+  "app16.analyzing_btn": "[VORTEX_AI_ANALYZING_CORE_MATRICES...]"
 };
 
 function getPredefinedTranslation(key) {
@@ -232,11 +268,16 @@ function translateDOM() {
   const i18n = window.braidI18n;
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
+    let translated = '';
     if (i18n && typeof i18n.t === 'function') {
-      el.textContent = i18n.t(key);
-    } else {
-      const val = getPredefinedTranslation(key);
-      if (val) el.textContent = val;
+      translated = i18n.t(key);
+    }
+    // If translation system is not ready or returns the key itself, try local fallback
+    if (!translated || translated === key) {
+      translated = getPredefinedTranslation(key);
+    }
+    if (translated) {
+      el.textContent = translated;
     }
   });
 }
@@ -5526,13 +5567,24 @@ function initAdvancedFluxApp() {
         return;
       }
 
-      const result = indexer.fetchNodeByHandleIndex(targetHandle);
-      if (feedbackEl) {
-        if (result.error) {
-          feedbackEl.innerHTML = `<span class="text-[#ff0055] font-bold">[QUERY_FAILED]</span> ${result.error} (Integrity score: ${result.integrityCheck.toFixed(2)})`;
-        } else {
-          const doc = result.document;
-          feedbackEl.innerHTML = `<span class="text-[#00f2fe] font-bold">[MATCH_SECURED]</span> Key: <span class="text-white select-all font-bold">${doc.compositeId}</span><br>Role: ${doc.role} // Bal: ${doc.braidBalance.toFixed(2)} $BRAID // Integrity: ${doc.integrityRating}`;
+      // If target contains '#' or is a status handle, execute advanced composite trie-tree indexing range finder!
+      if (targetHandle.includes('#') || ['VALIDATING', 'ACTIVE_MONITORING', 'SUSPENDED', 'IDLE'].includes(targetHandle.toUpperCase())) {
+        const parts = targetHandle.split('#');
+        const status = parts[0].toUpperCase();
+        const minIntegrity = parts[1] ? parseFloat(parts[1]) : 0.5;
+        const rangeResult = indexer.fetchJobsByIntegrityRangeIndex(status, minIntegrity);
+        if (feedbackEl) {
+          feedbackEl.innerHTML = `<span class="text-[#39ff14] font-bold">[TRIE_RANGE_MATCH]</span> Method: <span class="text-cyan font-bold">${rangeResult.queryMethod}</span><br>Found: ${rangeResult.recordsFound} record(s). References:<br><span class="text-gray-400 select-all font-mono break-all text-[7.5px]">${rangeResult.references.join('<br>') || 'No exact matches found.'}</span>`;
+        }
+      } else {
+        const result = indexer.fetchNodeByHandleIndex(targetHandle);
+        if (feedbackEl) {
+          if (result.error) {
+            feedbackEl.innerHTML = `<span class="text-[#ff0055] font-bold">[QUERY_FAILED]</span> ${result.error} (Integrity score: ${result.integrityCheck.toFixed(2)})`;
+          } else {
+            const doc = result.document;
+            feedbackEl.innerHTML = `<span class="text-[#00f2fe] font-bold">[MATCH_SECURED]</span> Key: <span class="text-white select-all font-bold">${doc.compositeId}</span><br>Role: ${doc.role} // Bal: ${doc.braidBalance.toFixed(2)} $BRAID // Integrity: ${doc.integrityRating}`;
+          }
         }
       }
       
