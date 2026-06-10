@@ -2349,3 +2349,73 @@ aside.w-full {
   }
 }
 
+/* ==========================================================
+   HIGH-LUMINESCENCE BOLDER TERMINAL BOARDS
+   ========================================================== */
+.vortex-log-scroll,
+.vortex-clear-log-scroll,
+.gateway-log-lines,
+#sovereign-terminal-logs,
+#sovereign-chat-messages,
+#sovereign-alert-feed,
+#flux-logs-container,
+#legal-logs-container,
+#resonance-ide-logs,
+.vortex-terminal-container,
+.gateway-log-panel,
+.log-item,
+.gateway-log-line,
+.phase-decrypt-btn,
+.chat-premium-bubble {
+  font-weight: 800 !important; /* Make all active telemetry streams extremely bold */
+  letter-spacing: 0.5px !important;
+}
+
+.log-item.system,
+.vortex-clear-log-scroll .log-item.system,
+.gateway-log-line {
+  font-weight: 800 !important;
+}
+
+.log-item.user,
+.log-item.droid {
+  font-weight: 900 !important;
+}
+
+/* Enhance glows and contrasts for terminals */
+.vortex-terminal-container,
+.vortex-clear-terminal-container,
+.gateway-log-panel {
+  border-width: 2px !important;
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.25), inset 0 0 15px rgba(0, 242, 254, 0.1) !important;
+}
+
+#sovereign-terminal-logs,
+#sovereign-chat-messages {
+  font-weight: 800 !important;
+  color: #e6f0ff !important;
+}
+
+/* Highly Interactive Workspace Anchors - override shaky translations/gravity animations */
+#app-legendrian-grid,
+#app-node-chat,
+#app-phase-sync-chat,
+#app-vortex-ai,
+#app-sovereign-grid {
+  animation: none !important;
+  transform: none !important;
+}
+#app-legendrian-grid:hover,
+#app-node-chat:hover,
+#app-phase-sync-chat:hover,
+#app-vortex-ai:hover,
+#app-sovereign-grid:hover {
+  transform: none !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.75), inset 0 0 25px rgba(0, 242, 254, 0.03) !important;
+}
+
+/* Stable scrollbar gutters to prevent layout shifts */
+#legendrian-jobs-list,
+#legendrian-console-feedback {
+  scrollbar-gutter: stable;
+}
