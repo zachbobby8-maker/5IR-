@@ -97,9 +97,7 @@ async function registerGazeTrackingHID(canvasElement) {
   console.log(">> [WEBHID_GAZE]: Local vector deflection mapping linked to canvas frame-buffer.");
 }
 
-// Support both ES modules (export) and vanilla global window registry
-export { currentBioMetricState, initializeBioBluetoothSync, registerGazeTrackingHID };
-
+// Global window registry for vanilla JS contexts
 if (typeof window !== 'undefined') {
   window.bioResonanceBridge = {
     currentBioMetricState,
@@ -107,4 +105,3 @@ if (typeof window !== 'undefined') {
     registerGazeTrackingHID
   };
 }
-
