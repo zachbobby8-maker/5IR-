@@ -16,6 +16,7 @@
 │   ├── 📄 useAdvancedFluxCore.js        # Core state calculator hooks [39,420 Hz Ticker]
 │   ├── 📄 sinterDatabaseIndexer.js      # Zero-friction composite key database storage engine
 │   └── 📄 soverignCoreServices.js       # Alpha Ledger Audit Cron + Gamma Web-Socket Torsion Link
+│   └── 📄 bioResonanceBridge.js         # WebHID & WebBluetooth biometric telemetry link
 │
 ├── 📁 portal-dev/ [[https://5iR.dev](https://5iR.dev)]
 │   ├── 📄 GlowSovereignDashboard.jsx    # Luminescent Cyano-Neon interface layout controller
@@ -34,9 +35,11 @@
  * **WASP 3.0 Core Timer:** Implements a strict 3-request limitation limit inside local memory heaps. Unauthorized automation triggers active **60-second hardware freeze locks**.
  * **Asymmetric Session Isolation:** Decouples active session data via hex tracking keys (MOBIUS_BRAID_MAIN), enforcing **Sticky Session Data** to recover design structures automatically.
  * **Download Guard:** Completely blocks native desktop compilation binaries (.exe/.dmg). Forces all calculation processing natively inside client-side **WASM 3.0 sandboxes**.
-### 📡 Layer 3: Communications & Imaging Array (RadioWaveMetricsPanel.jsx / SpatialScannerCore.jsx)
+### 📡 Layer 3: Communications & Imaging Array (RadioWaveMetricsPanel.jsx / SpatialScannerCore.jsx / AeroFluxNavigator.jsx)
  * **Topological Radio Core:** Coordinates signal waves down **24-strand Braided Graphene-Polymer filaments** using an invariant sub-harmonic carrier wave centered at **39,420 Hz** to preserve total topological stealth.
  * **Vector Spatial Imaging:** Replaces standard flat pixel image files with dynamic vector coordinate point-clouds mapping look profiles (Dior, Balenciaga) on Earth and tracking radiometric dust density indices across New Cydonia.
+ * **Aero-Flux Navigator (APP 17):** Projects multi-variable non-associative configuration space curves natively on a direct visualizer frame-buffer canvas to eliminate memory drag completely.
+ * **Bio-Resonance Bridge (APP 18):** Establishes an un-throttled WebBluetooth GATT link to smart wrist-wearables to pull heart rate variables and map WebHID eye-tracking cursor coordinate deflections on screen.
 ### 💰 Layer 4: Decentralized Labor Economy (LegendrianWorkGrid.jsx)
  * **Dynamic 3-Slot Grid:** Restricts public viewports to exactly 3 available contract tickets simultaneously. Solving the active set prompts an automatic database flush and shifts a new randomized batch of math jobs from the master pool.
  * **Rolling Anti-Macro Seeding:** Automatically mutates validation key seeds every 60 seconds. Any code submission displaying a low integrity threshold (< 0.5) is rejected instantly by **Vortex AI**.
