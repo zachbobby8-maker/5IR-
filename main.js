@@ -253,6 +253,11 @@ function bootstrapApp() {
   } catch (err) {
     console.error("App 16 (Legendrian-Grid) fault:", err);
   }
+  try {
+    initSovereignCoreServices();
+  } catch (err) {
+    console.error("Sovereign Core Services (Alpha/Gamma) fault:", err);
+  }
 };
 
 if (document.readyState === 'loading') {
@@ -6332,5 +6337,245 @@ function initLegendrianGridApp() {
   // Initial setup on boot
   generateNewJobBatch();
   startAntiCheatDaemon();
+}
+
+/**
+ * Fuses Alpha Ledger Audit Cron + Gamma Web-Socket Torsion Link Simulations
+ * Highlights known cross-chain directories and topological exchange mint actions.
+ */
+function initSovereignCoreServices() {
+  console.log(">> [MOBIUS_CORE_SERVICES] Initializing Alpha Ledger Audit & Gamma WS Torsion Link...");
+
+  const tickerSelect = document.getElementById('service-exchange-ticker');
+  const amountInput = document.getElementById('service-exchange-amount');
+  const sourceInput = document.getElementById('service-exchange-source');
+  const targetSelect = document.getElementById('service-exchange-target');
+  const exchangeBtn = document.getElementById('service-exchange-submit-btn');
+  const auditBtn = document.getElementById('service-audit-trigger-btn');
+  
+  const directoryCountEl = document.getElementById('audit-directory-count');
+  const directoryListEl = document.getElementById('audit-directory-list');
+  const ledgerDbListEl = document.getElementById('audit-ledger-db-list');
+  const logsFeedEl = document.getElementById('service-logs-feed');
+
+  if (!logsFeedEl) return;
+
+  // Local state replicas of Sovereign services schemas
+  const KNOWN_WALLETS = [
+    { address: "0x5iR_ARCHITECT_MAIN_MOBIUS", owner: "Architect (Möbius Braid)", role: "ROOT_ARCHITECT", integrity: 1.0 },
+    { address: "0x5iR_KING_DROID_SECURE_NODE", owner: "King Droid Core", role: "SYSTEM_SENTINEL", integrity: 1.0 },
+    { address: "0x5iR_MARS_HANGAR_08_POOL", owner: "Mars Hangar 08 Allocator", role: "LIQUIDITY_RESERVE", integrity: 0.9842 }
+  ];
+
+  const WALLET_DATABASE = new Map([
+    ["0x5iR_ARCHITECT_MAIN_MOBIUS", { balance: 500000.00, securityFlag: "NOMINAL", auditSig: "GENESIS_SIG_0x39" }],
+    ["0x5iR_KING_DROID_SECURE_NODE", { balance: 150000.00, securityFlag: "NOMINAL", auditSig: "SENTINEL_SIG_0x39" }],
+    ["0x5iR_MARS_HANGAR_08_POOL", { balance: 80000.00, securityFlag: "NOMINAL", auditSig: "POOL_SIG_0x39" }]
+  ]);
+
+  const RATES = { SOL: 145.25, ETH: 2150.80, BTC: 45000.00 };
+  let systemSeed = "SEED_0x39420";
+
+  // Audio helper
+  function playSynthSound(freq, type = 'sine', duration = 0.1) {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const actx = new AudioCtx();
+      const osc = actx.createOscillator();
+      const gain = actx.createGain();
+      osc.connect(gain);
+      gain.connect(actx.destination);
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, actx.currentTime);
+      gain.gain.setValueAtTime(0.03, actx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + duration);
+      osc.start();
+      osc.stop(actx.currentTime + duration);
+    } catch (e) {}
+  }
+
+  // Hash helper
+  async function computeHashSig(address, balance) {
+    const message = `${address}-${balance}-39420`;
+    try {
+      const msgBuffer = new TextEncoder().encode(message);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 16).toUpperCase();
+    } catch (err) {
+      let hash = 0;
+      for (let i = 0; i < message.length; i++) {
+        hash = (hash << 5) - hash + message.charCodeAt(i);
+        hash |= 0;
+      }
+      return '0x' + Math.abs(hash).toString(16).toUpperCase().substring(0, 12);
+    }
+  }
+
+  function appendFeedLog(text, colorClass = 'text-[#39ff14]/85') {
+    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+    const logLine = document.createElement('div');
+    logLine.className = `${colorClass} leading-relaxed select-all break-all`;
+    logLine.innerHTML = `<span class="text-gray-500 font-bold">[${time}]</span> ${text}`;
+    logsFeedEl.appendChild(logLine);
+    logsFeedEl.scrollTop = logsFeedEl.scrollHeight;
+  }
+
+  // Populate UI
+  function renderDirectory() {
+    if (!directoryListEl) return;
+    if (directoryCountEl) directoryCountEl.textContent = `${KNOWN_WALLETS.length} NODES VERIFIED`;
+
+    directoryListEl.innerHTML = KNOWN_WALLETS.map(w => `
+      <div class="flex justify-between items-center border-b border-[#39ff14]/10 py-1 last:border-b-0 text-[7px] text-gray-400">
+        <span class="text-[#39ff14] font-bold truncate max-w-[120px]" title="${w.owner}">${w.owner}</span>
+        <span class="text-gray-500 font-mono text-[6.5px]">${w.address.substring(0, 16)}...</span>
+        <span class="text-gray-400 font-bold font-mono">${w.integrity.toFixed(4)}🌟</span>
+      </div>
+    `).join('');
+  }
+
+  async function renderLedgerDatabase() {
+    if (!ledgerDbListEl) return;
+    
+    // Sync current logged-in node dynamic balance to shown list
+    const userNodeAddress = window.braidState?.activeNodeAddress || "MOBIUS_BRAID_MAIN";
+    const userBalance = window.braidState?.currentMinedBalance || 100.0;
+    
+    if (!WALLET_DATABASE.has(userNodeAddress)) {
+      WALLET_DATABASE.set(userNodeAddress, { balance: userBalance, securityFlag: "NOMINAL", auditSig: "SYNCING" });
+    } else {
+      WALLET_DATABASE.get(userNodeAddress).balance = userBalance;
+    }
+
+    const rowsHtml = [];
+    for (const [address, data] of WALLET_DATABASE.entries()) {
+      const isKnown = KNOWN_WALLETS.some(w => w.address === address);
+      const style = data.securityFlag === "NOMINAL" ? "text-cyan" : "text-magenta font-extrabold animate-pulse";
+      const shortAddr = address.length > 20 ? `${address.substring(0, 14)}...` : address;
+      
+      const sig = data.auditSig === "SYNCING" ? await computeHashSig(address, data.balance) : data.auditSig;
+      data.auditSig = sig;
+
+      rowsHtml.push(`
+        <div class="flex justify-between items-center border-b border-[#39ff14]/5 py-1 last:border-b-0 text-[7.2px]">
+          <span class="text-gray-400 truncate max-w-[110px]" title="${address}">${shortAddr}</span>
+          <span class="text-white font-bold">${data.balance.toFixed(2)} $BRAID</span>
+          <span class="text-gray-500 font-mono text-[6.5px]" title="SHA256 Hash signature: ${sig}">${sig.substring(0, 8)}</span>
+          <span class="text-[6.5px] px-1 rounded bg-black border ${data.securityFlag === "NOMINAL" ? 'border-[#39ff14]/20 text-[#39ff14]' : 'border-rose-950 text-magenta'}">${data.securityFlag}</span>
+        </div>
+      `);
+    }
+    ledgerDbListEl.innerHTML = rowsHtml.join('');
+  }
+
+  // WebSocket ticker simulation
+  setInterval(() => {
+    systemSeed = `SEED_0x${Math.floor(Math.random() * 65536).toString(16).toUpperCase()}`;
+    const pings = ["NODE_CYDONIA_08", "NODE_VINEYARD_X2", "0x5iR_KING_DROID_SECURE_NODE", "EXTERNAL_USER_NODE"];
+    const pingSender = pings[Math.floor(Math.random() * pings.length)];
+    
+    appendFeedLog(`[ws:port 3942] Handshake ping validated from <span class="text-[#39ff14] font-bold">${pingSender}</span> // seed: ${systemSeed}`, "text-cyan/85");
+  }, 12000);
+
+  // Bind Swap action
+  if (exchangeBtn) {
+    exchangeBtn.addEventListener('click', async () => {
+      const ticker = tickerSelect ? tickerSelect.value : 'SOL';
+      const amount = amountInput ? parseFloat(amountInput.value) : 0;
+      const source = sourceInput ? sourceInput.value.trim() : '0xPhantom_Sol_Target_Alpha';
+      const targetOption = targetSelect ? targetSelect.value : 'DYNAMIC_USER_NODE';
+
+      let targetAddress = targetOption;
+      if (targetOption === 'DYNAMIC_USER_NODE') {
+        targetAddress = window.braidState?.activeNodeAddress || 'MOBIUS_BRAID_MAIN';
+      }
+
+      if (isNaN(amount) || amount <= 0) {
+        alert("Enter a valid positive multi-chain asset amount to mint.");
+        return;
+      }
+
+      playSynthSound(784, 'triangle', 0.15);
+      appendFeedLog(`[EXCHANGE] Request compiled: Swap ${amount} ${ticker} for $BRAID targeting receiver node: ${targetAddress}...`, "text-cyan");
+
+      // Rate conversions
+      const rate = RATES[ticker];
+      const braidPayout = amount * rate;
+
+      setTimeout(async () => {
+        // Create or update database state
+        if (!WALLET_DATABASE.has(targetAddress)) {
+          WALLET_DATABASE.set(targetAddress, { balance: 0, securityFlag: "NOMINAL", auditSig: "INIT" });
+        }
+        
+        const record = WALLET_DATABASE.get(targetAddress);
+        record.balance += braidPayout;
+        record.auditSig = await computeHashSig(targetAddress, record.balance);
+
+        // Also update actual live stream balance if user targeted their active login node
+        if (targetOption === 'DYNAMIC_USER_NODE' && window.braidState) {
+          window.braidState.currentMinedBalance += braidPayout;
+          const userProfileRaw = safeStorage.getItem('5ir_authenticated_profile');
+          if (userProfileRaw) {
+            try {
+              const p = JSON.parse(userProfileRaw);
+              p.baseBalance = (p.baseBalance || 100.0) + braidPayout;
+              safeStorage.setItem('5ir_authenticated_profile', JSON.stringify(p));
+            } catch(e){}
+          }
+        }
+
+        playSynthSound(1046, 'sine', 0.2);
+        appendFeedLog(`[SUCCESS] Settled! Generated <span class="text-[#39ff14] font-bold">${braidPayout.toFixed(4)} $BRAID</span> for ${targetAddress}. (Energy Loss: dQ_leak/dt = 0.00W Flat)`, "text-[#39ff14]");
+        
+        renderLedgerDatabase();
+      }, 800);
+    });
+  }
+
+  // Bind Audit Cron Action
+  if (auditBtn) {
+    auditBtn.addEventListener('click', () => {
+      playSynthSound(440, 'sawtooth', 0.25);
+      appendFeedLog(`[CRON_AUDIT] Initiating automated ledger matrix sweep across verified heap addresses...`, "text-yellow-400");
+      
+      auditBtn.disabled = true;
+      auditBtn.textContent = "[AUDITING LEDGER STOCKS...]";
+
+      setTimeout(async () => {
+        let scanned = 0;
+        let quarantined = 0;
+
+        for (const [address, data] of WALLET_DATABASE.entries()) {
+          scanned++;
+          const isKnown = KNOWN_WALLETS.some(w => w.address === address);
+          
+          // Exploit check: If balance exceeds 50k and not listed in known verified directory, trigger macro exploit flags!
+          if (!isKnown && data.balance > 50000.0) {
+            data.securityFlag = "THROTTLED_SUSPECTED_MACRO_EXPLOIT";
+            quarantined++;
+            appendFeedLog(`[FIREWALL_ALERT] Node address: ${address.substring(0, 16)}... balance spike (${data.balance.toFixed(1)} $BRAID) exceeds public bounds without verified directory profile. Shunting to sandbox isolation.`, "text-magenta font-extrabold animate-pulse");
+          } else {
+            data.auditSig = await computeHashSig(address, data.balance);
+          }
+        }
+
+        playSynthSound(880, 'sine', 0.15);
+        auditBtn.disabled = false;
+        auditBtn.textContent = "🔍 RUN CRYPTOGRAPHIC CRON LEDGER AUDIT";
+
+        appendFeedLog(`[AUDIT_COMPLETE] Scanned: ${scanned} Heap entries. Quarantined: ${quarantined} Malicious anomalies. dQ_leak/dt = 0.00 Watts Flat.`, "text-[#39ff14]");
+        renderLedgerDatabase();
+      }, 1200);
+    });
+  }
+
+  // Initialize display lists
+  renderDirectory();
+  renderLedgerDatabase();
+  
+  appendFeedLog("Sovereign Core Services online. Listening over WS protocol on port 3942.", "text-[#39ff14]");
 }
 })();
