@@ -134,7 +134,11 @@ const LOCAL_TRANSLATIONS = {
   "app19.output_placeholder": "/* Sintered Output payload will display here natively with zero entropy parameters... */",
   "app19.commit_matrix_lbl": "[1.4M_MESH_ACTIVE_COMMIT_MATRIX]",
   "app19.stream_lbl": "[LIVE_CONTRIBUTOR_STREAM]",
-  "app19.status_lbl": "TOOL_STATUS: ONLINE"
+  "app19.status_lbl": "TOOL_STATUS: ONLINE",
+
+  // Missing App 20 Weave Exchange fallback translations
+  "app20.title": "[APP_20] THE WEAVE EXCHANGE & SINTER-LOOM",
+  "app20.tab_btn": "🛍️ 20: WEAVE-EXCHANGE"
 };
 
 function getPredefinedTranslation(key) {
@@ -308,6 +312,11 @@ function bootstrapApp() {
   } catch (err) {
     console.error("App 19 (Sinter-Grid) fault:", err);
   }
+  try {
+    initWeaveExchangeApp();
+  } catch (err) {
+    console.error("App 20 (Weave-Exchange) fault:", err);
+  }
 };
 
 if (document.readyState === 'loading') {
@@ -374,7 +383,7 @@ function switchTab(activeTab) {
     } catch (err) {}
   }
 
-  if (!isMasterUser && (activeTab === 'sovereign-suite' || activeTab === 'sovereign-grid' || activeTab === 'vortex-ai' || activeTab === 'advanced-flux-core')) {
+  if (!isMasterUser && (activeTab === 'sovereign-suite' || activeTab === 'sovereign-grid' || activeTab === 'vortex-ai' || activeTab === 'advanced-flux-core' || activeTab === 'braid-shield' || activeTab === 'wallet-wrapper')) {
     alert("CRITICAL WARNING: LEVEL-1 MOBIUS SECURITY CLEARANCE REQUIRED FOR THIS APPARATUS.");
     return;
   }
