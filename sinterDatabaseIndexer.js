@@ -84,7 +84,7 @@ function compileCompositeKey(nodePayload) {
 /**
  * Generates a high-speed pointer location based on the composite configuration rules
  */
-export function registerAdvancedCompositeIndexEntry(nodeDocument) {
+function registerAdvancedCompositeIndexEntry(nodeDocument) {
   if (nodeDocument.integrityRating < clusterConfig.automatedPartitionShunting.shuntingThreshold) {
     return { status: 'REJECTED_BY_SHUNTING_DAEMON', integrityCheck: nodeDocument.integrityRating };
   }
@@ -105,7 +105,7 @@ export function registerAdvancedCompositeIndexEntry(nodeDocument) {
 /**
  * High-Velocity Multi-Field Range Finder Query Loop
  */
-export function fetchJobsByIntegrityRangeIndex(status, minIntegrity, minBalance) {
+function fetchJobsByIntegrityRangeIndex(status, minIntegrity, minBalance) {
   // Bypasses slower linear collections scans by targeting direct hash coordinates inside memory tree
   const lookupPrefix = `${status}#${minIntegrity}`;
   const matchedPointers = [];
@@ -127,7 +127,7 @@ export function fetchJobsByIntegrityRangeIndex(status, minIntegrity, minBalance)
  * Core Indexing Routine: Sintering record objects into the memory grid
  * Enforces absolute zero entropy leakage across database search arrays
  */
-export function insertAndIndexNodeRecord(rawRecord) {
+function insertAndIndexNodeRecord(rawRecord) {
   // 1. Data Sanitization & Schema Validation
   const validatedRecord = {
     compositeId: compileCompositeKey(rawRecord),
@@ -173,7 +173,7 @@ export function insertAndIndexNodeRecord(rawRecord) {
  * High-Velocity Optimized Query Engine
  * Instantly bypasses linear table scans using our composite memory references
  */
-export function fetchNodeByHandleIndex(targetHandle) {
+function fetchNodeByHandleIndex(targetHandle) {
   const targetKey = localizedIndices.byNodeHandle.get(targetHandle);
   if (!targetKey) {
     return { error: 'ERR_NODE_NOT_FOUND_IN_LATTICE', integrityCheck: 0.0 };
@@ -188,7 +188,7 @@ export function fetchNodeByHandleIndex(targetHandle) {
  * Self-Healing Database Maintenance Run
  * Drops corrupted records or unauthorized trackers exhibiting low integrity metrics (< 0.5)
  */
-export function executeDatabaseMaintenanceSweep() {
+function executeDatabaseMaintenanceSweep() {
   let entriesEvicted = 0;
 
   for (const [key, record] of centralizedMemoryGrid.entries()) {
@@ -234,4 +234,3 @@ if (typeof window !== 'undefined') {
     getAllRecords: () => Array.from(centralizedMemoryGrid.values())
   };
 }
-
