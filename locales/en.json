@@ -151,5 +151,9 @@
     "commit_matrix_lbl": "[1.4M_MESH_ACTIVE_COMMIT_MATRIX]",
     "stream_lbl": "[LIVE_CONTRIBUTOR_STREAM]",
     "status_lbl": "TOOL_STATUS: ONLINE"
+  },
+  "app20": {
+    "title": "[APP_20] THE WEAVE EXCHANGE & SINTER-LOOM",
+    "tab_btn": "🛍️ 20: WEAVE-EXCHANGE"
   }
 }
