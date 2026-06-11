@@ -122,7 +122,19 @@ const LOCAL_TRANSLATIONS = {
   "app18.gaze_lbl": "EYE-GAZE DEFLECTION VECTOR",
   "app18.hrv_lbl": "HEART-RATE VARIABILITY INTEGRATOR",
   "app18.hr_lbl": "PHYSIOLOGICAL PULSE RATE",
-  "app18.system_msg": "[SYSTEM]: WebHID and WebBluetooth telemetry active. Micro-deflections adjust our sub-harmonic carriers natively."
+  "app18.system_msg": "[SYSTEM]: WebHID and WebBluetooth telemetry active. Micro-deflections adjust our sub-harmonic carriers natively.",
+
+  // Missing App 19 Sinter Grid fallback translations
+  "app19.title": "[APP_19] PRODUCTION CODE SINTER-PACKER & CONTRIBUTOR GRID",
+  "app19.tab_btn": "💻 19: SINTER-GRID",
+  "app19.handle_placeholder": "INPUT_CONTRIBUTOR_HANDLE",
+  "app19.execute_btn": "[EXECUTE_SINTER_PACK]",
+  "app19.executing_btn": "[SINTERING_OVERHEAD...]",
+  "app19.raw_placeholder": "// Paste raw JavaScript / React component code strings here to pack...",
+  "app19.output_placeholder": "/* Sintered Output payload will display here natively with zero entropy parameters... */",
+  "app19.commit_matrix_lbl": "[1.4M_MESH_ACTIVE_COMMIT_MATRIX]",
+  "app19.stream_lbl": "[LIVE_CONTRIBUTOR_STREAM]",
+  "app19.status_lbl": "TOOL_STATUS: ONLINE"
 };
 
 function getPredefinedTranslation(key) {
@@ -290,6 +302,11 @@ function bootstrapApp() {
     initBioResonanceApp();
   } catch (err) {
     console.error("App 18 (Bio-Resonance) fault:", err);
+  }
+  try {
+    initSinterPackGridApp();
+  } catch (err) {
+    console.error("App 19 (Sinter-Grid) fault:", err);
   }
 };
 
