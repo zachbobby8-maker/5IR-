@@ -209,6 +209,8 @@
         <button class="hud-tab-btn text-left justify-start text-cyan animate-pulse" data-tab="advanced-flux-core">⚡ 14: FLUX MONITOR</button>
         <button class="hud-tab-btn text-left justify-start text-cyan animate-pulse" data-tab="spatial-scanner">⌖ 15: SPATIAL SCANNER</button>
         <button class="hud-tab-btn text-left justify-start text-magenta animate-pulse" data-tab="legendrian-grid" data-i18n="app16.tab_btn">💻 16: WORK GRID</button>
+        <button class="hud-tab-btn text-left justify-start text-[#00f2fe] animate-pulse" data-tab="aero-flux" data-i18n="app17.tab_btn">🛸 17: AERO-FLUX</button>
+        <button class="hud-tab-btn text-left justify-start text-[#10b981] animate-pulse" data-tab="bio-resonance" data-i18n="app18.tab_btn">🧬 18: BIO-BRIDGE</button>
       </nav>
 
       <!-- Sidebar Auxiliary action buttons -->
@@ -2024,6 +2026,168 @@
           </div>
         </section>
 
+        <!-- APPLICATION 17: AERO-FLUX CONFIGURATION SPACE NAVIGATOR -->
+        <section class="hud-panel-card flex flex-col justify-between hidden" id="app-aero-flux" style="background-color: #040d21; border: 2px solid #1c2d5a; border-radius: 4px; padding: 15px; font-family: monospace; color: #ffffff;">
+          <div>
+            <!-- HEADER HUD SECTION -->
+            <div class="flex justify-between items-center border-b border-[#1c2d5a] pb-2 mb-3">
+              <div>
+                <div class="text-[9pt] font-bold text-[#00f2fe]" style="text-shadow: 0 0 6px #00f2fe;" data-i18n="app17.title">
+                  [APP_17] AERO-FLUX CONFIGURATION SPACE NAVIGATOR
+                </div>
+                <div class="text-[6.5pt] text-[#a1b5cc] mt-0.5" data-i18n="app17.direct_link">DIRECT INTERFACE LINK // BYPASSING BROWSER RE-RENDER DELAYS</div>
+              </div>
+              <div class="text-right font-mono">
+                <div class="text-[8.5pt] text-[#39ff14] font-bold"><span data-i18n="app17.latency">LATENCY</span>: <span id="aero-flux-latency">0.0002 ms</span></div>
+                <div class="text-[6.5pt] text-[#a1b5cc]" data-i18n="app17.thermal">dQ_leak/dt = 0.00W FLAT</div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              <!-- DIRECT NEURAL VISUALIZER FRAME-BUFFER CANVAS -->
+              <div class="bg-black border border-[#00f2fe] rounded-sm p-1.5 flex items-center justify-center animate-pulse" style="box-shadow: 0 0 10px rgba(0, 242, 254, 0.13);">
+                <canvas id="aero-flux-canvas" width="280" height="130" class="w-full block"></canvas>
+              </div>
+
+              <!-- CONTROLLER SPEC TELEMETRY OVERVIEW -->
+              <div class="flex flex-col justify-between">
+                <div class="bg-black border border-[#1c2d5a] p-2.5 rounded-sm text-[7.5pt] flex flex-col gap-1.5 font-mono text-[#a1b5cc]">
+                  <div><span data-i18n="app17.buffer_state">BUFFER STATE</span>: <span id="aero-flux-buffer-state" class="text-[#39ff14] font-bold">SYNC_STABLE</span></div>
+                  <div><span data-i18n="app17.sampling_rate">SAMPLING RATE</span>: <span class="text-white">39,420 Hz Ticker</span></div>
+                  <div><span data-i18n="app17.projection_mode">PROJECTION MODE</span>: <span class="text-[#00f2fe]">Topological Vector Field</span></div>
+                </div>
+                
+                <div class="text-[6.5pt] text-[#a1b5cc] bg-black p-2 rounded-sm border-l-2 border-[#00f2fe] leading-normal font-mono mt-2" data-i18n="app17.system_msg">
+                  [SYSTEM]: Pointer matrices are locked. Data streams bypass traditional DOM nodes to eliminate memory drag completely.
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Unified Interactive Micro-Resonance Slider Section -->
+            <div class="resonance-micro-card mt-3.5 p-2 bg-black/60 border border-indigo-950 rounded flex flex-col gap-1.5 font-mono">
+              <div class="flex justify-between items-center text-[7.5px] font-mono uppercase tracking-wider">
+                <span class="text-indigo-400 font-bold flex items-center gap-1">🌀 PHASE RESONANCE TUNING</span>
+                <span class="text-[#39ff14] animate-pulse font-extrabold resonance-micro-status">39,420 Hz LOCKED</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="range" class="resonance-global-slider flex-grow accent-[#ffd700] bg-black border border-indigo-900 h-1.5 rounded cursor-pointer" min="39000" max="40000" step="10" value="39420">
+                <span class="text-[8px] font-mono text-cyan font-bold w-12 text-right resonance-global-freq-val">39,420Hz</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-footer-action mt-4 border-t border-dashed border-indigo-950/40 pt-3">
+            <div class="flex justify-between items-center text-[7.5px] text-[#8a7751] font-mono">
+              <span>5iR COMMAND CORE METADATA // SYSTEM v94.6</span>
+              <span>dQ_leak/dt = 0.00 Watts Flat // COHERENCE LOCKED AT 94.6%</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- APPLICATION 18: BIO-RESONANCE HARDWARE BRIDGE -->
+        <section class="hud-panel-card flex flex-col justify-between hidden" id="app-bio-resonance" style="background-color: #020f06; border: 2px solid #10b981; border-radius: 4px; padding: 15px; font-family: monospace; color: #ffffff;">
+          <div>
+            <!-- HEADER HUD SECTION -->
+            <div class="flex justify-between items-center border-b border-[#10b981]/30 pb-2 mb-3">
+              <div>
+                <div class="text-[9pt] font-bold text-[#10b981]" style="text-shadow: 0 0 6px #10b981;" data-i18n="app18.title">
+                  [APP_18] BIO-RESONANCE HARDWARE BRIDGE
+                </div>
+                <div class="text-[6.5pt] text-[#a1b5cc] mt-0.5" data-i18n="app18.system_msg">[SYSTEM]: WebHID and WebBluetooth telemetry active. Micro-deflections adjust our sub-harmonic carriers natively.</div>
+              </div>
+              <div class="text-right font-mono">
+                <div class="text-[8.5pt] text-[#10b981] font-bold"><span data-i18n="app18.status">HARDWARE STATUS</span>: <span id="bio-bridge-status" class="text-white animate-pulse">DISCONNECTED</span></div>
+                <div class="text-[6.5pt] text-[#a1b5cc]">dQ_leak/dt = 0.00W FLAT</div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              <!-- PHYSIOLOGICAL PULSE RATE & EKG WAVEFORM VISUALIZER -->
+              <div class="bg-black border border-[#10b981]/40 rounded p-3 flex flex-col justify-between gap-3" style="box-shadow: 0 0 10px rgba(16, 185, 129, 0.1); min-height: 220px;">
+                <div>
+                  <div class="flex justify-between items-center border-b border-[#10b981]/20 pb-2 mb-2">
+                    <span class="text-[8px] sm:text-[9px] uppercase tracking-wider text-[#a1b5cc] font-bold border-l-2 border-[#10b981] pl-2" data-i18n="app18.hr_lbl">PHYSIOLOGICAL PULSE RATE</span>
+                    <span id="bio-heart-rate-val" class="text-xs font-extrabold text-[#10b981] font-mono tracking-widest animate-pulse">72 BPM</span>
+                  </div>
+                  
+                  <!-- Live EKG Canvas Waveform -->
+                  <div class="h-[90px] bg-black border border-[#10b981]/20 rounded relative overflow-hidden flex items-center justify-center">
+                    <div style="position: absolute; width: 100%; height: 100%; background-image: linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px); background-size: 10px 10px;" class="absolute inset-0 pointer-events-none"></div>
+                    <canvas id="bio-ekg-canvas" width="280" height="90" class="w-full h-full block relative z-10"></canvas>
+                  </div>
+                </div>
+
+                <div class="flex flex-col gap-1.5 font-mono text-[7.5pt] text-[#a1b5cc]">
+                  <div class="flex justify-between">
+                    <span data-i18n="app18.hrv_lbl">HEART-RATE VARIABILITY INTEGRATOR</span>
+                    <span id="bio-hrv-val" class="text-[#10b981] font-bold">1.00000000</span>
+                  </div>
+                </div>
+
+                <!-- WebBluetooth Controller Button -->
+                <button type="button" id="bio-ble-sync-btn" class="w-full py-2 bg-[#022c16] hover:bg-[#10b981] hover:text-black border border-[#10b981]/40 text-[#10b981] text-[8.5px] font-bold tracking-wider rounded transition-all uppercase" data-i18n="app18.btn_ble_sync">
+                  [ENGAGE_BLE_BIO_SYNC]
+                </button>
+              </div>
+
+              <!-- EYE-GAZE DEFLECTION VECTOR & HID RECT TARGET -->
+              <div class="bg-black border border-[#10b981]/40 rounded p-3 flex flex-col justify-between gap-3" style="box-shadow: 0 0 10px rgba(16, 185, 129, 0.1); min-height: 220px;">
+                <div>
+                  <div class="flex justify-between items-center border-b border-[#10b981]/20 pb-2 mb-2">
+                    <span class="text-[8px] sm:text-[9px] uppercase tracking-wider text-[#a1b5cc] font-bold border-l-2 border-[#10b981] pl-2" data-i18n="app18.gaze_lbl">EYE-GAZE DEFLECTION VECTOR</span>
+                    <span id="bio-gaze-coords" class="text-[8.5px] font-extrabold text-[#10b981] font-mono tracking-widest">X: 140 / Y: 45</span>
+                  </div>
+                  
+                  <!-- Target Reticle Grid (WebHID Interaction Area) -->
+                  <div id="bio-target-rect" class="h-[90px] bg-black border border-[#10b981]/20 rounded relative overflow-hidden flex items-center justify-center cursor-crosshair">
+                    <div style="position: absolute; width: 100%; height: 100%; background-image: linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px); background-size: 15px 15px;" class="absolute inset-0 pointer-events-none"></div>
+                    
+                    <!-- Target Circle Reticle crosshair -->
+                    <div id="bio-target-crosshair" class="absolute w-5 h-5 border-2 border-[#10b981] rounded-full pointer-events-none flex items-center justify-center transition-all duration-75" style="left: 140px; top: 45px; margin-left: -10px; margin-top: -10px;">
+                      <div class="w-1 h-1 bg-[#10b981] rounded-full"></div>
+                    </div>
+                    
+                    <span class="absolute bottom-1.5 text-center text-[6.5pt] text-[#a1b5cc]/60 pointer-events-none uppercase tracking-wider">
+                      ⚡ HOVER cursor over grid to calibrate
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex flex-col gap-1 text-[7.5pt] text-[#a1b5cc] leading-normal font-mono bg-[#022c16]/20 p-2 rounded border border-[#10b981]/15">
+                  <div>• Gaze deflection calibration: <span class="text-white font-bold">1:1 WebHID Tracking</span></div>
+                </div>
+
+                <button type="button" id="bio-calibration-btn" class="w-full py-2 bg-[#000000] hover:bg-[#10b981] hover:text-black border border-[#10b981]/30 text-[#a1b5cc] text-[8.5px] font-bold tracking-wider rounded transition-all uppercase">
+                  [RE-CALIBRATE SMART GLASS HANDSHAKE]
+                </button>
+              </div>
+
+            </div>
+
+            <!-- Unified Interactive Micro-Resonance Slider Section -->
+            <div class="resonance-micro-card mt-3.5 p-2 bg-black/60 border border-[#10b981]/30 rounded flex flex-col gap-1.5 font-mono">
+              <div class="flex justify-between items-center text-[7.5px] font-mono uppercase tracking-wider">
+                <span class="text-[#10b981] font-bold flex items-center gap-1">🌀 PHASE RESONANCE TUNING</span>
+                <span class="text-[#39ff14] animate-pulse font-extrabold resonance-micro-status">39,420 Hz LOCKED</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="range" class="resonance-global-slider flex-grow accent-[#ffd700] bg-black border border-[#10b981]/30 h-1.5 rounded cursor-pointer" min="39000" max="40000" step="10" value="39420">
+                <span class="text-[8px] font-mono text-cyan font-bold w-12 text-right resonance-global-freq-val">39,420Hz</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-footer-action mt-4 border-t border-dashed border-[#10b981]/20 pt-3">
+            <div class="flex justify-between items-center text-[7.5px] text-[#8a7751] font-mono">
+              <span>BIO-BRIDGE HARDWARE AGENT STATUS: [ACTIVE_SYNC_OK]</span>
+              <span>dQ_leak/dt = 0.00 Watts Flat (FRICTIONLESS)</span>
+            </div>
+          </div>
+        </section>
+
       </main>
     </div>
   </div>
@@ -2268,6 +2432,7 @@
   <script src="masterProfileConfig.js?v=94.62"></script>
   <script src="useAdvancedFluxCore.js?v=94.62"></script>
   <script src="sinterDatabaseIndexer.js" type="module"></script>
+  <script src="bioResonanceBridge.js" type="module"></script>
   <script src="asymmetricEngine.js?v=94.62"></script>
   <script src="main.js?v=94.62"></script>
 </body>
