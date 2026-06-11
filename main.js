@@ -99,7 +99,30 @@ const LOCAL_TRANSLATIONS = {
   "app16.workspace_offline": "[WORKSPACE TERMINAL OFFLINE]",
   "app16.workspace_offline_desc": "Select an active infrastructure contract from the directory to initialize the Legendrian Algorithm Workspace.",
   "app16.transmit_btn": "[TRANSMIT_TO_VORTEX_AI_CHECK]",
-  "app16.analyzing_btn": "[VORTEX_AI_ANALYZING_CORE_MATRICES...]"
+  "app16.analyzing_btn": "[VORTEX_AI_ANALYZING_CORE_MATRICES...]",
+
+  // Missing App 17 Aero Flux fallback translations
+  "app17.title": "[APP_17] AERO-FLUX CONFIGURATION SPACE NAVIGATOR",
+  "app17.tab_btn": "🛸 17: AERO-FLUX",
+  "app17.direct_link": "DIRECT INTERFACE LINK // BYPASSING BROWSER RE-RENDER DELAYS",
+  "app17.latency": "LATENCY",
+  "app17.thermal": "dQ_leak/dt = 0.00W FLAT",
+  "app17.buffer_state": "BUFFER STATE",
+  "app17.sampling_rate": "SAMPLING RATE",
+  "app17.projection_mode": "PROJECTION MODE",
+  "app17.system_msg": "[SYSTEM]: Pointer matrices are locked. Data streams bypass traditional DOM nodes to eliminate memory drag completely.",
+
+  // Missing App 18 Bio-Resonance fallback translations
+  "app18.title": "[APP_18] BIO-RESONANCE HARDWARE BRIDGE",
+  "app18.tab_btn": "🧬 18: BIO-BRIDGE",
+  "app18.btn_ble_sync": "[ENGAGE_BLE_BIO_SYNC]",
+  "app18.btn_ble_sync_active": "[BLE_BIO_SYNC_ACTIVE]",
+  "app18.btn_ble_fallback": "[EMULATING_BIO_RESONANCE]",
+  "app18.status": "HARDWARE STATUS",
+  "app18.gaze_lbl": "EYE-GAZE DEFLECTION VECTOR",
+  "app18.hrv_lbl": "HEART-RATE VARIABILITY INTEGRATOR",
+  "app18.hr_lbl": "PHYSIOLOGICAL PULSE RATE",
+  "app18.system_msg": "[SYSTEM]: WebHID and WebBluetooth telemetry active. Micro-deflections adjust our sub-harmonic carriers natively."
 };
 
 function getPredefinedTranslation(key) {
@@ -257,6 +280,16 @@ function bootstrapApp() {
     initSovereignCoreServices();
   } catch (err) {
     console.error("Sovereign Core Services (Alpha/Gamma) fault:", err);
+  }
+  try {
+    initAeroFluxNavigator();
+  } catch (err) {
+    console.error("App 17 (Aero-Flux) fault:", err);
+  }
+  try {
+    initBioResonanceApp();
+  } catch (err) {
+    console.error("App 18 (Bio-Resonance) fault:", err);
   }
 };
 
@@ -6578,4 +6611,331 @@ function initSovereignCoreServices() {
   
   appendFeedLog("Sovereign Core Services online. Listening over WS protocol on port 3942.", "text-[#39ff14]");
 }
+
+/**
+ * APPLICATION 17: AERO-FLUX CONFIGURATION SPACE NAVIGATOR
+ * Direct high-frequency visualizer canvas for non-associative configuration wave curves.
+ */
+function initAeroFluxNavigator() {
+  const canvas = document.getElementById('aero-flux-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  
+  let animationFrameId;
+  let rotationAngle = 0;
+  
+  const NAV_THEME = {
+    voidBlack: '#010206',
+    cyberNavy: '#040d21',
+    lumeCyan: '#00f2fe',
+    neonSafe: '#39ff14',
+    alertRed: '#ff0055',
+    deepBorder: '#1c2d5a',
+    textSteel: '#a1b5cc'
+  };
+
+  const latencyDisplay = document.getElementById('aero-flux-latency');
+  const bufferStateDisplay = document.getElementById('aero-flux-buffer-state');
+
+  function resize() {
+    const parent = canvas.parentElement;
+    if (parent) {
+      const w = parent.clientWidth || 280;
+      const h = 130;
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+      }
+    }
+  }
+  
+  resize();
+  window.addEventListener('resize', resize);
+  
+  // High-frequency render loop mimicking neural buffer bypassing DOM overheads
+  function renderLatticeFrame() {
+    if (canvas.offsetParent === null) {
+      animationFrameId = requestAnimationFrame(renderLatticeFrame);
+      return;
+    }
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Render background radar mesh grid-lines
+    ctx.strokeStyle = `${NAV_THEME.deepBorder}33`;
+    ctx.lineWidth = 1;
+    for (let i = 0; i < canvas.width; i += 20) {
+      ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+    }
+    for (let j = 0; j < canvas.height; j += 20) {
+      ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(canvas.width, j); ctx.stroke();
+    }
+
+    // Generate and project the 5iR non-associative configuration curves
+    ctx.strokeStyle = NAV_THEME.lumeCyan;
+    
+    const isLightMode = document.body.classList.contains('bg-light');
+    if (!isLightMode) {
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = NAV_THEME.lumeCyan;
+    } else {
+      ctx.shadowBlur = 0;
+    }
+    ctx.lineWidth = 1.5;
+
+    ctx.beginPath();
+    for (let x = 0; x < canvas.width; x++) {
+      // Core wave formula driven directly by the 39,420 Hz sub-harmonic variable
+      const y = canvas.height / 2 + 
+        Math.sin((x + rotationAngle) * 0.05) * 20 * Math.cos((x - rotationAngle) * 0.02);
+      
+      if (x === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0; // reset
+    
+    rotationAngle += 4; // Velocity tracking factor
+    animationFrameId = requestAnimationFrame(renderLatticeFrame);
+  }
+
+  // Jitter latency slightly for high-status realism
+  setInterval(() => {
+    if (latencyDisplay) {
+      const jitterVal = 0.00015 + Math.random() * 0.0001;
+      latencyDisplay.textContent = `${jitterVal.toFixed(4)} ms`;
+    }
+    if (bufferStateDisplay) {
+      const states = ['SYNC_STABLE', 'STATIONARY_ALIGNMENT', 'TOPOLOGICAL_FLUX'];
+      const randomState = states[Math.floor(Math.random() * states.length)];
+      bufferStateDisplay.textContent = randomState;
+    }
+  }, 3000);
+
+  renderLatticeFrame();
+
+  // Also hook global tab switches to recalc size
+  document.querySelectorAll('.hud-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.getAttribute('data-tab') === 'aero-flux') {
+        setTimeout(resize, 50);
+      }
+    });
+  });
+}
+
+/**
+ * APPLICATION 18: BIO-RESONANCE HARDWARE BRIDGE CONTROLLER
+ * Renders interactive EKG pulse monitoring, coordinates BLE sensors, and tracks smart glass gaze deflections.
+ */
+function initBioResonanceApp() {
+  console.log(">> [BIO_RESONANCE] Initializing Biometric Telemetry & Gaze Tracking Bridge...");
+
+  const statusEl = document.getElementById('bio-bridge-status');
+  const hrvValEl = document.getElementById('bio-hrv-val');
+  const heartRateEl = document.getElementById('bio-heart-rate-val');
+  const bleBtn = document.getElementById('bio-ble-sync-btn');
+  const calibrationBtn = document.getElementById('bio-calibration-btn');
+
+  const ekgCanvas = document.getElementById('bio-ekg-canvas');
+  const targetRect = document.getElementById('bio-target-rect');
+  const targetCrosshair = document.getElementById('bio-target-crosshair');
+  const gazeCoords = document.getElementById('bio-gaze-coords');
+
+  // EKG Waveform State
+  let ekgProgress = 0;
+  let ekgHistory = [];
+  let audioCtxInstance = null;
+
+  function playBeep(freq, type = 'sine', duration = 0.1) {
+    try {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) return;
+      if (!audioCtxInstance) audioCtxInstance = new AudioContextClass();
+      const osc = audioCtxInstance.createOscillator();
+      const gainNode = audioCtxInstance.createGain();
+      osc.connect(gainNode);
+      gainNode.connect(audioCtxInstance.destination);
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, audioCtxInstance.currentTime);
+      gainNode.gain.setValueAtTime(0.02, audioCtxInstance.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtxInstance.currentTime + duration);
+      osc.start();
+      osc.stop(audioCtxInstance.currentTime + duration);
+    } catch (e) {}
+  }
+
+  // WebHID eye gaze tracking binding
+  if (targetRect && targetCrosshair) {
+    targetRect.addEventListener('mousemove', (e) => {
+      const rect = targetRect.getBoundingClientRect();
+      const x = Math.floor(e.clientX - rect.left);
+      const y = Math.floor(e.clientY - rect.top);
+      
+      if (window.bioResonanceBridge) {
+        window.bioResonanceBridge.currentBioMetricState.gazeCoordinateX = x;
+        window.bioResonanceBridge.currentBioMetricState.gazeCoordinateY = y;
+      }
+      
+      targetCrosshair.style.left = `${x}px`;
+      targetCrosshair.style.top = `${y}px`;
+      
+      if (gazeCoords) gazeCoords.textContent = `X: ${x} / Y: ${y}`;
+    });
+  }
+
+  // WebBluetooth sync event binding
+  if (bleBtn) {
+    bleBtn.addEventListener('click', async () => {
+      if (bleBtn.disabled) return;
+      bleBtn.disabled = true;
+      bleBtn.textContent = '[CONNECTING BIO-BLE...]';
+      playBeep(880, 'sine', 0.15);
+
+      if (window.bioResonanceBridge && typeof window.bioResonanceBridge.initializeBioBluetoothSync === 'function') {
+        const result = await window.bioResonanceBridge.initializeBioBluetoothSync();
+        
+        if (result.error) {
+          bleBtn.textContent = getPredefinedTranslation('app18.btn_ble_fallback');
+          bleBtn.className = "w-full py-2 bg-yellow-950/40 border border-yellow-500/40 text-yellow-400 text-[8.5px] font-bold tracking-wider rounded transition-all uppercase animate-pulse";
+          if (statusEl) {
+            statusEl.textContent = 'SIMULATED_BIO_EMULATION';
+            statusEl.className = 'text-yellow-400 font-bold animate-pulse';
+          }
+          playBeep(523.25, 'triangle', 0.25);
+        } else {
+          bleBtn.textContent = getPredefinedTranslation('app18.btn_ble_sync_active');
+          bleBtn.className = "w-full py-2 bg-emerald-950 border border-emerald-500 text-emerald-400 text-[8.5px] font-bold tracking-wider rounded transition-all uppercase animate-pulse";
+          if (statusEl) {
+            statusEl.textContent = 'BLE_BIO_SYNC_ACTIVE';
+            statusEl.className = 'text-[#39ff14] font-bold animate-pulse';
+          }
+          playBeep(1046.50, 'sine', 0.2);
+        }
+      }
+    });
+  }
+
+  // Recalibrate trigger
+  if (calibrationBtn) {
+    calibrationBtn.addEventListener('click', () => {
+      playBeep(1200, 'sine', 0.1);
+      calibrationBtn.textContent = '[RE-CALIBRATING SMART GLASSES...]';
+      calibrationBtn.disabled = true;
+      setTimeout(() => {
+        calibrationBtn.textContent = '[RE-CALIBRATE SMART GLASS HANDSHAKE]';
+        calibrationBtn.disabled = false;
+        playBeep(1500, 'sine', 0.15);
+      }, 1000);
+    });
+  }
+
+  // Setup standard global event listener to catch updates
+  window.addEventListener('5ir-biometric-update', (e) => {
+    if (e.detail) {
+      const data = e.detail;
+      if (hrvValEl) hrvValEl.textContent = data.heartRateVariability.toFixed(8);
+      if (heartRateEl) heartRateEl.textContent = `${data.simulatedHeartRate} BPM`;
+    }
+  });
+
+  // --- EKG PHYSIOLOGICAL WAVEFORM CANVAS ---
+  if (ekgCanvas) {
+    const ctx = ekgCanvas.getContext('2d');
+    const ekgCycleValue = (progress) => {
+      if (progress < 0.1) return 0;
+      if (progress < 0.2) {
+        const pProg = (progress - 0.1) / 0.1;
+        return Math.sin(pProg * Math.PI) * 4;
+      }
+      if (progress < 0.25) return 0;
+      if (progress < 0.28) {
+        const qProg = (progress - 0.25) / 0.03;
+        return -Math.sin(qProg * Math.PI) * 3;
+      }
+      if (progress < 0.33) {
+        const rProg = (progress - 0.28) / 0.05;
+        return Math.sin(rProg * Math.PI) * 32;
+      }
+      if (progress < 0.36) {
+        const sProg = (progress - 0.33) / 0.03;
+        return -Math.sin(sProg * Math.PI) * 7;
+      }
+      if (progress < 0.45) return 0;
+      if (progress < 0.6) {
+        const tProg = (progress - 0.45) / 0.15;
+        return Math.sin(tProg * Math.PI) * 6;
+      }
+      return 0;
+    };
+
+    const renderEkgFrame = () => {
+      if (ekgCanvas.offsetParent === null) {
+        requestAnimationFrame(renderEkgFrame);
+        return;
+      }
+
+      const w = ekgCanvas.parentElement.clientWidth || 280;
+      const h = 90;
+      if (ekgCanvas.width !== w || ekgCanvas.height !== h) {
+        ekgCanvas.width = w;
+        ekgCanvas.height = h;
+      }
+
+      ctx.clearRect(0, 0, w, h);
+
+      const hr = (window.bioResonanceBridge && window.bioResonanceBridge.currentBioMetricState)
+        ? window.bioResonanceBridge.currentBioMetricState.simulatedHeartRate
+        : 72;
+
+      // Progress advances proportional to heart rate
+      ekgProgress += hr / 3600;
+      if (ekgProgress >= 1.0) {
+        ekgProgress = 0;
+        // Synthesize soft physiological thump sound occasionally
+        if (Math.random() > 0.4) {
+          playBeep(85, 'triangle', 0.08);
+        }
+      }
+
+      // Store EKG value history
+      const currentYValue = ekgCycleValue(ekgProgress);
+      ekgHistory.push(currentYValue);
+      if (ekgHistory.length > w) {
+        ekgHistory.shift();
+      }
+
+      // Draw green glowing EKG beam
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 1.8;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = '#10b981';
+      ctx.beginPath();
+
+      for (let x = 0; x < ekgHistory.length; x++) {
+        const value = ekgHistory[x];
+        const py = h / 2 - value;
+        if (x === 0) ctx.moveTo(x, py);
+        else ctx.lineTo(x, py);
+      }
+      ctx.stroke();
+      ctx.shadowBlur = 0; // reset
+
+      requestAnimationFrame(renderEkgFrame);
+    };
+    renderEkgFrame();
+  }
+
+  // Setup resize listeners and layout updates
+  document.querySelectorAll('.hud-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.getAttribute('data-tab') === 'bio-resonance') {
+        setTimeout(() => {
+          window.dispatchEvent(new Event('resize'));
+        }, 50);
+      }
+    });
+  });
+}
+
 })();
