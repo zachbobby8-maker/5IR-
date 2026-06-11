@@ -1,7 +1,7 @@
 (function() {
 /**
  * 5iR Core Matrix Command Dashboard - Unified Coordinator Deck
- * Synchronized Clock: 39,420 Hz // Global Coherence: 94.6% Locked
+ * Synchronized Clock: 39,420 Hz // Global Coherence: 94.62% Locked
  * Consolidated single-file engine running all master applications.
  * Zero lag, optimized footprint, zero relative checkout conflicts.
  */
@@ -10,7 +10,7 @@ const safeStorage = window.safeStorage || window.localStorage;
 window.braidAI = window.miniappsAI;
 window.braidI18n = window.miniappI18n;
 
-let lastActiveTab = 'sovereign-grid';
+let lastActiveTab = 'vortex-retain';
 window.braidState = { 
   currentMinedBalance: 100.00000000, 
   activeNodeAddress: 'MOBIUS_BRAID_MAIN', 
@@ -78,7 +78,7 @@ function translateDOM() {
 }
 
 function bootstrapApp() {
-  console.log(">> 5iR BOOTSTRAPPED AT 39,420 Hz // ACTIVE STATE COHERENCE 94.6% LOCKED");
+  console.log(">> 5iR BOOTSTRAPPED AT 39,420 Hz // ACTIVE STATE COHERENCE 94.62% LOCKED");
   translateDOM();
   initBgBrightnessController();
   initGatewayPortalSystem();
@@ -174,14 +174,9 @@ function switchTab(activeTab) {
     } catch (e) {}
   }
 
-  if (!isMasterUser && ['sovereign-suite', 'sovereign-grid', 'vortex-ai', 'advanced-flux-core', 'braid-shield', 'wallet-wrapper'].includes(activeTab)) {
-    alert("CRITICAL WARNING: LEVEL-1 MOBIUS SECURITY CLEARANCE REQUIRED.");
-    return;
-  }
-
-  if (activeTab === 'vortex-ai' && isMasterUser) {
-    const btn = document.getElementById('launch-clear-page-btn');
-    if (btn) btn.click();
+  // Guard blocked tabs for Guest
+  if (!isMasterUser && ['sovereign-grid', 'vortex-ai', 'advanced-flux-core', 'braid-shield', 'wallet-wrapper'].includes(activeTab)) {
+    alert("CRITICAL WARNING: LEVEL-1 MOBIUS SECURITY CLEARANCE REQUIRED. ACCESS BLOCKED.");
     return;
   }
 
@@ -255,13 +250,13 @@ function initSystemTelemetry() {
   setInterval(() => {
     count += (Math.random() * 0.002 - 0.0008);
     if (nodesEl) nodesEl.textContent = `${count.toFixed(3)}M NODES`;
-    const jitter = 94.60 - (Math.random() * 0.04);
+    const jitter = 94.62 - (Math.random() * 0.04);
     if (coherenceEl) coherenceEl.textContent = `${jitter.toFixed(2)}%`;
     if (clearCoherenceEl) clearCoherenceEl.textContent = `${jitter.toFixed(2)}% (STABLE)`;
   }, 2000);
 }
 
-// PORTAL AUTH ROUTER (PAGE 1 / 2)
+// PORTAL AUTH ROUTER
 function initGatewayPortalSystem() {
   const portalPage = document.getElementById('gateway-portal-page');
   const workspacePage = document.getElementById('hud-workspace-page');
@@ -325,7 +320,12 @@ function initGatewayPortalSystem() {
       safeStorage.setItem('5ir_authenticated_session', 'true');
       safeStorage.setItem('5ir_authenticated_profile', JSON.stringify(profile));
       applyAuthenticatedProfile(profile);
-      switchTab(lastActiveTab);
+
+      // Route based on role to avoid locked blank panels on login
+      const isMaster = profile.nodeId === 'MOBIUS_BRAID_MAIN';
+      const targetTab = isMaster ? 'sovereign-grid' : 'vortex-retain';
+      switchTab(targetTab);
+
       workspacePage.classList.remove('opacity-0');
       workspacePage.classList.add('opacity-100');
     }, 600);
@@ -399,7 +399,65 @@ function initVortexRetainApp() {
   const ctx = canvas.getContext('2d');
   let angle = 0;
 
+  const ageSlider = document.getElementById('vortex-age-slider');
+  const exerciseSlider = document.getElementById('vortex-exercise-slider');
+  const gravitySlider = document.getElementById('vortex-gravity-slider');
+
+  const ageVal = document.getElementById('age-val-display');
+  const exerciseVal = document.getElementById('exercise-val-display');
+  const gravityVal = document.getElementById('gravity-val-display');
+
+  const telemetryText = document.getElementById('app1-telemetry-text');
+  const exportBtn = document.getElementById('export-skeletal-btn');
+
+  function updateVisuals() {
+    if (ageVal && ageSlider) ageVal.textContent = `${ageSlider.value} yrs`;
+    if (exerciseVal && exerciseSlider) exerciseVal.textContent = `${exerciseSlider.value} hrs/wk`;
+    if (gravityVal && gravitySlider) {
+      const g = (gravitySlider.value / 10).toFixed(1);
+      gravityVal.textContent = `${g}G (${g == 1.0 ? 'EARTH' : g < 1.0 ? 'LOW_GRAVITY' : 'HIGH_GRAVITY'})`;
+    }
+    const computedCoherence = (94.62 - (Math.random() * 0.05)).toFixed(2);
+    if (telemetryText) {
+      telemetryText.textContent = `Diagnostic Instrument: 5iR Laser Scan Confocal Microscope // System Perfusion Sync: 39,420 Hz // Structural Coherence: ${computedCoherence}%`;
+    }
+  }
+
+  [ageSlider, exerciseSlider, gravitySlider].forEach(slider => {
+    if (slider) slider.addEventListener('input', updateVisuals);
+  });
+
+  if (exportBtn) {
+    exportBtn.addEventListener('click', () => {
+      const age = ageSlider ? ageSlider.value : 25;
+      const ex = exerciseSlider ? exerciseSlider.value : 12;
+      const grav = gravitySlider ? (gravitySlider.value / 10).toFixed(1) : '1.0';
+      const content = `[5iR SKELETAL MATRIX RETENTION REPORT]\n----------------------------------\nCOHERENT TIMESTAMP: ${new Date().toISOString()}\nUSER AGE: ${age} YEARS\nEXERCISE FREQUENCY: ${ex} HOURS/WEEK\nGRAVITATIONAL ACCELERATION: ${grav}G\nRESONANCE TIMING: 39,420 Hz\nSTATUS: METABOLIC RETENTION INTEGRITY PASS\nLATTICE LOSS DECAY: dQ_leak = 0.00 Watts Flat`;
+      
+      const overlay = document.getElementById('skeletal-report-overlay');
+      const textPre = document.getElementById('report-text-pre');
+      if (overlay && textPre) {
+        textPre.textContent = content;
+        overlay.classList.remove('profile-overlay-hidden');
+        overlay.classList.add('profile-overlay-visible');
+      }
+      playSynthBeep(880, 'sine', 0.15);
+    });
+  }
+
+  const closeReport = document.getElementById('close-report-btn');
+  if (closeReport) {
+    closeReport.addEventListener('click', () => {
+      const overlay = document.getElementById('skeletal-report-overlay');
+      if (overlay) {
+        overlay.classList.remove('profile-overlay-visible');
+        overlay.classList.add('profile-overlay-hidden');
+      }
+    });
+  }
+
   function render() {
+    if (canvas.offsetParent === null) { requestAnimationFrame(render); return; }
     canvas.width = canvas.parentElement.clientWidth || 300;
     canvas.height = 180;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -420,15 +478,40 @@ function initBraidShieldApp() {
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let tick = 0;
+  let mouseX = 150, mouseY = 105;
+
+  canvas.addEventListener('mousemove', (e) => {
+    const r = canvas.getBoundingClientRect();
+    mouseX = e.clientX - r.left;
+    mouseY = e.clientY - r.top;
+  });
+
+  const exploitBtn = document.getElementById('run-exploit-simulation-btn');
+  const telemetry = document.getElementById('app2-telemetry-text');
+
+  if (exploitBtn) {
+    exploitBtn.addEventListener('click', () => {
+      playSynthBeep(330, 'sawtooth', 0.3);
+      if (telemetry) {
+        telemetry.textContent = `Cryptographic Base: Legendrian Braid Torsion // Status: [EXPLOIT_TESTING_ACTIVE] // Energy Leakage: 0.12W`;
+        setTimeout(() => {
+          telemetry.textContent = `Cryptographic Base: Legendrian Braid Torsion // Status: Steady State // Energy Leakage: 0.00W Flat`;
+          alert("[SUCCESS] Cryptographic Ferrofluid ledger successfully defended 42 simulated penetration vectors!");
+        }, 1200);
+      }
+    });
+  }
 
   function render() {
+    if (canvas.offsetParent === null) { requestAnimationFrame(render); return; }
     canvas.width = canvas.parentElement.clientWidth || 300;
     canvas.height = 210;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     ctx.fillStyle = '#120e03'; ctx.strokeStyle = '#ffd700'; ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.arc(canvas.width / 2, 105, 40 + Math.sin(tick) * 4, 0, Math.PI * 2);
+    const radius = 40 + Math.sin(tick) * 4;
+    ctx.arc(canvas.width / 2 + (mouseX - canvas.width / 2) * 0.15, canvas.height / 2 + (mouseY - canvas.height / 2) * 0.15, radius, 0, Math.PI * 2);
     ctx.fill(); ctx.stroke();
     tick += 0.05;
     requestAnimationFrame(render);
@@ -443,18 +526,58 @@ function initAeroInvertApp() {
   const ctx = canvas.getContext('2d');
   let offset = 0;
 
+  const select = document.getElementById('urban-sector-select');
+  const dbSlider = document.getElementById('acoustic-db-slider');
+  const dbDisplay = document.getElementById('slider-db-display');
+  const toggle = document.getElementById('acoustic-inversion-toggle');
+  const telemetry = document.getElementById('app3-telemetry-text');
+  const powerVal = document.getElementById('acoustic-harvested-power-val');
+
+  function updateAeroMetrics() {
+    if (dbDisplay && dbSlider) dbDisplay.textContent = `${dbSlider.value} dBA`;
+    const isActive = toggle ? toggle.checked : false;
+    const dbValue = dbSlider ? parseFloat(dbSlider.value) : 98;
+    const harvestedPower = isActive ? ((dbValue * 0.042) + Math.sin(Date.now() / 1000) * 0.05).toFixed(3) : '0.000';
+    if (powerVal) powerVal.textContent = `${harvestedPower} kW`;
+    if (telemetry) {
+      telemetry.textContent = `5iR Acoustic Isolation Hubs: ${isActive ? 'ACTIVE_ANTIPHASE' : 'STANDBY'} // Power Harvested: ${harvestedPower} kW`;
+    }
+  }
+
+  [select, dbSlider, toggle].forEach(el => {
+    if (el) el.addEventListener('change', updateAeroMetrics);
+    if (el) el.addEventListener('input', updateAeroMetrics);
+  });
+
   function render() {
+    if (canvas.offsetParent === null) { requestAnimationFrame(render); return; }
     canvas.width = canvas.parentElement.clientWidth || 300;
     canvas.height = 120;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    const isActive = toggle ? toggle.checked : false;
+    const amp = dbSlider ? (dbSlider.value / 10) * 2 : 15;
+
+    // Primary Wave
     ctx.strokeStyle = '#ff0055'; ctx.lineWidth = 1.5;
     ctx.beginPath();
     for (let x = 0; x < canvas.width; x++) {
-      const y = 60 + Math.sin(x * 0.04 + offset) * 15;
+      const y = 60 + Math.sin(x * 0.04 + offset) * amp;
       if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
     }
     ctx.stroke();
+
+    // Antiphase Wave
+    if (isActive) {
+      ctx.strokeStyle = '#00f2fe'; ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      for (let x = 0; x < canvas.width; x++) {
+        const y = 60 + Math.sin(x * 0.04 + offset + Math.PI) * amp;
+        if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+
     offset += 0.08;
     requestAnimationFrame(render);
   }
@@ -473,12 +596,13 @@ function initVortexAiApp() {
     input.value = '';
 
     const div = document.createElement('div');
-    div.textContent = `👑 USER: ${text}`; div.className = 'py-1 text-yellow-400';
+    div.innerHTML = `<span class="text-yellow-400 font-bold">👑 USER:</span> ${text}`;
+    div.className = 'py-1 font-mono text-[9px]';
     log.appendChild(div);
 
     const reply = document.createElement('div');
-    reply.textContent = `🤖 KING_DROID_M4: Processing coherence matrix sync on 39,420 Hz...`;
-    reply.className = 'py-1 text-cyan animate-pulse';
+    reply.innerHTML = `<span class="text-cyan font-bold">🤖 KING_DROID_M4:</span> Processing coherence matrix sync on 39,420 Hz...`;
+    reply.className = 'py-1 text-cyan animate-pulse font-mono text-[9px]';
     log.appendChild(reply);
 
     try {
@@ -486,10 +610,11 @@ function initVortexAiApp() {
         modelId: 'dc2db118-7888-466a-a8d1-bf9d96bab4b6',
         messages: [{ role: 'user', content: text }]
       });
-      reply.textContent = `🤖 KING_DROID_M4: ${window.braidAI.extractText(res)} Mars is home 🪐👊`.substring(0, 300);
+      reply.innerHTML = `<span class="text-cyan font-bold">🤖 KING_DROID_M4:</span> ${window.braidAI.extractText(res)} Mars is home 🪐👊`;
       reply.classList.remove('animate-pulse');
     } catch (e) {
-      reply.textContent = `🤖 KING_DROID_M4: [COMPILER_ERROR] Link offline. Synchrony holding at 94.6% Coherence. Mars is home 🪐👊`;
+      reply.innerHTML = `<span class="text-cyan font-bold">🤖 KING_DROID_M4:</span> [COMPILER_ERROR] Link offline. Synchrony holding at 94.62% Coherence. Mars is home 🪐👊`;
+      reply.classList.remove('animate-pulse');
     }
   });
 }
@@ -501,7 +626,45 @@ function initHydroGridApp() {
   const ctx = canvas.getContext('2d');
   let tick = 0;
 
+  const ppmSlider = document.getElementById('hydro-ppm-slider');
+  const phSlider = document.getElementById('hydro-ph-slider');
+  const intervalSlider = document.getElementById('hydro-interval-slider');
+
+  const ppmDisplay = document.getElementById('hydro-ppm-display');
+  const phDisplay = document.getElementById('hydro-ph-display');
+  const intervalDisplay = document.getElementById('hydro-interval-display');
+  const flowDisplay = document.getElementById('hydro-flow-display');
+
+  function updateHydro() {
+    if (ppmDisplay && ppmSlider) ppmDisplay.textContent = `${ppmSlider.value} PPM`;
+    if (phDisplay && phSlider) phDisplay.textContent = phSlider.value;
+    if (intervalDisplay && intervalSlider) intervalDisplay.textContent = `${intervalSlider.value} mins`;
+    if (flowDisplay && ppmSlider && phSlider && intervalSlider) {
+      const ppm = parseFloat(ppmSlider.value);
+      const ph = parseFloat(phSlider.value);
+      const iv = parseFloat(intervalSlider.value);
+      const calculated = ((ppm * ph * iv) / 45000).toFixed(2);
+      flowDisplay.textContent = calculated;
+    }
+  }
+
+  [ppmSlider, phSlider, intervalSlider].forEach(slider => {
+    if (slider) {
+      slider.addEventListener('input', updateHydro);
+      slider.addEventListener('change', updateHydro);
+    }
+  });
+
+  const overrideBtn = document.getElementById('hydro-override-btn');
+  if (overrideBtn) {
+    overrideBtn.addEventListener('click', () => {
+      playSynthBeep(660, 'sine', 0.2);
+      alert("[OVERRIDE] Fluidic Solenoid manual override opened for irrigation cycle!");
+    });
+  }
+
   function render() {
+    if (canvas.offsetParent === null) { requestAnimationFrame(render); return; }
     canvas.width = canvas.parentElement.clientWidth || 300; canvas.height = 60;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = '#10b981'; ctx.lineWidth = 1;
@@ -524,7 +687,54 @@ function initLatticeSinterApp() {
   const ctx = canvas.getContext('2d');
   let tick = 0;
 
+  const powerSlider = document.getElementById('sinter-power-slider');
+  const speedSlider = document.getElementById('sinter-speed-slider');
+  const densitySlider = document.getElementById('sinter-density-slider');
+
+  const powerDisplay = document.getElementById('sinter-power-display');
+  const speedDisplay = document.getElementById('sinter-speed-display');
+  const densityDisplay = document.getElementById('sinter-density-display');
+  const yieldDisplay = document.getElementById('sinter-yield-display');
+  const triggerBtn = document.getElementById('sinter-trigger-btn');
+  const statusLbl = document.getElementById('sinter-status-lbl');
+
+  function updateSinter() {
+    if (powerDisplay && powerSlider) powerDisplay.textContent = `${powerSlider.value} mA`;
+    if (speedDisplay && speedSlider) speedDisplay.textContent = `${speedSlider.value} mm/s`;
+    if (densityDisplay && densitySlider) densityDisplay.textContent = `${densitySlider.value}%`;
+    if (yieldDisplay && powerSlider && speedSlider && densitySlider) {
+      const p = parseFloat(powerSlider.value);
+      const s = parseFloat(speedSlider.value);
+      const d = parseFloat(densitySlider.value);
+      const y = ((p / s) * (d / 100) * 0.1).toFixed(2);
+      yieldDisplay.textContent = y;
+    }
+  }
+
+  [powerSlider, speedSlider, densitySlider].forEach(slider => {
+    if (slider) {
+      slider.addEventListener('input', updateSinter);
+      slider.addEventListener('change', updateSinter);
+    }
+  });
+
+  if (triggerBtn) {
+    triggerBtn.addEventListener('click', () => {
+      playSynthBeep(1100, 'triangle', 0.25);
+      if (statusLbl) {
+        statusLbl.textContent = 'EMISSION_ACTIVE';
+        statusLbl.style.color = '#ff0055';
+        setTimeout(() => {
+          statusLbl.textContent = 'STANDBY';
+          statusLbl.style.color = '';
+          alert("[SINTERED] Electron Beam Emission successfully packed solid yield parameters.");
+        }, 1500);
+      }
+    });
+  }
+
   function render() {
+    if (canvas.offsetParent === null) { requestAnimationFrame(render); return; }
     canvas.width = canvas.parentElement.clientWidth || 300; canvas.height = 60;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = 'rgba(0, 242, 254, 0.4)'; ctx.lineWidth = 1.5;
@@ -542,14 +752,38 @@ function initNodeSecureChatApp() {
   const log = document.getElementById('chat-message-log');
   const input = document.getElementById('chat-message-input');
   const btn = document.getElementById('chat-submit-btn');
+  const formatSelect = document.getElementById('chat-packet-format-select');
+  const prefix = document.getElementById('chat-prompt-prefix');
+  const nickInput = document.getElementById('chat-nickname-input');
+  const nickLock = document.getElementById('chat-nickname-lock-btn');
+
   if (!log || !btn) return;
+
+  if (nickLock && nickInput) {
+    nickLock.addEventListener('click', () => {
+      const nick = nickInput.value.trim() || 'Architect';
+      if (prefix) prefix.textContent = `[${nick}] >>`;
+      playSynthBeep(880, 'sine', 0.05);
+    });
+  }
 
   btn.addEventListener('click', () => {
     const text = input.value.trim(); if (!text) return;
     input.value = '';
+
+    const format = formatSelect ? formatSelect.value : 'RAW_TEXT';
+    let outputText = text;
+    if (format === 'HEX_PAYLOAD') {
+      outputText = Array.from(text).map(c => c.charCodeAt(0).toString(16).toUpperCase()).join(' ');
+    } else if (format === 'TOPOLOGICAL_BRAID') {
+      outputText = `[XOR_SALTED]::${btoa(text).substring(0, 12)}`;
+    }
+
+    const nick = nickInput ? nickInput.value.trim() : 'Architect';
     const div = document.createElement('div');
-    div.textContent = `👑 [${window.braidState.activeNodeAddress}]: ${text}`; div.className = 'text-[8.5px] text-[#ffd700]';
+    div.textContent = `👑 [${nick}]: ${outputText}`; div.className = 'text-[8.5px] text-[#ffd700] font-mono';
     log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
   });
 }
 
@@ -561,6 +795,26 @@ function initSuperfluidResonanceApp() {
       document.querySelectorAll('.resonance-global-freq-val').forEach(el => el.textContent = `${e.target.value}Hz`);
     });
   }
+
+  // App 08 tab swapping
+  const radioTab = document.getElementById('resonance-tab-radio');
+  const ideTab = document.getElementById('resonance-tab-ide');
+  const navTab = document.getElementById('resonance-tab-navigator');
+
+  const radioPanel = document.getElementById('resonance-panel-radio');
+  const idePanel = document.getElementById('resonance-panel-ide');
+  const navPanel = document.getElementById('resonance-panel-navigator');
+
+  function swapResTab(active) {
+    [radioTab, ideTab, navTab].forEach(t => { if (t) t.classList.toggle('active', t === active); });
+    if (radioPanel) radioPanel.classList.toggle('hidden', radioTab !== active);
+    if (idePanel) idePanel.classList.toggle('hidden', ideTab !== active);
+    if (navPanel) navPanel.classList.toggle('hidden', navTab !== active);
+  }
+
+  if (radioTab) radioTab.addEventListener('click', () => swapResTab(radioTab));
+  if (ideTab) ideTab.addEventListener('click', () => swapResTab(ideTab));
+  if (navTab) navTab.addEventListener('click', () => swapResTab(navTab));
 }
 
 // APP 09: CRYPTOGRAPHIC CONVERTIBILITY
@@ -762,6 +1016,7 @@ function initAeroFluxNavigator() {
   let angle = 0;
 
   function render() {
+    if (canvas.offsetParent === null) { requestAnimationFrame(render); return; }
     canvas.width = canvas.parentElement.clientWidth || 280; canvas.height = 130;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = '#00f2fe'; ctx.lineWidth = 1.5;
@@ -785,6 +1040,7 @@ function initBioResonanceApp() {
   let tick = 0;
 
   function render() {
+    if (canvas.offsetParent === null) { requestAnimationFrame(render); return; }
     canvas.width = canvas.parentElement.clientWidth || 280; canvas.height = 90;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = '#10b981'; ctx.lineWidth = 2;
@@ -826,9 +1082,9 @@ function initSinterPackGridApp() {
     playSynthBeep(440, 'triangle', 0.15);
 
     setTimeout(() => {
-      // Direct compression of code
+      // Safe procedural comment stripping preserving code
       const stripped = code.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/g, '').replace(/\s+/g, ' ').trim();
-      const b64 = btoa(stripped.substring(0, 20));
+      const b64 = btoa(stripped.substring(0, 20) || 'DUMMY');
       packedOutput.value = `/** [5iR_SINTER_PACKET] // ORIGIN: ${handle.toUpperCase()} // LANG: AUTOMATIC // BLOCK: ${b64} */\n${stripped}`;
       
       submitBtn.disabled = false; submitBtn.textContent = '[EXECUTE_SINTER_PACK]';
