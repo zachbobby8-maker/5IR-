@@ -194,14 +194,14 @@
         <span class="text-[8px] text-gray-500 font-bold uppercase tracking-wider px-2 mb-1 block">Sovereign App Modules</span>
         <button class="hud-tab-btn active text-left justify-start text-[#ffd700] font-extrabold animate-pulse" data-tab="sovereign-grid">👑 00: SOVEREIGN GRID</button>
         <button class="hud-tab-btn text-left justify-start" data-tab="vortex-retain">🦴 01: VORTEX-RETAIN</button>
-        <button class="hud-tab-btn text-left justify-start" data-tab="braid-shield">🛡️ 02: BRAID-SHIELD</button>
+        <button id="tab-btn-braid-shield" class="hud-tab-btn text-left justify-start hidden" data-tab="braid-shield">🛡️ 02: BRAID-SHIELD</button>
         <button class="hud-tab-btn text-left justify-start" data-tab="aero-invert">⚡ 03: AERO-INVERT</button>
         <button class="hud-tab-btn text-left justify-start text-cyan font-extrabold bg-cyan-950/20 border-cyan-500/30 animate-pulse" data-tab="vortex-ai">👑 04: VORTEX-AI DECK</button>
         <button class="hud-tab-btn text-left justify-start" data-tab="hydro-grid">🌿 05: HYDRO-GRID</button>
         <button class="hud-tab-btn text-left justify-start text-cyan animate-pulse" data-tab="lattice-sinter">🔬 06: LATTICE-SINTER</button>
         <button class="hud-tab-btn text-left justify-start text-[#5850ec] animate-pulse" data-tab="node-chat">💬 07: NODE-CHAT</button>
         <button class="hud-tab-btn text-left justify-start text-cyan animate-pulse" data-tab="superfluid-resonance">🌀 08: RESONANCE</button>
-        <button class="hud-tab-btn text-left justify-start text-[#39ff14]" data-tab="wallet-wrapper">🔑 09: WALLET-WRAPPER</button>
+        <button id="tab-btn-wallet-wrapper" class="hud-tab-btn text-left justify-start text-[#39ff14] hidden" data-tab="wallet-wrapper">🔑 09: WALLET-WRAPPER</button>
         <button class="hud-tab-btn text-left justify-start text-[#9cb3c9]" data-tab="legal-compliance">⚖️ 10: LEGAL-COMPLIANCE</button>
         <button class="hud-tab-btn text-left justify-start text-[#ffd700]" data-tab="deployer-hub">📦 DEPLOYER HUB</button>
         <button class="hud-tab-btn text-left justify-start text-[#9cb3c9]" data-tab="asset-inventory">💼 12: ASSET-INVENTORY</button>
@@ -212,6 +212,7 @@
         <button class="hud-tab-btn text-left justify-start text-[#00f2fe] animate-pulse" data-tab="aero-flux" data-i18n="app17.tab_btn">🛸 17: AERO-FLUX</button>
         <button class="hud-tab-btn text-left justify-start text-[#10b981] animate-pulse" data-tab="bio-resonance" data-i18n="app18.tab_btn">🧬 18: BIO-BRIDGE</button>
         <button class="hud-tab-btn text-left justify-start text-[#00f2fe] animate-pulse" data-tab="sinter-grid" data-i18n="app19.tab_btn">💻 19: SINTER-GRID</button>
+        <button class="hud-tab-btn text-left justify-start text-[#00f2fe] animate-pulse" data-tab="weave-exchange">🛍️ 20: WEAVE-EXCHANGE</button>
       </nav>
 
       <!-- Sidebar Auxiliary action buttons -->
@@ -968,9 +969,6 @@
                 <button type="button" id="resonance-tab-radio" class="resonance-tab-btn active px-3.5 py-2 font-mono text-[8.5pt] font-bold uppercase text-[#00f2fe] border-b-2 border-[#00f2fe] bg-transparent outline-none cursor-pointer">
                   RADIO
                 </button>
-                <button type="button" id="resonance-tab-wallet" class="resonance-tab-btn px-3.5 py-2 font-mono text-[8.5pt] font-bold uppercase text-[#9cb3c9] border-none bg-transparent outline-none cursor-pointer">
-                  WALLET
-                </button>
                 <button type="button" id="resonance-tab-ide" class="resonance-tab-btn px-3.5 py-2 font-mono text-[8.5pt] font-bold uppercase text-[#9cb3c9] border-none bg-transparent outline-none cursor-pointer">
                   IDE
                 </button>
@@ -1059,21 +1057,7 @@
                   </div>
                 </div>
 
-                <!-- PANEL 2: WALLET -->
-                <div id="resonance-panel-wallet" class="resonance-panel hidden grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div class="bg-black border border-[#1c2d5a] p-3 rounded flex flex-col justify-center">
-                    <div class="text-[7.5pt] text-[#9cb3c9] font-mono uppercase">SUPERFLUID FLOW VELOCITY RATE</div>
-                    <div class="text-lg md:text-xl font-extrabold text-cyan font-mono my-1 flex items-baseline gap-1">
-                      +<span id="resonance-flow-rate-display">0.00039420</span> <span class="text-[9pt] text-[#9cb3c9]">$BRAID/sec</span>
-                    </div>
-                    <input type="range" id="resonance-flow-rate-slider" min="0.0001" max="0.001" step="0.0001" value="0.00039420" class="w-full accent-cyan bg-black border border-indigo-900 h-2 rounded cursor-pointer mt-1">
-                  </div>
-                  <div class="bg-black border border-[#1c2d5a] p-3 rounded flex flex-col justify-center text-center">
-                    <div class="text-[7.5pt] text-[#9cb3c9] font-mono uppercase">CURRENT INTEGRITY VALUE BALANCE</div>
-                    <div id="resonance-wallet-balance-display" class="text-xl md:text-2xl font-extrabold text-[#39ff14] font-mono my-1">100.00000000</div>
-                    <div class="text-[7pt] text-[#9cb3c9] font-mono">Zero-Entropy wealth allocation index metric flat.</div>
-                  </div>
-                </div>
+                <!-- REMOVED WALLET FROM SUPERFLUID RESONANCE -->
 
                 <!-- PANEL 3: IDE -->
                 <div id="resonance-panel-ide" class="resonance-panel hidden grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -2273,6 +2257,144 @@
             </div>
           </div>
         </section>
+
+        <!-- APPLICATION 20: THE WEAVE EXCHANGE & SINTER-LOOM -->
+        <section class="hud-panel-card flex flex-col justify-between hidden" id="app-weave-exchange" style="background-color: #040d21; border: 2px solid #1c2d5a; border-radius: 4px; padding: 15px; font-family: monospace; color: #ffffff; box-shadow: 0 0 12px rgba(28, 45, 90, 0.44);">
+          <div>
+            <!-- EXCHANGE MASTER HUD TELEMETRY HEADER -->
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1c2d5a; padding-bottom: 10px; margin-bottom: 15px;">
+              <div>
+                <div style="font-size: 10pt; font-weight: bold; color: #00f2fe; text-shadow: 0 0 6px #00f2fe;">
+                  [APP_20] THE WEAVE EXCHANGE & SINTER-LOOM
+                </div>
+                <div style="font-size: 6.5pt; color: #a1b5cc; margin-top: 2px;">FIAT INTEGRATION PLATFORM // SINTER-LOOM WORKSPACE v94.6</div>
+              </div>
+              <div style="background-color: #000000; border: 1px solid #1c2d5a; padding: 4px 12px; border-radius: 3px; text-align: right;">
+                <div style="font-size: 6pt; color: #a1b5cc;">SYNTROPY ACCOUNT VAL</div>
+                <div id="weave-credits-display" style="font-size: 11pt; font-weight: bold; color: #39ff14;">$2500.00 USD</div>
+              </div>
+            </div>
+
+            <!-- THE 4-STEP SINTER-LOOM WORKSPACE PIPELINE -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+              
+              <!-- COLUMN 1: STEP 1 & STEP 2 (ACTIVATION & LOOM TEMPLATE) -->
+              <div class="flex flex-col gap-3 p-3 bg-black/60 border border-[#1c2d5a] rounded-sm">
+                <!-- STEP 1: LATTICE PRESENCE SETUP -->
+                <div id="weave-step-1-box" class="border-b border-[#1c2d5a]/50 pb-3">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="text-[8pt] text-[#a1b5cc] font-bold">[STEP 1: LATTICE ACTIVATION]</span>
+                    <span id="weave-presence-badge" class="text-[7pt] font-extrabold uppercase font-mono text-gray-500">SILENT_NODE</span>
+                  </div>
+                  <button id="weave-heartbeat-btn" type="button" class="w-full py-2.5 bg-indigo-950 hover:bg-[#5850ec] hover:text-white border border-indigo-500 text-cyan text-[9px] font-bold rounded transition-all uppercase">
+                    [INITIALIZE CRYPTOGRAPHIC HEARTBEAT]
+                  </button>
+                </div>
+
+                <!-- STEP 2: ENTERING THE LOOM WORKSPACE -->
+                <div id="weave-step-2-box" class="pt-1">
+                  <span class="text-[8pt] text-[#a1b5cc] font-bold block mb-2">[STEP 2: ENTER THE LOOM]</span>
+                  <label class="block text-[7pt] text-gray-500 mb-1">SELECT WEAVE STRUCTURE TEMPLATE:</label>
+                  <select id="weave-template-select" disabled class="w-full bg-black border border-indigo-900 text-[10px] text-cyan p-2 rounded outline-none font-mono cursor-pointer">
+                    <option value="NONE">-- Select Blueprint Template --</option>
+                    <option value="MICRO_ECONOMY">Micro-Economy Braid Blueprint</option>
+                    <option value="SMART_CONTRACT">Smart Contract Braid Blueprint</option>
+                    <option value="SUPPLY_CHAIN">Supply Chain Braid Blueprint</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- COLUMN 2: STEP 3 (SPINNING THREADS WORKSPACE GRID) -->
+              <div id="weave-step-3-box" class="flex flex-col justify-between p-3 bg-black/60 border border-[#1c2d5a] rounded-sm">
+                <div>
+                  <div class="flex justify-between items-center mb-1.5">
+                    <span class="text-[8pt] text-[#a1b5cc] font-bold">[STEP 3: SPINNING THREADS]</span>
+                    <button id="reset-loom-workspace" type="button" class="text-[7pt] text-[#ff0055] border border-red-950 hover:border-[#ff0055] px-1 bg-black rounded font-mono uppercase transition-all">[RESET]</button>
+                  </div>
+                  
+                  <!-- Loom Workspace Canvas representation -->
+                  <div class="bg-black border border-indigo-950 rounded h-[120px] relative overflow-hidden flex items-center justify-center mb-2">
+                    <canvas id="sinter-loom-workspace-canvas" class="w-full h-full block cursor-pointer"></canvas>
+                  </div>
+                  
+                  <!-- Live Stitching Shunts Controls -->
+                  <div class="grid grid-cols-3 gap-1.5 text-[7pt] font-mono mb-2">
+                    <button id="stitch-market-prices" disabled class="py-1 bg-black border border-indigo-900 text-gray-500 rounded transition-all font-bold uppercase truncate" title="Market Price Feeds">+MKT</button>
+                    <button id="stitch-weather-sensors" disabled class="py-1 bg-black border border-indigo-900 text-gray-500 rounded transition-all font-bold uppercase truncate" title="Meteorological Sensors">+WTH</button>
+                    <button id="stitch-legacy-feed" disabled class="py-1 bg-black border border-indigo-900 text-gray-500 rounded transition-all font-bold uppercase truncate text-[#ff0055]" title="Corrupt Legacy Ad-Network [DRIFT]">+LEGACY</button>
+                  </div>
+                </div>
+
+                <!-- Live Calibration Metrics -->
+                <div class="grid grid-cols-3 gap-1.5 border-t border-[#1c2d5a]/40 pt-2 text-[7pt] font-mono text-center">
+                  <div class="bg-black/50 p-1 border border-[#1c2d5a]/40 rounded-sm">
+                    <span class="text-gray-500 block text-[6.5pt]">RESONANCE</span>
+                    <span id="weave-resonance-val" class="font-extrabold text-cyan">0.000</span>
+                  </div>
+                  <div class="bg-black/50 p-1 border border-[#1c2d5a]/40 rounded-sm">
+                    <span class="text-gray-500 block text-[6.5pt]">EFFICIENCY</span>
+                    <span id="weave-efficiency-val" class="font-extrabold text-[#39ff14]">0%</span>
+                  </div>
+                  <div class="bg-black/50 p-1 border border-[#1c2d5a]/40 rounded-sm">
+                    <span class="text-gray-500 block text-[6.5pt]">STATUS</span>
+                    <span id="weave-status-val" class="font-extrabold text-white truncate block">SILENT</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- COLUMN 3: STEP 4 (PULSE & PROFIT MANIFOLD DEPLOYER) -->
+              <div class="flex flex-col justify-between p-3 bg-black/60 border border-[#1c2d5a] rounded-sm">
+                <div>
+                  <span class="text-[8pt] text-[#a1b5cc] font-bold block mb-2">[STEP 4: PULSE & PROFIT]</span>
+                  <p class="text-[7.5pt] text-gray-400 leading-normal m-0 mb-3">
+                    Once your Weave template is selected and data input threads are stitched cleanly, transmit your configuration parameters to go live on the active Manifold loop.
+                  </p>
+                </div>
+                <button id="weave-pulse-manifold-btn" disabled type="button" class="w-full py-2.5 bg-zinc-800 text-gray-500 font-mono text-[9px] font-bold cursor-not-allowed rounded uppercase border border-zinc-700">
+                  [PULSE WEAVE TO LIVE EXCHANGE]
+                </button>
+              </div>
+
+            </div>
+
+            <!-- RIGHT COMPARTMENT: ACTIVE MARKETPLACE LIQUIDITY VORTEX -->
+            <div class="bg-black/40 border border-[#1c2d5a] p-3.5 rounded-sm">
+              <div class="flex justify-between items-center border-b border-[#1c2d5a]/40 pb-2 mb-2">
+                <span class="text-[8pt] text-[#00f2fe] font-bold font-mono tracking-widest">[THE WEAVE EXCHANGE LIQUIDITY VORTEX MARKET]</span>
+                <span class="text-[6.5pt] text-gray-500 font-mono uppercase">Vortex Dynamic Pricing: 5s Tick Auto-Refresh</span>
+              </div>
+              
+              <div id="weave-market-list" class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[160px] overflow-y-auto pr-1">
+                <!-- Rendered dynamically via weaveExchange.js -->
+              </div>
+            </div>
+
+            <!-- SYSTEM FEEDBACK RUNTIME FOOTER CONSOLE -->
+            <div id="weave-console-log" style="margin-top: 12px; font-size: 7pt; color: #a1b5cc; background-color: #000000; padding: 6px 10px; border-radius: 2px; border-left: 2px solid #00f2fe;">
+              >> [LOOM]: Simply link your mobile ID or biometric signature to activate your presence on the Lattice.
+            </div>
+
+            <!-- Unified Interactive Micro-Resonance Slider Section -->
+            <div class="resonance-micro-card mt-5 p-2 bg-black/60 border border-indigo-950 rounded flex flex-col gap-1.5">
+              <div class="flex justify-between items-center text-[7.5px] font-mono uppercase tracking-wider">
+                <span class="text-indigo-400 font-bold flex items-center gap-1">🌀 PHASE RESONANCE TUNING</span>
+                <span class="text-[#39ff14] animate-pulse font-extrabold resonance-micro-status">39,420 Hz LOCKED</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input type="range" class="resonance-global-slider flex-grow accent-[#ffd700] bg-black border border-indigo-900 h-1.5 rounded cursor-pointer" min="39000" max="40000" step="10" value="39420">
+                <span class="text-[8px] font-mono text-cyan font-bold w-12 text-right resonance-global-freq-val">39,420Hz</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANEL FOOTER -->
+          <div class="panel-footer-action mt-4 border-t border-dashed border-[#1c2d5a] pt-3">
+            <div class="flex justify-between items-center text-[7.5px] text-[#8a7751]">
+              <span>5iR WEAVE EXCHANGE // COHERENT INTEGRITY v94.6</span>
+              <span>dQ_leak/dt = 0.00 Watts Flat // SYSTEM COHERENCE 94.6%</span>
+            </div>
+          </div>
+        </section>
  
       </main>
     </div>
@@ -2517,9 +2639,10 @@
 
   <script src="masterProfileConfig.js?v=94.62"></script>
   <script src="useAdvancedFluxCore.js?v=94.62"></script>
-  <script src="sinterDatabaseIndexer.js" type="module"></script>
-  <script src="bioResonanceBridge.js" type="module"></script>
+  <script src="sinterDatabaseIndexer.js"></script>
+  <script src="bioResonanceBridge.js"></script>
   <script src="sinterpackgrid.js"></script>
+  <script src="weaveExchange.js"></script>
   <script src="asymmetricEngine.js?v=94.62"></script>
   <script src="main.js?v=94.62"></script>
 </body>
