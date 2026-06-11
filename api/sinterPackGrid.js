@@ -117,8 +117,8 @@ async function initSinterPackGridApp() {
 
   // 3. Load saved history from AI storage
   try {
-    if (window.braidAI && window.braidAI.storage) {
-      const cached = await window.braidAI.storage.getItem('sinter_contribution_history');
+    if (window.miniappsAI && window.miniappsAI.storage) {
+      const cached = await window.miniappsAI.storage.getItem('sinter_contribution_history');
       if (cached) {
         contributionHistory = JSON.parse(cached);
       }
@@ -149,8 +149,8 @@ async function initSinterPackGridApp() {
 
       // Transition to processing state
       submitBtn.disabled = true;
-      submitBtn.textContent = window.braidI18n?.t('app19.executing_btn') || '[SINTERING...]';
-      packedOutputArea.value = '// Sintering active codebase stream at 39,420 Hz... Purging comments and extra spacing.';
+      submitBtn.textContent = window.miniappI18n?.t('app19.executing_btn') || '[SINTERING...]';
+      packedOutputArea.value = '/* Sintering active codebase stream at 39,420 Hz... Purging comments and extra spacing. */';
       
       playSynthBeep(440, 'triangle', 0.15);
 
@@ -218,7 +218,7 @@ async function initSinterPackGridApp() {
           packedOutputArea.value = packedPayload;
           
           submitBtn.disabled = false;
-          submitBtn.textContent = window.braidI18n?.t('app19.execute_btn') || '[EXECUTE_SINTER_PACK]';
+          submitBtn.textContent = window.miniappI18n?.t('app19.execute_btn') || '[EXECUTE_SINTER_PACK]';
 
           // Prepend history log
           contributionHistory.unshift({
@@ -246,14 +246,14 @@ async function initSinterPackGridApp() {
 
           // Persist to storage
           try {
-            if (window.braidAI && window.braidAI.storage) {
-              window.braidAI.storage.setItem('sinter_contribution_history', JSON.stringify(contributionHistory));
+            if (window.miniappsAI && window.miniappsAI.storage) {
+              window.miniappsAI.storage.setItem('sinter_contribution_history', JSON.stringify(contributionHistory));
             }
           } catch(e) {}
 
         } catch (err) {
           submitBtn.disabled = false;
-          submitBtn.textContent = window.braidI18n?.t('app19.execute_btn') || '[EXECUTE_SINTER_PACK]';
+          submitBtn.textContent = window.miniappI18n?.t('app19.execute_btn') || '[EXECUTE_SINTER_PACK]';
           packedOutputArea.value = `/* [SINTER_OS_EXCEPTION_HANDLED] // CODE STRENGTH RESTORED */\n${rawCode}`;
           playSynthBeep(180, 'sawtooth', 0.35);
         }
