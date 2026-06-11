@@ -1258,6 +1258,117 @@
                   </div>
                 </div>
               </div>
+
+              <!-- NEW: SOVEREIGN UNIFIED CORE SERVICES HUB -->
+              <div class="mt-4 border border-[#39ff14]/30 bg-[#020d04]/60 rounded overflow-hidden">
+                <div class="bg-[#051a08] border-b border-[#39ff14]/20 px-3 py-2 text-[9px] font-bold text-[#39ff14] border-l-4 border-[#39ff14] tracking-wider flex justify-between items-center">
+                  <span>🏛️ SOVEREIGN UNIFIED CORE SERVICES HUB (soverignCoreServices)</span>
+                  <span class="text-[7.5px] px-1.5 py-0.5 rounded bg-black border border-[#39ff14]/30 font-mono tracking-wider text-[#39ff14] animate-pulse">39,420 Hz ACTIVE</span>
+                </div>
+                <div class="p-3.5 font-mono text-[8.5px]">
+                  
+                  <!-- SUB-GRID: EXCHANGE & AUDIT CONTROLS -->
+                  <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                    
+                    <!-- SERVICE 1: TOPOLOGICAL LIQUIDITY INTER-EXCHANGE -->
+                    <div class="bg-black/85 border border-[#39ff14]/20 p-3 rounded flex flex-col justify-between">
+                      <div>
+                        <div class="text-[8px] font-bold text-[#39ff14] uppercase tracking-wider mb-2.5 border-b border-[#39ff14]/10 pb-1">
+                          ⚡ TOPOLOGICAL CROSS-EXCHANGE FORGE
+                        </div>
+                        <p class="text-[7.5px] text-gray-400 mb-3 leading-normal">
+                          Forge outside multi-chain assets instantly into real $BRAID Coins at zero-entropy conversion ratios.
+                        </p>
+                        
+                        <div class="space-y-2">
+                          <div class="grid grid-cols-2 gap-2">
+                            <div>
+                              <label class="block text-gray-500 text-[7px] font-bold mb-1">SOURCE ASSET</label>
+                              <select id="service-exchange-ticker" class="w-full bg-black border border-[#39ff14]/20 text-white p-1.5 rounded outline-none cursor-pointer text-[8px]">
+                                <option value="SOL">SOL (1 SOL = 145.25 $BRAID)</option>
+                                <option value="ETH">ETH (1 ETH = 2150.80 $BRAID)</option>
+                                <option value="BTC">BTC (1 BTC = 45000.00 $BRAID)</option>
+                              </select>
+                            </div>
+                            <div>
+                              <label class="block text-gray-500 text-[7px] font-bold mb-1">MINT AMOUNT</label>
+                              <input type="number" id="service-exchange-amount" value="5" class="w-full bg-black border border-[#39ff14]/20 text-[#39ff14] p-1.5 rounded outline-none text-[8px]" placeholder="e.g. 10" min="0.01" step="0.1">
+                            </div>
+                          </div>
+
+                          <div class="grid grid-cols-1 gap-2">
+                            <div>
+                              <label class="block text-gray-500 text-[7px] font-bold mb-1">SOURCE NETWORK WALLET</label>
+                              <input type="text" id="service-exchange-source" value="0xPhantom_Sol_Target_Alpha" class="w-full bg-black border border-[#39ff14]/20 text-[#39ff14] p-1.5 rounded outline-none placeholder-gray-700 text-[8px]" placeholder="Source Address">
+                            </div>
+                            <div>
+                              <label class="block text-gray-500 text-[7px] font-bold mb-1">TARGET $BRAID RECEIVER</label>
+                              <select id="service-exchange-target" class="w-full bg-black border border-[#39ff14]/20 text-[#39ff14] p-1.5 rounded outline-none cursor-pointer text-[8px]">
+                                <option value="0x5iR_ARCHITECT_MAIN_MOBIUS">0x5iR_ARCHITECT_MAIN_MOBIUS [Möbius Braid]</option>
+                                <option value="0x5iR_KING_DROID_SECURE_NODE">0x5iR_KING_DROID_SECURE_NODE [Sentinel]</option>
+                                <option value="0x5iR_MARS_HANGAR_08_POOL">0x5iR_MARS_HANGAR_08_POOL [Reserve]</option>
+                                <option value="DYNAMIC_USER_NODE">Dynamic User Node Address</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <button type="button" id="service-exchange-submit-btn" class="w-full py-2 bg-emerald-950 hover:bg-[#39ff14] hover:text-black border border-[#39ff14]/40 text-[#39ff14] text-[8.5px] font-bold tracking-wider rounded transition-all mt-3">
+                        ⚡ INITIALIZE TOPOLOGICAL MINT FORGE
+                      </button>
+                    </div>
+
+                    <!-- SERVICE 2: ALPHA AUTOMATED LEDGER CRON -->
+                    <div class="bg-black/85 border border-[#39ff14]/20 p-3 rounded flex flex-col justify-between">
+                      <div>
+                        <div class="text-[8px] font-bold text-[#39ff14] uppercase tracking-wider mb-2.5 border-b border-[#39ff14]/10 pb-1">
+                          🛡️ ALPHA AUTOMATED LEDGER CRON AUDIT
+                        </div>
+                        
+                        <div class="space-y-2 mb-3">
+                          <div class="flex justify-between text-[7.5px]">
+                            <span class="text-gray-500">KNOWN WALLET DIRECTORY:</span>
+                            <span class="text-white font-bold" id="audit-directory-count">3 NODES VERIFIED</span>
+                          </div>
+                          
+                          <!-- KNOWN ADDRESS DIRECTORY PREVIEW LIST -->
+                          <div class="bg-black/40 border border-[#39ff14]/10 p-2 rounded text-[7px] space-y-1.5 text-gray-400 max-h-[72px] overflow-y-auto" id="audit-directory-list">
+                            <!-- Populated with known wallets -->
+                          </div>
+                        </div>
+
+                        <!-- LIVE LEDGER DATABASE STATE -->
+                        <div class="mb-3 text-[7px]">
+                          <span class="block text-gray-500 font-bold mb-1">SIMULATED MEMORY LEDGER DATABASE</span>
+                          <div class="bg-black border border-[#39ff14]/10 p-2 rounded max-h-[60px] overflow-y-auto space-y-1" id="audit-ledger-db-list">
+                            <!-- Live database rows -->
+                          </div>
+                        </div>
+                      </div>
+
+                      <button type="button" id="service-audit-trigger-btn" class="w-full py-2 bg-[#020d04] hover:bg-[#39ff14] hover:text-black border border-[#39ff14]/30 text-[#39ff14] text-[8.5px] font-bold tracking-wider rounded transition-all">
+                        🔍 RUN CRYPTOGRAPHIC CRON LEDGER AUDIT
+                      </button>
+                    </div>
+
+                  </div>
+
+                  <!-- UNIFIED SERVICE TELEMETRY OUTPUT TERMINAL -->
+                  <div class="mt-3 bg-black border border-[#39ff14]/20 rounded overflow-hidden">
+                    <div class="bg-black border-b border-[#39ff14]/10 px-2.5 py-1.5 flex justify-between items-center text-[7.5px] text-[#39ff14] font-bold">
+                      <span>SOVEREIGN_CORE_SERVICES_FEED // WEB-SOCKET TRANSCRIPTS</span>
+                      <span id="service-socket-indicator" class="text-[7px] font-extrabold flex items-center gap-1.5">
+                        <span class="w-1 h-1 rounded-full bg-[#39ff14]"></span> PORT 3942 LINKED
+                      </span>
+                    </div>
+                    <div class="h-[75px] overflow-y-auto p-2 bg-black/95 text-[7px] leading-relaxed text-[#39ff14]/85 space-y-1" id="service-logs-feed">
+                      <!-- Live audit logs and websocket outputs -->
+                    </div>
+                  </div>
+
+                </div>
+              </div>
             </div>
           </div>
 
