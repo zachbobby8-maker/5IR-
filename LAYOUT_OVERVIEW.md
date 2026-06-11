@@ -14,7 +14,8 @@
 │
 ├── 📁 core-logic/
 │   ├── 📄 useAdvancedFluxCore.js        # Core state calculator hooks [39,420 Hz Ticker]
-│   └── 📄 sinterDatabaseIndexer.js      # Zero-friction composite key database storage engine
+│   ├── 📄 sinterDatabaseIndexer.js      # Zero-friction composite key database storage engine
+│   └── 📄 soverignCoreServices.js       # Alpha Ledger Audit Cron + Gamma Web-Socket Torsion Link
 │
 ├── 📁 portal-dev/ [[https://5iR.dev](https://5iR.dev)]
 │   ├── 📄 GlowSovereignDashboard.jsx    # Luminescent Cyano-Neon interface layout controller
@@ -39,6 +40,10 @@
 ### 💰 Layer 4: Decentralized Labor Economy (LegendrianWorkGrid.jsx)
  * **Dynamic 3-Slot Grid:** Restricts public viewports to exactly 3 available contract tickets simultaneously. Solving the active set prompts an automatic database flush and shifts a new randomized batch of math jobs from the master pool.
  * **Rolling Anti-Macro Seeding:** Automatically mutates validation key seeds every 60 seconds. Any code submission displaying a low integrity threshold (< 0.5) is rejected instantly by **Vortex AI**.
+### 🏛️ Layer 5: Sovereign Unified Backend Services (soverignCoreServices.js)
+ * **Alpha Ledger Audit Cron:** Runs active database health checks, stamping verified cryptographic address mappings with SHA256 hashes and isolating rogue balance triggers.
+ * **Topological Liquidity Inter-Exchange:** Fuses multi-chain ticker conversions natively (SOL, ETH, BTC) straight into active client ledger balances at zero-entropy speeds.
+ * **Gamma WebSocket Torsion Link:** Synchronizes active connection handshakes and rolling anti-cheat seed validation packets over high-status communication ports.
 ## 📊 3. RUNTIME SYSTEM PERFORMANCE INVARIANTS
  1. **Frictionless Wave Modulations:** Local state updates are processed via non-vanishing mathematical Lie brackets to ensure zero structural drag.
  2. **Physics-Based Firewall:** Input vectors carrying an exploitation variable below the 0.50 shunting limit are programmatically dropped at the client memory boundary.
