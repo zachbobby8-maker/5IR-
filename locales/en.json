@@ -116,5 +116,28 @@
     "workspace_offline_desc": "Select an active infrastructure contract from the directory to initialize the Legendrian Algorithm Workspace.",
     "transmit_btn": "[TRANSMIT_TO_VORTEX_AI_CHECK]",
     "analyzing_btn": "[VORTEX_AI_ANALYZING_CORE_MATRICES...]"
+  },
+  "app17": {
+    "title": "[APP_17] AERO-FLUX CONFIGURATION SPACE NAVIGATOR",
+    "tab_btn": "🛸 17: AERO-FLUX",
+    "direct_link": "DIRECT INTERFACE LINK // BYPASSING BROWSER RE-RENDER DELAYS",
+    "latency": "LATENCY",
+    "thermal": "dQ_leak/dt = 0.00W FLAT",
+    "buffer_state": "BUFFER STATE",
+    "sampling_rate": "SAMPLING RATE",
+    "projection_mode": "PROJECTION MODE",
+    "system_msg": "[SYSTEM]: Pointer matrices are locked. Data streams bypass traditional DOM nodes to eliminate memory drag completely."
+  },
+  "app18": {
+    "title": "[APP_18] BIO-RESONANCE HARDWARE BRIDGE",
+    "tab_btn": "🧬 18: BIO-BRIDGE",
+    "btn_ble_sync": "[ENGAGE_BLE_BIO_SYNC]",
+    "btn_ble_sync_active": "[BLE_BIO_SYNC_ACTIVE]",
+    "btn_ble_fallback": "[EMULATING_BIO_RESONANCE]",
+    "status": "HARDWARE CONNECTION STATUS",
+    "gaze_lbl": "EYE-GAZE DEFLECTION VECTOR",
+    "hrv_lbl": "HEART-RATE VARIABILITY INTEGRATOR",
+    "hr_lbl": "PHYSIOLOGICAL PULSE RATE",
+    "system_msg": "[SYSTEM]: WebHID and WebBluetooth telemetry active. Micro-deflections adjust our sub-harmonic carriers natively."
   }
 }
