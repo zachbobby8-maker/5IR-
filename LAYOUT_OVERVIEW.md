@@ -42,6 +42,7 @@
  * **Aero-Flux Navigator (APP 17):** Projects multi-variable non-associative configuration space curves natively on a direct visualizer frame-buffer canvas to eliminate memory drag completely.
  * **Bio-Resonance Bridge (APP 18):** Establishes an un-throttled WebBluetooth GATT link to smart wrist-wearables to pull heart rate variables and map WebHID eye-tracking cursor coordinate deflections on screen.
  * **Sinter-Grid Compiler (APP 19):** Interactively compiles, compresses (minifies) raw JS/React scripts and injects unique Base64 metadata envelopes while tracking mesh block activity indicators.
+ * **The Weave Exchange & Sinter-Loom (APP 20):** Connects real-time price feeds, meteorological sensors, and legacy corporate feeds with custom resonance indexes and interactive minting systems, supporting complete Syntropy Credit exchanges.
 ### 💰 Layer 4: Decentralized Labor Economy (LegendrianWorkGrid.jsx)
  * **Dynamic 3-Slot Grid:** Restricts public viewports to exactly 3 available contract tickets simultaneously. Solving the active set prompts an automatic database flush.
  * **Rolling Anti-Macro Seeding:** Automatically mutates validation key seeds every 60 seconds. Any code submission displaying a low integrity threshold (< 0.5) is rejected instantly by **Vortex AI**.
