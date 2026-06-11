@@ -14,7 +14,7 @@
 │
 ├── 📁 core-logic/
 │   ├── 📄 useAdvancedFluxCore.js        # Core state calculator hooks [39,420 Hz Ticker]
-│   ├── 📄 sinterPackGrid.js             # Client-side minification and metadata packing worker
+│   ├── 📄 sinterpackgrid.js             # Client-side minification and metadata packing worker
 │   ├── 📄 sinterDatabaseIndexer.js      # Zero-friction composite key database storage engine
 │   └── 📄 soverignCoreServices.js       # Alpha Ledger Audit Cron + Gamma Web-Socket Torsion Link
 │   └── 📄 bioResonanceBridge.js         # WebHID & WebBluetooth biometric telemetry link
