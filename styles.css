@@ -1,0 +1,148 @@
+/*
+ * Braid Command Suite Custom Holographic Styling Sheet
+ * High-fidelity 0.00 Watts Flat Thermal Footprint CRT Display Theme
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@500;700&display=swap');
+
+:root {
+  --color-neon-cyan: #00f2fe;
+  --color-neon-blue: #0066ff;
+  --color-neon-magenta: #ff0055;
+  --color-neon-amber: #ffaa00;
+  --color-cyber-navy: #040d21;
+  --color-cyber-deep: #020612;
+  --color-grid-overlay: rgba(0, 242, 254, 0.05);
+}
+
+body {
+  font-family: 'Rajdhani', sans-serif;
+  background-color: var(--color-cyber-deep);
+  color: #e2e8f0;
+  overflow-x: hidden;
+  height: 100vh;
+  margin: 0;
+}
+
+.monospace {
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* Custom Scanlines Overlay */
+.crt-screen {
+  position: relative;
+  overflow: hidden;
+}
+
+.crt-screen::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 40;
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+}
+
+/* Cyber Matrix Background Grid */
+.cyber-grid-bg {
+  background-image: 
+    linear-gradient(rgba(0, 242, 254, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 242, 254, 0.04) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Glowing Neon Classes */
+.glow-cyan {
+  text-shadow: 0 0 8px rgba(0, 242, 254, 0.8), 0 0 20px rgba(0, 242, 254, 0.3);
+}
+
+.glow-magenta {
+  text-shadow: 0 0 8px rgba(255, 0, 85, 0.8), 0 0 20px rgba(255, 0, 85, 0.3);
+}
+
+.glow-amber {
+  text-shadow: 0 0 8px rgba(255, 170, 0, 0.8), 0 0 20px rgba(255, 170, 0, 0.3);
+}
+
+.border-neon-cyan {
+  border: 1px solid var(--color-neon-cyan);
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.15), inset 0 0 10px rgba(0, 242, 254, 0.1);
+}
+
+.border-neon-magenta {
+  border: 1px solid var(--color-neon-magenta);
+  box-shadow: 0 0 10px rgba(255, 0, 85, 0.15), inset 0 0 10px rgba(255, 0, 85, 0.1);
+}
+
+.border-neon-amber {
+  border: 1px solid var(--color-neon-amber);
+  box-shadow: 0 0 10px rgba(255, 170, 0, 0.15), inset 0 0 10px rgba(255, 170, 0, 0.1);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cyber-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: #00f2fe;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ff0055;
+}
+
+/* Continuous Pulse Animation */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.8; filter: brightness(1); }
+  50% { opacity: 1; filter: brightness(1.3); }
+}
+
+.pulse-glow {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+/* Matrix Noise Grid Effect */
+@keyframes flicker {
+  0% { opacity: 0.9782; }
+  50% { opacity: 1; }
+  100% { opacity: 0.9821; }
+}
+.flicker-overlay {
+  animation: flicker 0.15s infinite;
+}
+
+/* Active tab selection indicator */
+.tab-active {
+  background: linear-gradient(90deg, rgba(0, 242, 254, 0.15), rgba(0, 102, 255, 0.02));
+  border-left: 3px solid var(--color-neon-cyan);
+  color: var(--color-neon-cyan);
+}
+
+/* Floating HUD panel header style */
+.panel-header-bracket::before {
+  content: "[";
+  color: var(--color-neon-cyan);
+  margin-right: 6px;
+  font-weight: bold;
+}
+.panel-header-bracket::after {
+  content: "]";
+  color: var(--color-neon-cyan);
+  margin-left: 6px;
+  font-weight: bold;
+}
+
+/* Terminal Line Typing Indicator */
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+.cursor-blink {
+  border-right: 2px solid var(--color-neon-cyan);
+  animation: blink 1s step-end infinite;
+}
