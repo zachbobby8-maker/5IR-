@@ -949,12 +949,36 @@ function initGatewayAuthentication() {
   const passwordInput = document.getElementById("sovereign-password");
   const badgeLabel = document.getElementById("clearance-badge");
   const footerUser = document.getElementById("footer-username");
+  const terminal = document.getElementById("gateway-terminal");
+
+  // Progressive holographic boot sequence inside gateway terminal
+  if (terminal) {
+    terminal.innerHTML = `<p class="pulse-glow text-emerald-400">[SYSTEM COHERENCE MATRIX INITIALIZED]</p>`;
+    const bootLogs = [
+      { text: ">> Synchronizing sub-harmonic carrier lock at 39,420 Hz...", delay: 200, color: "text-[#00f2fe]/60" },
+      { text: ">> Mapped Legendrian Braid torsion indexes to local storage...", delay: 500, color: "text-[#00f2fe]/60" },
+      { text: ">> Flatline thermal leaks calibrated at 0.00 Watts...", delay: 800, color: "text-emerald-400" },
+      { text: ">> [SECURITY OVERRIDE] Sovereign port open // Encryption active.", delay: 1100, color: "text-amber-400 font-bold" },
+      { text: ">> [NOTICE] Enter 'MOBIUS' or 'Architect' to claim Master level-1 status.", delay: 1400, color: "text-[#00f2fe] font-bold glow-cyan" },
+      { text: ">> [NOTICE] (Or enter any personal operator name to login with custom clearance)", delay: 1700, color: "text-[#00f2fe]/70" }
+    ];
+
+    bootLogs.forEach(log => {
+      setTimeout(() => {
+        const p = document.createElement("p");
+        p.className = `${log.color} monospace text-[11px] leading-tight mt-1`;
+        p.textContent = log.text;
+        terminal.appendChild(p);
+        terminal.scrollTop = terminal.scrollHeight;
+      }, log.delay);
+    });
+  }
 
   async function enterSuite(isSovereign, name) {
     State.user.handle = name;
     State.user.isSovereign = isSovereign;
     State.user.clearance = isSovereign 
-      ? "SOVEREIGN LEVEL-1 [ARCHITECT]" 
+      ? `SOVEREIGN LEVEL-1 [${name.toUpperCase()}]` 
       : "GUEST LEVEL-0 [DEMO_NODE]";
 
     // Save login locally
@@ -967,6 +991,9 @@ function initGatewayAuthentication() {
       badgeLabel.textContent = State.user.clearance;
       if (!isSovereign) {
         badgeLabel.className = badgeLabel.className.replace("text-[#00f2fe]", "text-[#ff0055]").replace("border-[#00f2fe]", "border-[#ff0055]");
+      } else {
+        // Glowing cyan color for custom sovereign logins
+        badgeLabel.className = "text-[10px] bg-[#00f2fe]/15 text-[#00f2fe] px-1.5 py-0.5 rounded border border-[#00f2fe]/30 monospace uppercase";
       }
     }
     if (footerUser) footerUser.textContent = name;
@@ -996,8 +1023,14 @@ function initGatewayAuthentication() {
       showToast("ENTRY DENIED", "Please fill valid encryption parameters.", "error");
       return;
     }
-    // Any password qualifies for custom role identification
-    enterSuite(true, "Architect");
+
+    const lowerPw = pw.toLowerCase();
+    if (lowerPw === "mobius" || lowerPw === "architect" || lowerPw === "cydonia" || lowerPw === "braid" || lowerPw === "39420") {
+      enterSuite(true, "Architect");
+    } else {
+      // Allow any custom text as their personal sovereign operator handle!
+      enterSuite(true, pw);
+    }
   });
 
   btnDemo?.addEventListener("click", () => {
@@ -1010,9 +1043,13 @@ window.addEventListener("DOMContentLoaded", async () => {
   // Read localized i18n variables if standard initialization succeeds
   if (window.miniappI18n) {
     try {
-      await window.miniappI18n.ready();
+      if (typeof window.miniappI18n.ready === "function") {
+        await window.miniappI18n.ready();
+      } else if (window.miniappI18n.ready && typeof window.miniappI18n.ready.then === "function") {
+        await window.miniappI18n.ready;
+      }
     } catch(err){
-      console.warn("i18n not ready, falling back to manual mapping:", err);
+      console.warn("i18n initialization check bypassed:", err);
     }
   }
 
