@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>5iR SINTER OS // V2.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ══ SECURE LOGIN PORTAL // ISOLATED_GATE ══ -->
+  <div id="gate">
+    <div class="gate-theme-wrap">
+      <button id="btn-theme-gate" class="btn-theme" type="button" aria-label="Toggle dark/light mode">[ ◐ MODE ]</button>
+    </div>
+    <div class="gate-card">
+      <div class="gate-eyebrow">5iR_SINTER_OS // SYSTEM_GATE</div>
+      <div class="gate-subtitle">BIOMETRIC_SIGNAL_GATE // BRAID_ENCRYPTED</div>
+
+      <div class="gate-scan-bar" id="gate-scan-bar" aria-hidden="true">
+        <div class="gate-scan-line"></div>
+      </div>
+
+      <div class="gate-field">
+        <label class="gate-label" for="input-handle">NEURAL_SIGNATURE // OPERATOR_ID</label>
+        <input id="input-handle" type="text" autocomplete="off"
+          data-i18n-placeholder="gate_handle_placeholder"
+          placeholder="TRANSMIT_NEURAL_SIGNATURE" aria-label="Neural signature operator ID" />
+      </div>
+
+      <div class="gate-field">
+        <label class="gate-label" for="input-key">CRYPTOGRAPHIC_BRAID_KEY // SHA∞</label>
+        <input id="input-key" type="password" autocomplete="off"
+          data-i18n-placeholder="gate_key_placeholder"
+          placeholder="ENTER_BRAID_CIPHER_SEQUENCE" aria-label="Cryptographic braid key" />
+      </div>
+
+      <button id="btn-demo" class="btn-demo" type="button">[ LOAD_DEMO_SIGNAL // MOBIUS_ACCESS ]</button>
+      <button id="btn-handshake" class="btn-handshake" type="button"
+        data-i18n="gate_submit">INITIATE_CRYPTOGRAPHIC_HANDSHAKE</button>
+
+      <div id="gate-msg" class="gate-msg"></div>
+
+      <div class="gate-footer">
+        <span>SYS_FREQ: 39,420 Hz</span>
+        <span>COHERENCE: 94.6%</span>
+        <span>BRAID_CIPHER: ACTIVE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SINTER OS INTERFACE // HIGH-CONTRAST MULTI-PAGE TABBED VIEWPORT ══ -->
+  <div id="os">
+
+    <!-- HUD header -->
+    <header class="os-hud">
+      <div class="hud-left">
+        <div class="hud-title">SINTER_OS // REVISION_2.0</div>
+        <div class="hud-sub" id="hud-sub">OPERATOR_NODE: @— // PROTECTION: ACTIVE</div>
+      </div>
+      <div class="hud-right">
+        <button id="btn-theme-os" class="btn-theme" type="button" aria-label="Toggle dark/light mode">[ ◐ MODE ]</button>
+        <div>CLOCK_SYNC: 39,420 HZ</div>
+        <div>THERMAL_LOSS: dQ_leak/dt = 0.00W</div>
+        <div>COHERENCE: 94.6% LOCKED</div>
+      </div>
+    </header>
+
+    <!-- Tab nav -->
+    <nav class="tab-nav" role="tablist">
+      <button class="tab-btn active" data-tab="VORTEX_AI"       role="tab" aria-selected="true" >APP_01 // VORTEX_AI</button>
+      <button class="tab-btn"        data-tab="LEGENDRIAN_MATH" role="tab" aria-selected="false">APP_02 // LEGENDRIAN_MATH</button>
+      <button class="tab-btn"        data-tab="LATTICE_MONITOR" role="tab" aria-selected="false">APP_03 // LATTICE_MONITOR</button>
+      <button class="tab-btn"        data-tab="WASP"            role="tab" aria-selected="false">APP_04 // WASP</button>
+      <button class="tab-btn"        data-tab="LOOM"            role="tab" aria-selected="false">APP_05 // LOOM</button>
+    </nav>
+
+    <!-- Viewport wrapper -->
+    <main class="viewport">
+      <div class="viewport-frame">
+
+        <!-- ══ APP 01: VORTEX AI MINIFIER + WASP SCANNER ══ -->
+        <section id="tab-VORTEX_AI" class="app-panel" role="tabpanel">
+          <h3 class="app-title">[ APP_01 // VORTEX_AI_MINIFIER &amp; WASP_SECURITY_SCANNER ]</h3>
+          <div class="two-col vortex-col">
+
+            <div class="col-input">
+              <label class="field-micro" for="vortex-code">RAW_SOURCE_CODE</label>
+              <textarea id="vortex-code"
+                placeholder="// Paste code string layouts here to compress and scan..."
+                aria-label="Raw source code"></textarea>
+
+              <div class="wasp-check-row">
+                <input type="checkbox" id="wasp-check" aria-label="Engage WASP defensive protocol" />
+                <label for="wasp-check">ENGAGE WASP DEFENSIVE PROTOCOL (SCAN FOR 4iR INSECURE INFRASTRUCTURE PATTERNS)</label>
+              </div>
+
+              <button id="btn-vortex" class="btn-exec">RUN_VORTEX_SINTER_SCAN</button>
+              <button id="btn-vortex-ai" class="btn-exec btn-ai" type="button">RUN_AI_ANALYSIS ✦</button>
+            </div>
+
+            <div class="signal-box" id="vortex-signals">
+              <div class="signal-head dashed">SECURITY_ANALYSIS_SIGNALS</div>
+              <div id="vortex-idle" class="signal-idle">// Awaiting raw code buffers for analysis...</div>
+              <div id="vortex-data" style="display:none">
+                <div class="signal-row"><span class="sk">BLOCK_ID</span>      <span class="sv" id="v-blockid">---</span></div>
+                <div class="signal-row"><span class="sk">COMP_RATIO</span>    <span class="sv" id="v-ratio">0.0%</span></div>
+                <div class="signal-row"><span class="sk">STREAM_CLASS</span>  <span class="sv" id="v-complexity">---</span></div>
+                <div class="signal-row"><span class="sk">WASP_STATUS</span>   <span class="sv" id="v-wasp">---</span></div>
+                <div class="signal-row"><span class="sk">THREAT_SCORE</span>  <span class="sv" id="v-threat">---</span></div>
+                <div class="signal-row"><span class="sk">COHERENCE</span>     <span class="sv" id="v-integrity">---</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- sintered output -->
+          <div id="vortex-out-wrap" class="output-wrap" style="display:none">
+            <div class="field-micro">SINTER_OUTPUT</div>
+            <div id="vortex-output" class="code-out"></div>
+          </div>
+
+          <!-- AI analysis output -->
+          <div id="ai-out-wrap" class="output-wrap" style="display:none">
+            <div class="field-micro">AI_VORTEX_ANALYSIS ✦</div>
+            <div id="ai-output" class="code-out ai-out"></div>
+          </div>
+
+          <div id="vortex-log" class="app-log" style="display:none"></div>
+        </section>
+
+        <!-- ══ APP 02: LEGENDRIAN MATH TUNER ══ -->
+        <section id="tab-LEGENDRIAN_MATH" class="app-panel" role="tabpanel" style="display:none">
+          <h3 class="app-title">[ APP_02 // LEGENDRIAN_MATH_TUNER ]</h3>
+          <div class="two-col">
+
+            <div class="col-input">
+              <label class="field-micro" for="math-task">SELECT_FORMULA</label>
+              <select id="math-task" aria-label="Select formula"></select>
+
+              <div class="formula-hint" id="formula-hint"></div>
+
+              <label class="field-micro" for="math-val">INPUT_EQUATION_SOLUTION</label>
+              <input id="math-val" type="text" autocomplete="off"
+                placeholder="INPUT_EQUATION_SOLUTION" aria-label="Equation solution value" />
+
+              <button id="btn-math" class="btn-exec">VALIDATE_WORK_UNIT</button>
+            </div>
+
+            <div class="signal-box" id="math-signals">
+              <div class="signal-head dashed">WAVE_HARMONIC_SIGNALS</div>
+              <div id="math-idle" class="signal-idle">// Awaiting numerical parameters...</div>
+              <div id="math-data" style="display:none">
+                <div class="signal-row"><span class="sk">SYNC_STATUS</span>  <span class="sv" id="m-status">---</span></div>
+                <div class="signal-row"><span class="sk">RESONANCE</span>    <span class="sv" id="m-resonance">---</span></div>
+                <div class="signal-row"><span class="sk">DRIFT_CHECK</span>  <span class="sv" id="m-drift">---</span></div>
+                <div class="signal-row"><span class="sk">TARGET_VAL</span>   <span class="sv" id="m-target">---</span></div>
+              </div>
+            </div>
+          </div>
+          <div id="math-log" class="app-log" style="display:none"></div>
+        </section>
+
+        <!-- ══ APP 03: LATTICE DEEP STORAGE MONITOR ══ -->
+        <section id="tab-LATTICE_MONITOR" class="app-panel" role="tabpanel" style="display:none">
+          <h3 class="app-title">[ APP_03 // LATTICE_DEEP_STORAGE_MONITOR ]</h3>
+
+          <div class="metrics-quad">
+            <div class="metric-cell"><span class="mc-label">TOTAL_NODES_ACTIVE</span>       <span class="mc-val" id="l-nodes">1,446,720</span></div>
+            <div class="metric-cell"><span class="mc-label">COHERENCE_PARITY_FLOOR</span>   <span class="mc-val" id="l-coherence">94.6% LOCKED</span></div>
+            <div class="metric-cell"><span class="mc-label">LATTICE_MONITOR_STATE</span>    <span class="mc-val" id="l-state">NOMINAL_STATIC</span></div>
+            <div class="metric-cell"><span class="mc-label">CLOCK_REFERENCE_TICK</span>     <span class="mc-val">39,420 Hz</span></div>
+            <div class="metric-cell"><span class="mc-label">THERMAL_OVERHEAD</span>         <span class="mc-val" id="l-thermal">0.0000 W [SUPERCONDUCTING]</span></div>
+            <div class="metric-cell"><span class="mc-label">ENTROPY_COEFFICIENT</span>      <span class="mc-val">STATIC_ZERO</span></div>
+            <div class="metric-cell"><span class="mc-label">WASP_SECURITY_AUDITS_RUN</span> <span class="mc-val" id="l-audits">0 SCANS</span></div>
+            <div class="metric-cell"><span class="mc-label">SINTERED_BLOCKS_COUNT</span>    <span class="mc-val" id="l-blocks">0 RECS</span></div>
+          </div>
+
+          <!-- Persistent block history -->
+          <div class="history-section">
+            <div class="history-divider field-micro">PERSISTENT_BLOCK_HISTORY // sinter_block_history</div>
+            <div id="lattice-history-container"></div>
+          </div>
+        </section>
+
+        <!-- ══ APP 04: WASP SECURITY PROBE ══ -->
+        <section id="tab-WASP" class="app-panel" role="tabpanel" style="display:none">
+          <!-- Rendered by ui/wasp-view.js initWaspView() -->
+        </section>
+
+        <!-- ══ APP 05: THE MATRIX-THREAD LOOM ══ -->
+        <section id="tab-LOOM" class="app-panel" role="tabpanel" style="display:none">
+          <!-- Rendered by ui/loom-view.js initLoomView() -->
+        </section>
+
+      </div><!-- /viewport-frame -->
+    </main>
+
+    <!-- Config reference badge -->
+    <footer class="os-footer">
+      <span>5iR_SINTER_OS_V2 // portal-dev @ 5iR.dev</span>
+      <span>CONFIG: config/sinterClusterConfig.json</span>
+      <span>CORE: core-logic/sinterOS_v2_defensive.js</span>
+    </footer>
+  </div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
