@@ -1,0 +1,78 @@
+{
+  "cluster": {
+    "id": "SINTER_OS_V2",
+    "revision": "2.0",
+    "coreFrequency": 39420,
+    "thermalProfile": "dQ_leak/dt = 0.00 Watts FLAT",
+    "coherenceParity": 0.946,
+    "aesthetic": "PURE_MONOCHROME_B&W",
+    "purgedPalette": ["NEON", "OBSIDIAN", "GRADIENT"],
+    "securityGate": {
+      "keyHash": "MOBIUS_39420",
+      "sessionMode": "ISOLATED_GATE",
+      "accessTiers": ["DEMO_NODE", "OPERATOR_NODE"]
+    }
+  },
+  "apps": [
+    {
+      "id": "APP_01",
+      "slug": "VORTEX_AI",
+      "title": "VORTEX_AI_MINIFIER & WASP_SECURITY_SCANNER",
+      "engine": "executeVortexDefensiveScan",
+      "features": ["MINIFICATION", "WASP_DEFENSIVE_SCAN", "AI_ANALYSIS"],
+      "aiModel": "Gemini 2.5 Flash",
+      "waspEnabled": true
+    },
+    {
+      "id": "APP_02",
+      "slug": "LEGENDRIAN_MATH",
+      "title": "LEGENDRIAN_MATH_TUNER",
+      "engine": "validateMath",
+      "formulaPool": [
+        { "id": "T1", "title": "LIE_BRACKET_CONVERGENCE_FACTOR",    "target": "39420", "drift": "0.001%" },
+        { "id": "T2", "title": "THERMAL_FLUX_INVARIANT_CALIBRATOR", "target": "0.00",  "drift": "0.000%" },
+        { "id": "T3", "title": "SUB_HARMONIC_24_BRAID_ALIGNMENT",   "target": "24",    "drift": "0.002%" },
+        { "id": "T4", "title": "MOBIUS_PHASE_LOCK_RESONATOR",       "target": "0.946", "drift": "0.003%" }
+      ]
+    },
+    {
+      "id": "APP_03",
+      "slug": "LATTICE_MONITOR",
+      "title": "LATTICE_DEEP_STORAGE_MONITOR",
+      "engine": "computeLiveLatticeTelemetry",
+      "baseNodes": 1446720,
+      "storageKey": "sinter_block_history",
+      "maxHistoryRecords": 50
+    },
+    {
+      "id": "APP_04",
+      "slug": "WASP",
+      "title": "WASP_SECURITY_PROBE",
+      "engine": "runWaspScan",
+      "ruleCount": 12,
+      "verdictThresholds": {
+        "COMPROMISED": 60,
+        "FLAGGED": 20,
+        "CAUTION": 1,
+        "CLEAN": 0
+      }
+    }
+  ],
+  "lattice": {
+    "clockHz": 39420,
+    "entropyCoefficient": "STATIC_ZERO",
+    "thermalOverhead": "0.00W FLAT",
+    "coherenceIndex": "94.6% LOCKED",
+    "persistenceArea": "persistent",
+    "syncEnabled": true
+  },
+  "portal": {
+    "url": "https://5iR.dev",
+    "font": "JetBrains Mono",
+    "colorBlack": "#000000",
+    "colorWhite": "#ffffff",
+    "colorGray": "#666666",
+    "borderLight": "1px solid #000000",
+    "borderDouble": "2px solid #000000"
+  }
+}
