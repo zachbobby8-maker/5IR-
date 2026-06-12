@@ -1,55 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title data-i18n="system.title">Braid Command Suite</title>
   <!-- Tailwind CSS Support -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Core Custom Stylesheet -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css"/>
 </head>
-<body class="crt-screen text-[#e2e8f0] h-screen flex flex-col selection:bg-[#00f2fe] selection:text-[#020612]">
+<body class="theme-black text-primary-theme bg-app-theme h-screen flex flex-col overflow-hidden selection:bg-blue-500 selection:text-white">
 
   <!-- GATEWAY SYSTEM AUTHENTICATION MODAL -->
-  <div id="gateway-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#020612] cyber-grid-bg px-4">
-    <div class="max-w-md w-full bg-[#040d21] border border-[#00f2fe]/40 rounded-lg p-6 md:p-8 border-neon-cyan relative">
-      <!-- Decorative corner brackets -->
-      <div class="absolute -top-1 -left-1 w-4 h-4 border-t-2 border-l-2 border-[#00f2fe]"></div>
-      <div class="absolute -top-1 -right-1 w-4 h-4 border-t-2 border-r-2 border-[#00f2fe]"></div>
-      <div class="absolute -bottom-1 -left-1 w-4 h-4 border-b-2 border-l-2 border-[#00f2fe]"></div>
-      <div class="absolute -bottom-1 -right-1 w-4 h-4 border-b-2 border-r-2 border-[#00f2fe]"></div>
-
+  <div id="gateway-screen" class="fixed inset-0 z-50 bg-app-theme flat-grid-overlay overflow-y-auto flex justify-center items-start p-4 sm:p-6 md:p-8">
+    <div class="my-auto max-w-md w-full bg-panel-theme border border-strong-theme rounded-xl p-6 md:p-8 shadow-2xl relative overflow-hidden transition-all duration-300">
+      
       <div class="text-center mb-6">
-        <h1 class="text-2xl font-bold tracking-widest text-[#00f2fe] glow-cyan monospace mb-1" data-i18n="system.title">Braid Command Suite</h1>
-        <p class="text-xs text-[#00f2fe]/60 tracking-wider monospace uppercase" data-i18n="gateway.subtext">Sovereign Web Access Terminal // Cydonia Tactical Division</p>
+        <div class="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-brand-soft border border-brand mb-3">
+          <span class="text-2xl">🪐</span>
+        </div>
+        <h1 class="text-2xl font-bold tracking-tight text-primary-theme monospace" data-i18n="system.title">Braid Command Suite</h1>
+        <p class="text-xs text-muted-theme tracking-wide monospace uppercase mt-1" data-i18n="gateway.subtext">Sovereign Web Access Terminal // Cydonia Tactical Division</p>
       </div>
 
-      <!-- Live Loading Visualizer -->
-      <div class="border border-[#00f2fe]/20 rounded bg-[#020612] p-4 mb-6 monospace text-xs text-[#00f2fe]/80 h-32 overflow-y-auto" id="gateway-terminal">
-        <p class="pulse-glow" data-i18n="gateway.verification_needed">VERIFYING CRYPTOGRAPHIC SYSTEM MATRIX...</p>
-        <p class="text-[#00f2fe]/40">>> Initializing sub-harmonic carrier frequency checks...</p>
-        <p class="text-[#00f2fe]/40">>> Core clock locked at 39,420 Hz // Global Coherence 94.6% stable</p>
+      <!-- Live Loading Visualizer (No Tips/Codes inside) -->
+      <div class="border border-theme rounded-lg bg-input-theme p-4 mb-5 monospace text-xs text-muted-theme h-36 overflow-y-auto shadow-inner" id="gateway-terminal">
+        <div class="flex items-center space-x-2 text-emerald-500">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+          <p class="font-semibold uppercase tracking-wider animate-pulse" data-i18n="gateway.verification_needed">VERIFYING CRYPTOGRAPHIC SYSTEM MATRIX...</p>
+        </div>
+        <p class="mt-1">&gt;&gt; Initializing sub-harmonic carrier frequency checks...</p>
+        <p>&gt;&gt; Core clock locked at 39,420 Hz // Global Coherence 94.6% stable</p>
       </div>
 
       <!-- Access Form Buttons -->
       <div class="space-y-4">
         <div>
-          <label class="block text-xs uppercase tracking-wider text-[#00f2fe]/70 mb-1 monospace">Sovereign Encryption Credentials</label>
-          <input type="password" id="sovereign-password" placeholder="••••••••••••" class="w-full bg-[#020612] border border-[#00f2fe]/30 rounded px-3 py-2 text-sm text-[#00f2fe] focus:outline-none focus:border-[#00f2fe] focus:ring-1 focus:ring-[#00f2fe] placeholder-[#00f2fe]/30 monospace">
+          <label class="block text-[11px] uppercase tracking-wider text-muted-theme mb-1.5 font-semibold monospace">Sovereign Credentials Identifier</label>
+          <div class="relative">
+            <span class="absolute left-3 top-2.5 text-muted-theme text-xs">👤</span>
+            <input type="text" id="sovereign-password" placeholder="Enter custom operator name..." class="w-full bg-input-theme border border-theme rounded-lg pl-9 pr-3 py-2 text-xs text-primary-theme focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 placeholder-slate-500 monospace tracking-wider transition-all">
+          </div>
         </div>
 
-        <button id="btn-sovereign-login" class="w-full bg-[#00f2fe]/20 hover:bg-[#00f2fe]/35 border border-[#00f2fe] text-[#00f2fe] py-3 rounded font-bold uppercase tracking-wider text-xs transition duration-200 cursor-pointer monospace" data-i18n="gateway.btn_sovereign">
-          [VERIFY_SOVEREIGN_CREDENTIALS]
+        <button id="btn-sovereign-login" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-bold uppercase tracking-wider text-xs transition duration-150 cursor-pointer monospace shadow active:scale-95">
+          [VERIFY CLEARANCE]
         </button>
 
-        <div class="relative flex py-2 items-center">
-          <div class="flex-grow border-t border-[#00f2fe]/10"></div>
-          <span class="flex-shrink mx-3 text-[10px] text-[#00f2fe]/30 uppercase tracking-widest monospace">or bypass credentials</span>
-          <div class="flex-grow border-t border-[#00f2fe]/10"></div>
+        <div class="relative flex py-1 items-center">
+          <div class="flex-grow border-t border-theme"></div>
+          <span class="flex-shrink mx-3 text-[9px] text-muted-theme uppercase tracking-wider monospace">or bypass identity check</span>
+          <div class="flex-grow border-t border-theme"></div>
         </div>
 
-        <button id="btn-demo-login" class="w-full bg-[#ff0055]/10 hover:bg-[#ff0055]/25 border border-[#ff0055] text-[#ff0055] py-3 rounded font-bold uppercase tracking-wider text-xs transition duration-200 cursor-pointer glow-magenta monospace" data-i18n="gateway.btn_demo">
+        <button id="btn-demo-login" class="w-full bg-panel-theme border border-strong-theme hover:bg-muted-theme text-primary-theme py-2.5 rounded-lg font-bold uppercase tracking-wider text-xs transition duration-150 cursor-pointer monospace active:scale-95">
           ⚡ [ENGAGE_PUBLIC_DEMO_NODE] (ONE-CLICK ACCESS)
         </button>
       </div>
@@ -57,39 +61,51 @@
   </div>
 
   <!-- MAIN HUD COMMAND SUITE VIEWPORT -->
-  <div id="main-app-screen" class="hidden h-screen flex flex-col bg-[#020612] overflow-hidden">
+  <div id="main-app-screen" class="hidden h-screen flex flex-col bg-app-theme overflow-hidden">
     
     <!-- TOP STATUS HEADER BAR -->
-    <header class="bg-[#040d21] border-b border-[#00f2fe]/20 px-4 py-3 flex flex-wrap justify-between items-center z-10">
-      <div class="flex items-center space-x-3">
-        <div class="w-2.5 h-2.5 bg-[#00f2fe] rounded-full pulse-glow"></div>
+    <header class="bg-panel-theme border-b border-strong-theme px-4 md:px-6 py-2.5 flex flex-wrap justify-between items-center z-10 relative">
+      <div class="flex items-center space-x-3.5">
+        <div class="w-2.5 h-2.5 bg-emerald-500 rounded-full shadow-sm"></div>
         <div>
           <div class="flex items-center space-x-2">
-            <span class="text-md font-bold tracking-widest text-[#00f2fe] uppercase glow-cyan monospace" data-i18n="system.title">Braid Command Suite</span>
-            <span class="text-[10px] bg-[#00f2fe]/15 text-[#00f2fe] px-1.5 py-0.5 rounded border border-[#00f2fe]/30 monospace uppercase" id="clearance-badge" data-i18n="system.clearance_val">SOVEREIGN LEVEL-1 [ARCHITECT]</span>
+            <span class="text-md font-bold tracking-tight text-primary-theme uppercase monospace" data-i18n="system.title">Braid Command Suite</span>
+            <span class="text-[9px] bg-brand-soft text-brand-theme px-2 py-0.5 rounded border border-theme font-bold monospace uppercase tracking-wider" id="clearance-badge" data-i18n="system.clearance_val">SOVEREIGN LEVEL-1 [ARCHITECT]</span>
           </div>
-          <p class="text-[9px] text-[#00f2fe]/50 uppercase tracking-widest monospace" data-i18n="system.ping">SYSTEM SECURE // COHERENCE OVERWATCH</p>
+          <p class="text-[9px] text-muted-theme uppercase tracking-wider font-semibold monospace" data-i18n="system.ping">SYSTEM SECURE // COHERENCE OVERWATCH</p>
         </div>
       </div>
 
       <!-- Header Telemetry Readouts -->
-      <div class="flex space-x-4 md:space-x-8 text-right text-xs monospace text-[#00f2fe]/80 py-1 md:py-0">
+      <div class="flex items-center space-x-4 md:space-x-6 text-right text-xs monospace text-primary-theme py-1 md:py-0">
+        <!-- Modern Theme Selector Toggle (Black vs White) -->
+        <div class="flex items-center bg-input-theme px-2.5 py-1 rounded border border-theme">
+          <span class="text-[10px] text-muted-theme mr-2 uppercase font-semibold">THEME:</span>
+          <button id="btn-theme-toggle" class="px-2 py-0.5 bg-brand-soft text-brand-theme text-[9.5px] rounded border border-brand font-bold cursor-pointer uppercase transition tracking-wider active:scale-95">
+            [BLACK]
+          </button>
+        </div>
         <div class="hidden sm:block">
-          <span class="text-[10px] text-[#00f2fe]/40 block" data-i18n="system.frequency">FREQUENCY STATUS</span>
-          <span id="header-frequency-clock" class="glow-cyan text-sm">39,420 Hz</span>
+          <span class="text-[9px] text-muted-theme block font-semibold" data-i18n="system.frequency">FREQUENCY STATUS</span>
+          <span id="header-frequency-clock" class="text-brand-theme font-bold">39,420 Hz</span>
         </div>
         <div>
-          <span class="text-[10px] text-[#00f2fe]/40 block" data-i18n="system.active_mesh">ACTIVE MESH NODES</span>
-          <span id="header-mesh-nodes" class="text-sm">1,446,720</span>
+          <span class="text-[9px] text-muted-theme block font-semibold" data-i18n="system.active_mesh">ACTIVE MESH NODES</span>
+          <span id="header-mesh-nodes" class="font-bold">1,446,720</span>
         </div>
         <div class="hidden md:block">
-          <span class="text-[10px] text-[#00f2fe]/40 block" data-i18n="system.thermal">THERMAL PROFILE</span>
-          <span class="text-sm" data-i18n="styles.thermal" id="header-thermal-leaks">0.00 Watts Flat</span>
+          <span class="text-[9px] text-muted-theme block font-semibold" data-i18n="system.thermal">THERMAL PROFILE</span>
+          <span class="text-success-theme font-bold" id="header-thermal-leaks">0.00 W Flat</span>
         </div>
         <div>
-          <span class="text-[10px] text-[#00f2fe]/40 block" data-i18n="system.coherence">LATTICE COHERENCE</span>
-          <span id="header-coherence-val" class="text-[#00f2fe] font-bold text-sm">94.6%</span>
+          <span class="text-[9px] text-muted-theme block font-semibold" data-i18n="system.coherence">LATTICE COHERENCE</span>
+          <span id="header-coherence-val" class="text-brand-theme font-black text-sm">94.6%</span>
         </div>
+
+        <!-- Easy Quick Logout Action on Header -->
+        <button id="header-logout-btn" class="ml-2 px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-[10px] rounded uppercase font-bold tracking-wider cursor-pointer transition active:scale-95 monospace">
+          [DE-AUTH]
+        </button>
       </div>
     </header>
 
@@ -97,212 +113,263 @@
     <div class="flex-grow flex overflow-hidden">
       
       <!-- SIDEBAR APPLICATION SELECTOR -->
-      <nav class="w-16 md:w-56 bg-[#040d21] border-r border-[#00f2fe]/20 flex flex-col justify-between py-4 select-none">
+      <nav class="w-16 md:w-56 bg-panel-theme border-r border-strong-theme flex flex-col justify-between py-3 select-none relative">
         <div class="space-y-1">
           <!-- App Menu Header -->
-          <div class="hidden md:block px-4 pb-2 mb-2 border-b border-[#00f2fe]/10">
-            <p class="text-[10px] text-[#00f2fe]/40 tracking-widest uppercase monospace">Active Command Hubs</p>
+          <div class="hidden md:block px-4 pb-2 mb-2 border-b border-theme">
+            <p class="text-[10px] text-muted-theme tracking-wider uppercase monospace font-bold">Active Command Hubs</p>
           </div>
 
-          <!-- TAB BUTTONS (ONLY KEEPING THESE 7 APPS) -->
-          <button data-target="app-hub" class="tab-btn w-full px-4 py-3 flex items-center space-x-3 text-left hover:bg-[#00f2fe]/5 transition duration-150 border-l-3 border-transparent text-[#00f2fe]/60 cursor-pointer tab-active">
-            <span class="text-lg">🏠</span>
-            <span class="hidden md:inline monospace text-xs font-bold uppercase tracking-wider">00: Deployed Hub</span>
+          <!-- TAB BUTTONS -->
+          <button data-target="app-hub" class="tab-btn w-full px-4 py-3 flex items-center space-x-3 text-left hover:bg-muted-theme transition duration-150 border-l-4 border-transparent text-muted-theme cursor-pointer tab-active">
+            <span class="text-md">🏠</span>
+            <div class="hidden md:block monospace">
+              <p class="text-[9px] opacity-40 font-bold uppercase tracking-wider">SUB-GRID 00</p>
+              <p class="text-xs font-bold uppercase tracking-wider text-primary-theme">DEPLOYED HUB</p>
+            </div>
           </button>
 
-          <button data-target="app-retain" class="tab-btn w-full px-4 py-3 flex items-center space-x-3 text-left hover:bg-[#00f2fe]/5 transition duration-150 border-l-3 border-transparent text-[#00f2fe]/60 cursor-pointer">
-            <span class="text-lg">🦴</span>
-            <span class="hidden md:inline monospace text-xs font-bold uppercase tracking-wider">01: Vortex Retain</span>
+          <button data-target="app-retain" class="tab-btn w-full px-4 py-3 flex items-center space-x-3 text-left hover:bg-muted-theme transition duration-150 border-l-4 border-transparent text-muted-theme cursor-pointer">
+            <span class="text-md">📊</span>
+            <div class="hidden md:block monospace">
+              <p class="text-[9px] opacity-40 font-bold uppercase tracking-wider">SUB-GRID 01</p>
+              <p class="text-xs font-bold uppercase tracking-wider text-primary-theme">VORTEX RETAIN</p>
+            </div>
           </button>
 
-          <button data-target="app-ai" class="tab-btn w-full px-4 py-3 flex items-center space-x-3 text-left hover:bg-[#00f2fe]/5 transition duration-150 border-l-3 border-transparent text-[#00f2fe]/60 cursor-pointer">
-            <span class="text-lg">🔮</span>
-            <span class="hidden md:inline monospace text-xs font-bold uppercase tracking-wider">04: VortexAI</span>
+          <button data-target="app-ai" class="tab-btn w-full px-4 py-3 flex items-center space-x-3 text-left hover:bg-muted-theme transition duration-150 border-l-4 border-transparent text-muted-theme cursor-pointer">
+            <span class="text-md">🤖</span>
+            <div class="hidden md:block monospace">
+              <p class="text-[9px] opacity-40 font-bold uppercase tracking-wider">SUB-GRID 04</p>
+              <p class="text-xs font-bold uppercase tracking-wider text-primary-theme">ORACLE CORE</p>
+            </div>
           </button>
 
-          <button data-target="app-resonance" class="tab-btn w-full px-4 py-3 flex items-center space-x-3 text-left hover:bg-[#00f2fe]/5 transition duration-150 border-l-3 border-transparent text-[#00f2fe]/60 cursor-pointer">
-            <span class="text-lg">🌀</span>
-            <span class="hidden md:inline monospace text-xs font-bold uppercase tracking-wider">08: Resonance</span>
+          <button data-target="app-resonance" class="tab-btn w-full px-4 py-3 flex items-center space-x-3 text-left hover:bg-muted-theme transition duration-150 border-l-4 border-transparent text-muted-theme cursor-pointer">
+            <span class="text-md">🌀</span>
+            <div class="hidden md:block monospace">
+              <p class="text-[9px] opacity-40 font-bold uppercase tracking-wider">SUB-GRID 08</p>
+              <p class="text-xs font-bold uppercase tracking-wider text-primary-theme">RESONANCE</p>
+            </div>
           </button>
 
-          <button data-target="app-work" class="tab-btn w-full px-4 py-3 flex items-center space-x-3 text-left hover:bg-[#00f2fe]/5 transition duration-150 border-l-3 border-transparent text-[#00f2fe]/60 cursor-pointer">
-            <span class="text-lg">💻</span>
-            <span class="hidden md:inline monospace text-xs font-bold uppercase tracking-wider">16: Work Grid</span>
+          <button data-target="app-work" class="tab-btn w-full px-4 py-3 flex items-center space-x-3 text-left hover:bg-muted-theme transition duration-150 border-l-4 border-transparent text-muted-theme cursor-pointer">
+            <span class="text-md">💻</span>
+            <div class="hidden md:block monospace">
+              <p class="text-[9px] opacity-40 font-bold uppercase tracking-wider">SUB-GRID 16</p>
+              <p class="text-xs font-bold uppercase tracking-wider text-primary-theme">WORK GRID</p>
+            </div>
           </button>
 
-          <button data-target="app-bio" class="tab-btn w-full px-4 py-3 flex items-center space-x-3 text-left hover:bg-[#00f2fe]/5 transition duration-150 border-l-3 border-transparent text-[#00f2fe]/60 cursor-pointer">
-            <span class="text-lg">🧬</span>
-            <span class="hidden md:inline monospace text-xs font-bold uppercase tracking-wider">18: Bio Bridge</span>
+          <button data-target="app-bio" class="tab-btn w-full px-4 py-3 flex items-center space-x-3 text-left hover:bg-muted-theme transition duration-150 border-l-4 border-transparent text-muted-theme cursor-pointer">
+            <span class="text-md">🧬</span>
+            <div class="hidden md:block monospace">
+              <p class="text-[9px] opacity-40 font-bold uppercase tracking-wider">SUB-GRID 18</p>
+              <p class="text-xs font-bold uppercase tracking-wider text-primary-theme">BIO BRIDGE</p>
+            </div>
           </button>
 
-          <button data-target="app-sinter" class="tab-btn w-full px-4 py-3 flex items-center space-x-3 text-left hover:bg-[#00f2fe]/5 transition duration-150 border-l-3 border-transparent text-[#00f2fe]/60 cursor-pointer">
-            <span class="text-lg">📦</span>
-            <span class="hidden md:inline monospace text-xs font-bold uppercase tracking-wider">19: Sinter Grid</span>
+          <button data-target="app-sinter" class="tab-btn w-full px-4 py-3 flex items-center space-x-3 text-left hover:bg-muted-theme transition duration-150 border-l-4 border-transparent text-muted-theme cursor-pointer">
+            <span class="text-md">📦</span>
+            <div class="hidden md:block monospace">
+              <p class="text-[9px] opacity-40 font-bold uppercase tracking-wider">SUB-GRID 19</p>
+              <p class="text-xs font-bold uppercase tracking-wider text-primary-theme">SINTER PACKER</p>
+            </div>
           </button>
         </div>
 
-        <!-- User Information Badge Bottom -->
-        <div class="px-4 pt-4 border-t border-[#00f2fe]/10 hidden md:block monospace text-[11px] text-[#00f2fe]/60">
-          <p class="text-[#00f2fe]/40 text-[9px] uppercase tracking-wider" data-i18n="dashboard.user_handle">Operator Handle</p>
-          <p id="footer-username" class="font-bold text-[#00f2fe] uppercase">Architect</p>
-          <div class="flex items-center space-x-1.5 mt-2">
-            <div class="w-1.5 h-1.5 bg-[#00f2fe] rounded-full"></div>
-            <p class="text-[9px] text-[#00f2fe]/40 uppercase tracking-widest">dQ_leak = 0.00W</p>
+        <!-- Logout & User Information Badge Bottom -->
+        <div class="px-4 pt-3 border-t border-theme flex flex-col justify-end space-y-3">
+          <div class="hidden md:block monospace text-[11px]">
+            <p class="text-muted-theme text-[9px] uppercase tracking-wider" data-i18n="dashboard.user_handle">Operator Handle</p>
+            <p id="footer-username" class="font-bold text-primary-theme uppercase tracking-wider">Architect</p>
+            <div class="flex items-center space-x-1.5 mt-1">
+              <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></div>
+              <p class="text-[9px] text-muted-theme uppercase tracking-wider">dQ_leak = 0.00W</p>
+            </div>
           </div>
+
+          <!-- Master Logout Sidebar Trigger -->
+          <button id="sidebar-logout-btn" class="w-full py-2 bg-red-600/10 hover:bg-red-600/20 border border-red-500/30 text-red-500 text-xs font-semibold rounded-lg uppercase tracking-wider transition-all duration-150 cursor-pointer monospace flex items-center justify-center space-x-2 active:scale-95">
+            <span>🔴</span>
+            <span class="hidden md:inline">[LOGOUT SESSION]</span>
+          </button>
         </div>
       </nav>
 
       <!-- VIEWPORTS MAIN PANEL (EACH TAB CLICKS TO REVEAL) -->
-      <main class="flex-grow p-4 md:p-6 overflow-y-auto cyber-grid-bg relative">
+      <main class="flex-grow p-4 md:p-6 overflow-y-auto relative bg-app-theme flat-grid-overlay flex flex-col">
         
+        <!-- TOP BREADCRUMB INDICATOR BAR -->
+        <div class="mb-4 bg-panel-theme border border-theme rounded-lg px-4 py-2 flex justify-between items-center text-[10px] monospace uppercase tracking-wider shadow-sm">
+          <div class="flex items-center space-x-2 text-muted-theme">
+            <span>CYDONIA_TACTICAL_NODE</span>
+            <span>&gt;&gt;</span>
+            <span id="breadcrumb-current" class="text-brand-theme font-semibold">STAGING HUB & CENTRAL COCKPIT</span>
+          </div>
+          <div class="text-muted-theme hidden sm:block">
+            <span>CLOCK: </span><span id="live-hud-clock" class="text-primary-theme font-bold">12:00:00 UTC</span>
+          </div>
+        </div>
+
         <!-- 🏠 APP 00: DEPLOYED HUB / CENTRAL STAGING COCKPIT -->
-        <div id="app-hub" class="tab-view space-y-6">
-          <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-[#00f2fe]/20 pb-3">
-            <div>
-              <h2 class="text-xl font-bold tracking-widest text-[#00f2fe] glow-cyan monospace panel-header-bracket" data-i18n="dashboard.title">STAGING HUB & CENTRAL COCKPIT</h2>
-              <p class="text-xs text-[#00f2fe]/50 uppercase tracking-wider monospace">Master System Monitoring Matrix & Broadcaster Station</p>
-            </div>
-            <!-- Interactive Global Control Override Buttons -->
-            <div class="mt-3 md:mt-0 flex space-x-2">
-              <button id="hub-lock-torsion" class="px-3 py-1.5 bg-[#00f2fe]/10 border border-[#00f2fe]/40 hover:bg-[#00f2fe]/20 text-xs rounded monospace tracking-wider uppercase transition cursor-pointer">
-                [TORSION LOCK ACTIVE]
-              </button>
-              <button id="hub-maintenance" class="px-3 py-1.5 bg-[#ff0055]/10 border border-[#ff0055]/40 hover:bg-[#ff0055]/20 text-xs rounded text-[#ff0055] monospace tracking-wider uppercase transition cursor-pointer">
-                [RUN SWEEP MAINT]
-              </button>
-            </div>
-          </div>
-
-          <!-- Core System Telemetry Readout Deck -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-[#040d21] border border-[#00f2fe]/20 rounded p-4 border-neon-cyan relative">
-              <span class="absolute top-2 right-2 text-[10px] monospace text-[#00f2fe]/30">HUB_D1</span>
-              <p class="text-xs text-[#00f2fe]/40 uppercase tracking-wider monospace" data-i18n="dashboard.mesh_label">Synchronized Nodes</p>
-              <p id="dashboard-mesh-count" class="text-2xl font-bold monospace text-[#00f2fe] glow-cyan mt-1">1,446,720</p>
-              <p class="text-[10px] text-[#00f2fe]/40 uppercase tracking-wider monospace mt-2">Active sub-mesh loops synchronized</p>
-            </div>
-            <div class="bg-[#040d21] border border-[#00f2fe]/20 rounded p-4 relative">
-              <span class="absolute top-2 right-2 text-[10px] monospace text-[#00f2fe]/30">HUB_D2</span>
-              <p class="text-xs text-[#00f2fe]/40 uppercase tracking-wider monospace" data-i18n="dashboard.vortex_velocity">Vortex Flow Velocity</p>
-              <p id="dashboard-velocity-val" class="text-2xl font-bold monospace text-white mt-1">1.00000000</p>
-              <p class="text-[10px] text-[#00f2fe]/40 uppercase tracking-wider monospace mt-2">Harmonic displacement index</p>
-            </div>
-            <div class="bg-[#040d21] border border-[#00f2fe]/20 rounded p-4 relative">
-              <span class="absolute top-2 right-2 text-[10px] monospace text-[#00f2fe]/30">HUB_D3</span>
-              <p class="text-xs text-[#00f2fe]/40 uppercase tracking-wider monospace" data-i18n="dashboard.entropy_leakage">System Entropy Leakage</p>
-              <p class="text-2xl font-bold monospace text-emerald-400 mt-1" data-i18n="dashboard.entropy_leakage_val">0.00 Watts Flat</p>
-              <p class="text-[10px] text-emerald-400/40 uppercase tracking-wider monospace mt-2">dQ_leak/dt flat thermal baseline</p>
-            </div>
-          </div>
-
-          <!-- Dynamic Live Logging Feeds & Database Indexer -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            
-            <!-- Real-time Event Stream Logger -->
-            <div class="bg-[#040d21] border border-[#00f2fe]/20 rounded-lg p-5">
-              <h3 class="text-md font-bold text-[#00f2fe] tracking-wider monospace mb-3 uppercase" data-i18n="dashboard.alerts">REAL-TIME BROADCAST STREAM</h3>
-              <div class="h-64 border border-[#00f2fe]/10 rounded bg-[#020612] p-4 font-mono text-xs text-[#00f2fe]/80 space-y-2 overflow-y-auto" id="dashboard-console-logs">
-                <p class="text-emerald-400" data-i18n="dashboard.log_calibrated">[ONLINE] Scanner core calibrated to 39,420 Hz.</p>
-                <p class="text-emerald-400" data-i18n="dashboard.system_alert">[ALARM] System tracking stable. 0.00 Watts Flat leakage.</p>
-                <p class="text-[#00f2fe]/40">>> Secure Braid-Cluster nodes listening in background...</p>
-              </div>
-            </div>
-
-            <!-- Integrated Sovereign Ledger & Credentials Validation -->
-            <div class="bg-[#040d21] border border-[#00f2fe]/20 rounded-lg p-5 flex flex-col justify-between">
+        <div id="app-hub" class="tab-view space-y-6 flex-grow flex flex-col justify-between">
+          <div class="space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-theme pb-3">
               <div>
-                <h3 class="text-md font-bold text-[#00f2fe] tracking-wider monospace mb-3 uppercase" data-i18n="dashboard.diagnostics">ACTIVE CORE RE-SHAPE TELEMETRY</h3>
-                <p class="text-xs text-slate-400 leading-relaxed mb-4">
-                  The Sovereign command network utilizes non-associative topological wave formations to anchor live hardware integrations. Toggle telemetry loops, execute structural maintenance, and calibrate sub-harmonics across active viewports.
-                </p>
-                
-                <!-- Quick App Integration Information Cards -->
-                <div class="space-y-2 text-xs monospace bg-[#020612] p-3 rounded border border-[#00f2fe]/10">
-                  <div class="flex justify-between border-b border-[#00f2fe]/10 pb-1.5">
-                    <span class="text-[#00f2fe]/50">MÖBIUS COHERENCE KEY:</span>
-                    <span class="text-[#00f2fe] font-bold">LEGENDRIAN CLASS-1 [MÖBIUS LEVEL]</span>
-                  </div>
-                  <div class="flex justify-between border-b border-[#00f2fe]/10 py-1.5">
-                    <span class="text-[#00f2fe]/50">ACTIVE CORE DIRECTORY:</span>
-                    <span class="text-emerald-400">7 MODULES MOUNTED</span>
-                  </div>
-                  <div class="flex justify-between pt-1.5">
-                    <span class="text-[#00f2fe]/50">ACCOUNT LEDGER VALUE:</span>
-                    <span class="text-amber-400 font-bold" id="hub-ledger-val">$5,000.00 $BRAID</span>
-                  </div>
-                </div>
+                <h2 class="text-xl font-bold tracking-tight text-primary-theme monospace" data-i18n="dashboard.title">STAGING HUB & CENTRAL COCKPIT</h2>
+                <p class="text-xs text-muted-theme uppercase tracking-wider monospace mt-0.5">Master System Monitoring Matrix & Broadcaster Station</p>
               </div>
-
-              <!-- Admin Override Trigger Control -->
-              <div class="mt-6 pt-4 border-t border-[#00f2fe]/10 flex flex-wrap gap-2">
-                <button id="btn-sync-all" class="px-4 py-2 bg-[#00f2fe]/20 hover:bg-[#00f2fe]/30 border border-[#00f2fe] text-[#00f2fe] text-xs font-bold uppercase rounded cursor-pointer transition monospace">
-                  [RE-SYNC COHERENCE NETWORK]
+              <!-- Interactive Global Control Override Buttons -->
+              <div class="mt-3 md:mt-0 flex space-x-2">
+                <button id="hub-lock-torsion" class="px-4 py-1.5 bg-brand-soft border border-brand text-brand-theme text-xs rounded-lg monospace font-bold tracking-wider uppercase transition cursor-pointer shadow-sm active:scale-95">
+                  [TORSION LOCK ACTIVE]
+                </button>
+                <button id="hub-maintenance" class="px-4 py-1.5 bg-red-600/10 border border-red-500/30 hover:bg-red-600/20 text-xs rounded-lg text-red-500 monospace font-bold tracking-wider uppercase transition cursor-pointer active:scale-95">
+                  [RUN SWEEP MAINT]
                 </button>
               </div>
             </div>
 
+            <!-- Core System Telemetry Readout Deck -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+              <div class="bg-panel-theme border border-theme rounded-xl p-5 relative overflow-hidden shadow-sm hover:border-brand transition duration-200">
+                <p class="text-xs text-muted-theme uppercase tracking-wider font-semibold monospace" data-i18n="dashboard.mesh_label">Synchronized Nodes</p>
+                <div class="flex items-baseline space-x-2 mt-2">
+                  <p id="dashboard-mesh-count" class="text-2xl font-bold monospace text-brand-theme">1,446,720</p>
+                  <span class="text-xs text-success-theme font-bold">▲ +0.02%</span>
+                </div>
+                <div class="mt-3 w-full bg-input-theme h-1 rounded-full overflow-hidden">
+                  <div class="bg-brand h-full rounded-full transition-all duration-500" style="width: 88%;"></div>
+                </div>
+              </div>
+
+              <div class="bg-panel-theme border border-theme rounded-xl p-5 relative overflow-hidden shadow-sm hover:border-brand transition duration-200">
+                <p class="text-xs text-muted-theme uppercase tracking-wider font-semibold monospace" data-i18n="dashboard.vortex_velocity">Vortex Flow Velocity</p>
+                <div class="flex items-baseline space-x-2 mt-2">
+                  <p id="dashboard-velocity-val" class="text-2xl font-bold monospace text-primary-theme">1.00000000</p>
+                  <span class="text-[10px] text-muted-theme monospace">INDEX</span>
+                </div>
+                <div class="mt-3 w-full bg-input-theme h-1 rounded-full overflow-hidden">
+                  <div id="vortex-flow-bar" class="bg-brand h-full rounded-full" style="width: 100%;"></div>
+                </div>
+              </div>
+
+              <div class="bg-panel-theme border border-theme rounded-xl p-5 relative overflow-hidden shadow-sm hover:border-brand transition duration-200">
+                <p class="text-xs text-muted-theme uppercase tracking-wider font-semibold monospace" data-i18n="dashboard.entropy_leakage">System Entropy Leakage</p>
+                <div class="flex items-baseline space-x-2 mt-2">
+                  <p class="text-2xl font-bold monospace text-success-theme" data-i18n="dashboard.entropy_leakage_val">0.00 Watts Flat</p>
+                </div>
+                <div class="mt-3 w-full bg-input-theme h-1 rounded-full overflow-hidden">
+                  <div class="bg-emerald-500 h-full rounded-full" style="width: 12%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Live Logging Feeds & Database Indexer -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              
+              <!-- Real-time Event Stream Logger -->
+              <div class="bg-panel-theme border border-theme rounded-xl p-5 flex flex-col shadow-sm">
+                <h3 class="text-xs uppercase tracking-wider text-primary-theme font-bold monospace mb-3 flex items-center justify-between">
+                  <span>REAL-TIME BROADCAST STREAM</span>
+                  <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span>
+                </h3>
+                <div class="h-60 border border-theme rounded bg-input-theme p-4 font-mono text-[11px] text-muted-theme space-y-2 overflow-y-auto shadow-inner" id="dashboard-console-logs">
+                  <p class="text-success-theme" data-i18n="dashboard.log_calibrated">[ONLINE] Scanner core calibrated to 39,420 Hz.</p>
+                  <p class="text-success-theme" data-i18n="dashboard.system_alert">[ALARM] System tracking stable. 0.00 Watts Flat leakage.</p>
+                </div>
+              </div>
+
+              <!-- Live Topological Mesh Graphic Visualizer -->
+              <div class="bg-panel-theme border border-theme rounded-xl p-5 flex flex-col justify-between shadow-sm min-h-[280px]">
+                <div class="mb-2">
+                  <h3 class="text-xs uppercase tracking-wider text-primary-theme font-bold monospace mb-1">BRAID TOPOLOGICAL MESH OSCILLATOR</h3>
+                  <p class="text-xs text-muted-theme leading-relaxed">
+                    Visual telemetry tracking across active nodes using clean flat coordinate mappings.
+                  </p>
+                </div>
+                
+                <!-- SVG Matrix Mesh Canvas -->
+                <div class="flex-grow flex items-center justify-center bg-input-theme border border-theme rounded-lg p-3 relative overflow-hidden h-40">
+                  <canvas id="mesh-particles-canvas" class="w-full h-full"></canvas>
+                  <div class="absolute bottom-2 left-2 bg-panel-theme border border-theme rounded px-2 py-1 text-[9px] monospace text-muted-theme uppercase font-semibold">
+                    LATTICE: COHERENT // dQ: 0.00W
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-theme flex justify-between items-center flex-wrap gap-2">
+                  <span class="text-[10px] text-muted-theme monospace font-semibold uppercase">ACCOUNT VALUE: <span class="text-amber-500 font-bold" id="hub-ledger-val">$5,000.00 $BRAID</span></span>
+                  <button id="btn-sync-all" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold uppercase rounded-lg cursor-pointer transition active:scale-95 monospace shadow-sm">
+                    [RE-SYNC COHERENCE NETWORK]
+                  </button>
+                </div>
+              </div>
+
+            </div>
           </div>
+          <p class="text-[9px] text-muted-theme monospace text-center mt-4">Cydonia Command Matrix Control // Unified Engineering Terminal</p>
         </div>
 
         <!-- 🦴 APP 01: VORTEX RETAIN / SKELETAL SIMULATION -->
         <div id="app-retain" class="tab-view hidden space-y-6">
-          <div class="border-b border-[#00f2fe]/20 pb-3">
-            <h2 class="text-xl font-bold tracking-widest text-[#00f2fe] glow-cyan monospace panel-header-bracket" data-i18n="app_retain.title">APP 01 // VORTEX-RETAIN SKELETAL SIMULATOR</h2>
-            <p class="text-xs text-[#00f2fe]/50 uppercase tracking-wider monospace">3D Bone Density Scaffolding Under Multi-G Stressors</p>
+          <div class="border-b border-theme pb-3">
+            <h2 class="text-lg font-bold tracking-tight text-primary-theme monospace" data-i18n="app_retain.title">APP 01 // VORTEX-RETAIN SKELETAL SIMULATOR</h2>
+            <p class="text-xs text-muted-theme uppercase tracking-wider monospace mt-0.5">3D Bone Density Scaffolding Under Multi-G Stressors</p>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- 3D Cylindrical Scaffold Viewport Canvas -->
-            <div class="lg:col-span-2 bg-[#040d21] border border-[#00f2fe]/20 rounded-lg p-5 flex flex-col items-center justify-center min-h-[350px] relative border-neon-cyan">
-              <span class="absolute top-2 left-2 text-[10px] text-[#00f2fe]/40 monospace">3D SCANNED CONCURRENT PERSPECTIVE SCAFFOLD</span>
+            <!-- 3D Scaffold Viewport Canvas -->
+            <div class="lg:col-span-2 bg-panel-theme border border-theme rounded-xl p-5 flex flex-col items-center justify-center min-h-[380px] relative shadow-sm">
+              <span class="absolute top-2 left-2 text-[10px] text-muted-theme monospace font-semibold uppercase">3D CANONICAL SCANNED COHERENCE DECK</span>
               <!-- Bone Fracture Warning HUD -->
-              <div id="brittle-warning" class="absolute top-12 left-4 right-4 hidden bg-red-950/80 border border-red-500 rounded p-2 text-center text-xs text-red-400 monospace animate-pulse" data-i18n="app_retain.brittle_warn">
+              <div id="brittle-warning" class="absolute top-12 left-4 right-4 hidden bg-red-600/10 border border-red-500 text-red-500 rounded-lg p-2.5 text-center text-xs monospace animate-pulse shadow-sm" data-i18n="app_retain.brittle_warn">
                 [ALERT: CRITICAL BRITTLE SEGMENT FRACTURE RISK DETECTED]
               </div>
-              <canvas id="osteComb-canvas" class="w-full max-w-[450px] h-[300px] cursor-grab"></canvas>
+              <canvas id="osteComb-canvas" class="w-full max-w-[480px] h-[280px] cursor-grab"></canvas>
             </div>
 
             <!-- Parametric Sliders Configuration Command Deck -->
-            <div class="bg-[#040d21] border border-[#00f2fe]/20 rounded-lg p-5 flex flex-col justify-between">
+            <div class="bg-panel-theme border border-theme rounded-xl p-5 flex flex-col justify-between shadow-sm">
               <div class="space-y-4">
-                <h3 class="text-xs uppercase tracking-widest text-[#00f2fe]/80 font-bold monospace border-b border-[#00f2fe]/10 pb-2">SIMULATION CONSTANTS</h3>
+                <h3 class="text-xs uppercase tracking-wider text-primary-theme font-bold monospace border-b border-theme pb-2">SIMULATION CONSTANTS</h3>
 
                 <!-- Parameter 1: Age -->
-                <div>
-                  <div class="flex justify-between text-xs monospace mb-1">
-                    <span data-i18n="app_retain.age_lbl" class="text-[#00f2fe]/60">SUBJECT AGE (YEARS)</span>
-                    <span id="label-age" class="text-[#00f2fe] font-bold">34</span>
+                <div class="bg-input-theme p-3 rounded-lg border border-theme">
+                  <div class="flex justify-between text-xs monospace mb-1.5">
+                    <span data-i18n="app_retain.age_lbl" class="text-muted-theme font-semibold">SUBJECT AGE (YEARS)</span>
+                    <span id="label-age" class="text-brand-theme font-bold text-sm">34</span>
                   </div>
-                  <input type="range" id="slider-age" min="18" max="95" value="34" class="w-full accent-[#00f2fe] bg-[#020612] h-1.5 rounded cursor-pointer">
+                  <input type="range" id="slider-age" min="18" max="95" value="34" class="w-full accent-blue-600 bg-app-theme h-1 rounded cursor-pointer">
                 </div>
 
                 <!-- Parameter 2: Exercise Frequency -->
-                <div>
-                  <div class="flex justify-between text-xs monospace mb-1">
-                    <span data-i18n="app_retain.exercise_lbl" class="text-[#00f2fe]/60">EXERCISE FREQUENCY (HOURS/WEEK)</span>
-                    <span id="label-exercise" class="text-[#00f2fe] font-bold">12</span>
+                <div class="bg-input-theme p-3 rounded-lg border border-theme">
+                  <div class="flex justify-between text-xs monospace mb-1.5">
+                    <span data-i18n="app_retain.exercise_lbl" class="text-muted-theme font-semibold">EXERCISE FREQUENCY (HOURS/WEEK)</span>
+                    <span id="label-exercise" class="text-brand-theme font-bold text-sm">12</span>
                   </div>
-                  <input type="range" id="slider-exercise" min="0" max="40" value="12" class="w-full accent-[#00f2fe] bg-[#020612] h-1.5 rounded cursor-pointer">
+                  <input type="range" id="slider-exercise" min="0" max="40" value="12" class="w-full accent-blue-600 bg-app-theme h-1 rounded cursor-pointer">
                 </div>
 
                 <!-- Parameter 3: Gravitational Stress -->
-                <div>
-                  <div class="flex justify-between text-xs monospace mb-1">
-                    <span data-i18n="app_retain.gravity_lbl" class="text-[#00f2fe]/60">GRAVITATIONAL FORCE (G-FORCE)</span>
-                    <span id="label-gravity" class="text-[#00f2fe] font-bold">1.0</span>
+                <div class="bg-input-theme p-3 rounded-lg border border-theme">
+                  <div class="flex justify-between text-xs monospace mb-1.5">
+                    <span data-i18n="app_retain.gravity_lbl" class="text-muted-theme font-semibold">GRAVITATIONAL FORCE (G-FORCE)</span>
+                    <span id="label-gravity" class="text-brand-theme font-bold text-sm">1.0</span>
                   </div>
-                  <input type="range" id="slider-gravity" min="0.1" max="10.0" step="0.1" value="1.0" class="w-full accent-[#00f2fe] bg-[#020612] h-1.5 rounded cursor-pointer">
+                  <input type="range" id="slider-gravity" min="0.1" max="10.0" step="0.1" value="1.0" class="w-full accent-blue-600 bg-app-theme h-1 rounded cursor-pointer">
                 </div>
 
                 <!-- Live Dynamic Confocal Diagnostic readout -->
-                <div class="p-3 bg-[#020612] border border-[#00f2fe]/10 rounded font-mono text-[11px] text-[#00f2fe]/70 leading-relaxed">
-                  <p id="diagnostic-confocal-readout">Diagnostic Confocal scanning at 39,420 Hz // Density Coherence: 86.4%</p>
+                <div class="p-4 bg-input-theme border border-theme rounded-lg font-mono text-[11px] text-primary-theme leading-relaxed">
+                  <p id="diagnostic-confocal-readout" class="font-bold">Diagnostic Confocal scanning at 39,420 Hz // Density Coherence: 86.4%</p>
                 </div>
               </div>
 
               <!-- PDF/Text Confocal Simulation Report Generator Export -->
-              <div class="pt-4 border-t border-[#00f2fe]/10 mt-6">
-                <button id="btn-export-report" class="w-full py-2.5 bg-[#00f2fe]/10 hover:bg-[#00f2fe]/20 border border-[#00f2fe] text-[#00f2fe] rounded font-bold text-xs uppercase tracking-wider transition cursor-pointer monospace" data-i18n="app_retain.export_btn">
+              <div class="pt-4 border-t border-theme mt-6">
+                <button id="btn-export-report" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs uppercase tracking-wider transition cursor-pointer monospace active:scale-95 shadow-sm">
                   [EXPORT_SKELETAL_RETENTION_REPORT]
                 </button>
               </div>
@@ -310,127 +377,182 @@
           </div>
         </div>
 
-        <!-- 🔮 APP 04: VORTEXAI / COHERENCE ORACLE -->
+        <!-- 🔮 APP 04: ORACLE CORE COHERENCE TERMINAL -->
         <div id="app-ai" class="tab-view hidden space-y-6">
-          <div class="border-b border-[#00f2fe]/20 pb-3">
-            <h2 class="text-xl font-bold tracking-widest text-[#00f2fe] glow-cyan monospace panel-header-bracket" data-i18n="app_ai.title">APP 04 // VORTEX-AI COHERENCE ORACLE</h2>
-            <p class="text-xs text-[#00f2fe]/50 uppercase tracking-wider monospace">High-Frequency Cognitive Synthesis Matrix</p>
+          <div class="border-b border-theme pb-3 flex justify-between items-center">
+            <div>
+              <h2 class="text-lg font-bold tracking-tight text-primary-theme monospace" data-i18n="app_ai.title">APP 04 // VORTEX-AI COHERENCE ORACLE</h2>
+              <p class="text-xs text-muted-theme uppercase tracking-wider monospace mt-0.5">High-Frequency Cognitive Synthesis Matrix</p>
+            </div>
+            <div class="text-xs monospace bg-input-theme border border-theme rounded px-2.5 py-1 text-muted-theme font-semibold">
+              ENGINE: <span class="text-brand-theme font-bold">ORACLE CORE</span>
+            </div>
           </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <!-- Sidebar with prefilled command nodes -->
-            <div class="bg-[#040d21] border border-[#00f2fe]/20 rounded-lg p-5 space-y-4">
-              <h3 class="text-xs uppercase tracking-widest text-[#00f2fe]/70 font-bold monospace border-b border-[#00f2fe]/10 pb-2">PRESET COMMAND PATHS</h3>
-              <div class="space-y-2">
-                <button class="ai-preset-btn w-full text-left p-2.5 bg-[#020612] hover:bg-[#00f2fe]/10 border border-[#00f2fe]/20 rounded text-xs monospace text-[#00f2fe]/80 transition cursor-pointer" data-prompt="Query command suite sub-harmonic resonance properties for frequency alignment." data-i18n="app_ai.preset_1">
-                  Query System Resonance
-                </button>
-                <button class="ai-preset-btn w-full text-left p-2.5 bg-[#020612] hover:bg-[#00f2fe]/10 border border-[#00f2fe]/20 rounded text-xs monospace text-[#00f2fe]/80 transition cursor-pointer" data-prompt="Synthesize localized optimal compaction parameters for osteComb cylindrical scaffolding." data-i18n="app_ai.preset_2">
-                  Request Lattice Optimization
-                </button>
-                <button class="ai-preset-btn w-full text-left p-2.5 bg-[#020612] hover:bg-[#00f2fe]/10 border border-[#00f2fe]/20 rounded text-xs monospace text-[#00f2fe]/80 transition cursor-pointer" data-prompt="Read and decode Mars atmosphere pressure telemetry and dQ_leak variables." data-i18n="app_ai.preset_3">
-                  Report Mars Weather Telemetry
-                </button>
-              </div>
-              <div class="p-3 bg-[#020612] rounded border border-[#00f2fe]/10 text-[10px] text-slate-400 monospace uppercase tracking-wider leading-relaxed">
-                COHERENCE ASSOC: UNIFIED ORACLE<br>
-                MODEL_ID: DEEPSEEK_V4_FLASH<br>
-                COGNITIVE LIMITS: 4,096 TOKENS
+          <!-- ASYMMETRIC SYSTEM INTEGRATION CONTAINER -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <!-- LEFT COLUMN: COGNITIVE CONTROLLER & SYNC BLOCK -->
+            <div class="lg:col-span-4 bg-panel-theme border border-theme rounded-xl p-5 flex flex-col justify-between shadow-sm space-y-5">
+              <div class="space-y-4">
+                <div class="text-center pb-4 border-b border-theme">
+                  <span class="text-[10px] tracking-wider uppercase text-muted-theme font-bold monospace block mb-2">SYNAPSE INTEGRATION MONITOR</span>
+                  <div class="relative w-16 h-16 mx-auto flex items-center justify-center bg-input-theme border border-theme rounded-xl text-xl shadow-inner">
+                    🤖
+                  </div>
+                </div>
+
+                <!-- MATHEMATICAL MEMORY MONITOR -->
+                <div>
+                  <h4 class="text-xs uppercase tracking-wider text-primary-theme font-bold monospace mb-2 flex items-center">
+                    <span class="mr-2">📁</span> MEMORY SYNC CHIP CONTROLLER
+                  </h4>
+                  <div class="space-y-1.5 bg-input-theme border border-theme rounded-lg p-3.5 text-[10.5px] monospace leading-normal">
+                    <div class="flex justify-between text-muted-theme border-b border-theme pb-1.5">
+                      <span>SKELETAL_AGE:</span>
+                      <span id="ai-sync-age" class="text-primary-theme font-bold">34 yrs</span>
+                    </div>
+                    <div class="flex justify-between text-muted-theme border-b border-theme py-1.5">
+                      <span>SKELETAL_DENSITY:</span>
+                      <span id="ai-sync-density" class="text-primary-theme font-bold">86.4%</span>
+                    </div>
+                    <div class="flex justify-between text-muted-theme border-b border-theme py-1.5">
+                      <span>RESONANCE_CARRIER:</span>
+                      <span id="ai-sync-freq" class="text-primary-theme font-bold">12,500 Hz</span>
+                    </div>
+                    <div class="flex justify-between text-muted-theme border-b border-theme py-1.5">
+                      <span>BIOPULSE_HEART:</span>
+                      <span id="ai-sync-bpm" class="text-success-theme font-bold">72 BPM</span>
+                    </div>
+                    <div class="flex justify-between text-muted-theme border-b border-theme py-1.5">
+                      <span>LEDGER_BALANCE:</span>
+                      <span id="ai-sync-ledger" class="text-amber-500 font-bold">$5,000.00</span>
+                    </div>
+                    <div class="flex justify-between text-muted-theme pt-1.5">
+                      <span>ENTROPY_PROFILE:</span>
+                      <span class="text-success-theme font-bold">0.00 W Flat</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- PRESET OPERATIONS QUICK SEND -->
+                <div>
+                  <h4 class="text-xs uppercase tracking-wider text-primary-theme font-bold monospace mb-2">QUICK OPERATIONS TRIGGER</h4>
+                  <div class="space-y-2">
+                    <button class="ai-preset-btn w-full text-left p-2.5 bg-input-theme hover:bg-muted-theme border border-theme rounded text-[10.5px] monospace text-primary-theme transition cursor-pointer font-medium" data-prompt="Query command suite sub-harmonic resonance properties for frequency alignment." data-i18n="app_ai.preset_1">
+                      Query System Resonance
+                    </button>
+                    <button class="ai-preset-btn w-full text-left p-2.5 bg-input-theme hover:bg-muted-theme border border-theme rounded text-[10.5px] monospace text-primary-theme transition cursor-pointer font-medium" data-prompt="Synthesize localized optimal compaction parameters for osteComb cylindrical scaffolding." data-i18n="app_ai.preset_2">
+                      Request Lattice Optimization
+                    </button>
+                    <button class="ai-preset-btn w-full text-left p-2.5 bg-input-theme hover:bg-muted-theme border border-theme rounded text-[10.5px] monospace text-primary-theme transition cursor-pointer font-medium" data-prompt="Read and decode Mars atmosphere pressure telemetry and dQ_leak variables." data-i18n="app_ai.preset_3">
+                      Report Mars Weather Telemetry
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <!-- Interactive AI Chat Terminal Display -->
-            <div class="lg:col-span-3 bg-[#040d21] border border-[#00f2fe]/20 rounded-lg p-5 flex flex-col h-[450px] border-neon-cyan">
-              <div class="flex justify-between items-center border-b border-[#00f2fe]/10 pb-2 mb-3">
-                <span class="text-xs monospace text-emerald-400 flex items-center space-x-1.5 animate-pulse">
-                  <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-                  <span data-i18n="app_ai.system_msg">Connected to Oracle Core. DeepSeek Flash operational.</span>
+            <!-- RIGHT COLUMN: HIGH-GRADE TERMINAL CHAT FEED -->
+            <div class="lg:col-span-8 bg-panel-theme border border-theme rounded-xl p-5 flex flex-col h-[500px] shadow-sm">
+              <!-- CRT Header -->
+              <div class="flex justify-between items-center border-b border-theme pb-3 mb-4">
+                <span class="text-xs monospace text-success-theme flex items-center space-x-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                  <span data-i18n="app_ai.system_msg">Connected to Oracle Core. Core operational.</span>
                 </span>
-                <span class="text-[10px] monospace text-[#00f2fe]/30 uppercase">Sovereign_Oracle_Node</span>
+                <span class="text-[9px] monospace bg-brand-soft text-brand-theme px-2.5 py-1 rounded border border-theme font-bold">ORACLE_CORE_DECK</span>
               </div>
 
               <!-- Message Logs Container -->
-              <div id="ai-chat-logs" class="flex-grow overflow-y-auto space-y-4 p-3 bg-[#020612] rounded border border-[#00f2fe]/10 monospace text-xs mb-3">
-                <div class="text-[#00f2fe]/40 border-b border-[#00f2fe]/5 pb-1">[SYSTEM INITIALIZED // WAITING FOR DIRECT COMMANDS]</div>
-                <div class="p-2 bg-[#00f2fe]/5 border border-[#00f2fe]/15 rounded text-[#00f2fe]/95">
-                  <span class="text-[#00f2fe] font-bold block mb-1">COHERENCE ORACLE:</span>
-                  Commander Möbius, I am fully online at 39,420 Hz. Enter any operational query or execute a preset parameter path to optimize the command lattice.
+              <div id="ai-chat-logs" class="flex-grow overflow-y-auto space-y-4 p-4 bg-input-theme rounded-lg border border-theme monospace text-xs mb-4 shadow-inner">
+                <div class="text-muted-theme border-b border-theme pb-2 flex justify-between items-center text-[10px]">
+                  <span>[SYSTEM CORE INITIALIZED // MATH CHANNEL PIPELINE SYNCED]</span>
+                  <span>CLOCK LOCK</span>
+                </div>
+                
+                <div class="p-3 bg-brand-soft border border-theme rounded-lg text-primary-theme">
+                  <div class="flex justify-between items-center mb-1.5">
+                    <span class="text-brand-theme font-bold">🤖 COHERENCE ORACLE:</span>
+                    <span class="text-[9px] text-muted-theme font-semibold uppercase">SECURE HANDSHAKE</span>
+                  </div>
+                  Commander, I am fully online at 39,420 Hz. Enter any operational query or execute a preset parameter path to optimize the command matrix.
                 </div>
               </div>
 
               <!-- Chat Input Form -->
-              <form id="ai-chat-form" class="flex space-x-2">
-                <input type="text" id="ai-chat-input" placeholder="Command the Oracle (e.g. 'Synthesize grid parameters')..." class="flex-grow bg-[#020612] border border-[#00f2fe]/30 rounded px-3 py-2.5 text-xs text-[#00f2fe] focus:outline-none focus:border-[#00f2fe] placeholder-[#00f2fe]/30 monospace" data-i18n-placeholder="app_ai.placeholder" required>
-                <button type="submit" class="bg-[#00f2fe]/20 hover:bg-[#00f2fe]/35 border border-[#00f2fe] text-[#00f2fe] px-5 py-2.5 rounded font-bold uppercase tracking-wider text-xs transition duration-150 cursor-pointer monospace" data-i18n="app_ai.submit">
+              <form id="ai-chat-form" class="flex space-x-3">
+                <input type="text" id="ai-chat-input" placeholder="Command the Oracle (e.g. 'Synthesize grid parameters')..." class="flex-grow bg-input-theme border border-theme rounded-lg px-4 py-2.5 text-xs text-primary-theme focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 placeholder-slate-500 monospace shadow-inner" data-i18n-placeholder="app_ai.placeholder" required>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-bold uppercase tracking-wider text-xs transition duration-150 cursor-pointer monospace active:scale-95 shadow-sm">
                   SEND
                 </button>
               </form>
             </div>
+
           </div>
         </div>
 
         <!-- 🌀 APP 08: SUPERFLUID RESONANCE -->
         <div id="app-resonance" class="tab-view hidden space-y-6">
-          <div class="border-b border-[#00f2fe]/20 pb-3">
-            <h2 class="text-xl font-bold tracking-widest text-[#00f2fe] glow-cyan monospace panel-header-bracket" data-i18n="app_resonance.title">APP 08 // SUPERFLUID RESONANCE SYSTEM</h2>
-            <p class="text-xs text-[#00f2fe]/50 uppercase tracking-wider monospace">Sub-harmonic Frequency Sweeper & Oscillating Phase Shifter</p>
+          <div class="border-b border-theme pb-3">
+            <h2 class="text-lg font-bold tracking-tight text-primary-theme monospace" data-i18n="app_resonance.title">APP 08 // SUPERFLUID RESONANCE SYSTEM</h2>
+            <p class="text-xs text-muted-theme uppercase tracking-wider monospace mt-0.5">Sub-harmonic Frequency Sweeper & Oscillating Phase Shifter</p>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Morphing Audio Wave Path Visualizer SVG -->
-            <div class="lg:col-span-2 bg-[#040d21] border border-[#00f2fe]/20 rounded-lg p-5 flex flex-col justify-center items-center min-h-[300px] relative border-neon-cyan">
-              <span class="absolute top-2 left-2 text-[10px] text-[#00f2fe]/40 monospace">SUPERFLUID PHYSICAL RESONANCE WAVE PATH</span>
+            <!-- Audio Wave Path Visualizer SVG -->
+            <div class="lg:col-span-2 bg-panel-theme border border-theme rounded-xl p-5 flex flex-col justify-center items-center min-h-[330px] relative shadow-sm">
+              <span class="absolute top-2 left-2 text-[10px] text-muted-theme monospace font-semibold uppercase">SUPERFLUID RESONANCE PATH DISPLACEMENT WAVE</span>
               <svg id="resonance-wave-svg" viewBox="0 0 600 200" class="w-full max-w-[500px] h-[180px]">
-                <!-- Wave grid guide lines -->
-                <line x1="0" y1="100" x2="600" y2="100" stroke="rgba(0, 242, 254, 0.15)" stroke-width="1" stroke-dasharray="4" />
-                <path id="resonance-wave-path" d="M 0 100 Q 150 100 300 100 T 600 100" fill="none" stroke="#00f2fe" stroke-width="2.5" class="transition-all duration-300" />
+                <line x1="0" y1="100" x2="600" y2="100" stroke="var(--border-main)" stroke-width="1" stroke-dasharray="4" />
+                <path id="resonance-wave-path" d="M 0 100 Q 150 100 300 100 T 600 100" fill="none" stroke="var(--brand)" stroke-width="2.5" class="transition-all duration-300" />
               </svg>
-              <div class="w-full flex justify-between px-4 text-[10px] monospace text-[#00f2fe]/50 mt-2 uppercase">
+              <div class="w-full flex justify-between px-4 text-[10px] monospace text-muted-theme mt-4 uppercase font-bold">
                 <span>0.00 Hz Carrier</span>
-                <span id="label-live-phase">Angle: 0.00°</span>
+                <span id="label-live-phase" class="text-primary-theme font-bold">Angle: 0.00°</span>
                 <span>39,420 Hz Max</span>
               </div>
             </div>
 
             <!-- Superfluid Slider Modulation Controls -->
-            <div class="bg-[#040d21] border border-[#00f2fe]/20 rounded-lg p-5 flex flex-col justify-between">
+            <div class="bg-panel-theme border border-theme rounded-xl p-5 flex flex-col justify-between shadow-sm">
               <div class="space-y-4">
-                <h3 class="text-xs uppercase tracking-widest text-[#00f2fe]/80 font-bold monospace border-b border-[#00f2fe]/10 pb-2">WAVE MODULATOR CONTROLS</h3>
+                <h3 class="text-xs uppercase tracking-wider text-primary-theme font-bold monospace border-b border-theme pb-2">WAVE MODULATOR CONTROLS</h3>
 
                 <!-- Parameter 1: Carrier Harmonic Frequency -->
-                <div>
-                  <div class="flex justify-between text-xs monospace mb-1">
-                    <span data-i18n="app_resonance.carrier_lbl" class="text-[#00f2fe]/60">CARRIER FREQUENCY HARMONIC (Hz)</span>
-                    <span id="label-resonance-freq" class="text-[#00f2fe] font-bold">12,500 Hz</span>
+                <div class="bg-input-theme p-3 rounded-lg border border-theme">
+                  <div class="flex justify-between text-xs monospace mb-1.5">
+                    <span data-i18n="app_resonance.carrier_lbl" class="text-muted-theme font-semibold">CARRIER FREQUENCY (Hz)</span>
+                    <span id="label-resonance-freq" class="text-brand-theme font-bold text-sm">12,500 Hz</span>
                   </div>
-                  <input type="range" id="slider-resonance-freq" min="1000" max="39420" value="12500" class="w-full accent-[#00f2fe] bg-[#020612] h-1.5 rounded cursor-pointer">
+                  <input type="range" id="slider-resonance-freq" min="1000" max="39420" value="12500" class="w-full accent-blue-600 bg-app-theme h-1 rounded cursor-pointer">
                 </div>
 
                 <!-- Parameter 2: Sub-harmonic Decay -->
-                <div>
-                  <div class="flex justify-between text-xs monospace mb-1">
-                    <span data-i18n="app_resonance.decay_lbl" class="text-[#00f2fe]/60">SUB-HARMONIC DECAY COEFFICIENT</span>
-                    <span id="label-resonance-decay" class="text-[#00f2fe] font-bold">0.45</span>
+                <div class="bg-input-theme p-3 rounded-lg border border-theme">
+                  <div class="flex justify-between text-xs monospace mb-1.5">
+                    <span data-i18n="app_resonance.decay_lbl" class="text-muted-theme font-semibold">SUB-HARMONIC DECAY</span>
+                    <span id="label-resonance-decay" class="text-brand-theme font-bold text-sm">0.45</span>
                   </div>
-                  <input type="range" id="slider-resonance-decay" min="0.05" max="0.95" step="0.01" value="0.45" class="w-full accent-[#00f2fe] bg-[#020612] h-1.5 rounded cursor-pointer">
+                  <input type="range" id="slider-resonance-decay" min="0.05" max="0.95" step="0.01" value="0.45" class="w-full accent-blue-600 bg-app-theme h-1 rounded cursor-pointer">
                 </div>
 
                 <!-- Parameter 3: Convergence Ratio -->
-                <div>
-                  <div class="flex justify-between text-xs monospace mb-1">
-                    <span data-i18n="app_resonance.convergence_lbl" class="text-[#00f2fe]/60">CONVERGENCE PARITY RATIO</span>
-                    <span id="label-resonance-convergence" class="text-[#00f2fe] font-bold">1.22</span>
+                <div class="bg-input-theme p-3 rounded-lg border border-theme">
+                  <div class="flex justify-between text-xs monospace mb-1.5">
+                    <span data-i18n="app_resonance.convergence_lbl" class="text-muted-theme font-semibold">CONVERGENCE RATIO</span>
+                    <span id="label-resonance-convergence" class="text-brand-theme font-bold text-sm">1.22</span>
                   </div>
-                  <input type="range" id="slider-resonance-convergence" min="0.10" max="3.00" step="0.05" value="1.22" class="w-full accent-[#00f2fe] bg-[#020612] h-1.5 rounded cursor-pointer">
+                  <input type="range" id="slider-resonance-convergence" min="0.10" max="3.00" step="0.05" value="1.22" class="w-full accent-blue-600 bg-app-theme h-1 rounded cursor-pointer">
                 </div>
               </div>
 
               <!-- Instant Preset Calibrations -->
-              <div class="pt-4 border-t border-[#00f2fe]/10 mt-6 grid grid-cols-2 gap-2">
-                <button id="btn-sweep-ch4" class="py-2 bg-[#00f2fe]/10 hover:bg-[#00f2fe]/20 border border-[#00f2fe] text-[#00f2fe] rounded text-xs transition cursor-pointer monospace uppercase" data-i18n="app_resonance.sweep_ch_04">
+              <div class="pt-4 border-t border-theme mt-6 grid grid-cols-2 gap-3">
+                <button id="btn-sweep-ch4" class="py-2.5 bg-input-theme hover:bg-muted-theme border border-theme text-primary-theme font-bold rounded-lg text-xs transition cursor-pointer monospace uppercase active:scale-95">
                   [CAL_CH_04]
                 </button>
-                <button id="btn-sweep-lunar" class="py-2 bg-[#ff0055]/10 hover:bg-[#ff0055]/20 border border-[#ff0055] text-[#ff0055] rounded text-xs transition cursor-pointer monospace uppercase" data-i18n="app_resonance.sweep_lunar">
+                <button id="btn-sweep-lunar" class="py-2.5 bg-brand-soft border border-brand text-brand-theme font-bold rounded-lg text-xs transition cursor-pointer monospace uppercase active:scale-95">
                   [CAL_LUNAR]
                 </button>
               </div>
@@ -440,97 +562,117 @@
 
         <!-- 💻 APP 16: LEGENDRIAN ALGORITHM WORK GRID -->
         <div id="app-work" class="tab-view hidden space-y-6">
-          <div class="border-b border-[#00f2fe]/20 pb-3 flex flex-wrap justify-between items-center">
+          <div class="border-b border-theme pb-3 flex flex-wrap justify-between items-center">
             <div>
-              <h2 class="text-xl font-bold tracking-widest text-[#00f2fe] glow-cyan monospace panel-header-bracket" data-i18n="app_work.title">APP 16 // LEGENDRIAN ALGORITHM WORK GRID</h2>
-              <p class="text-xs text-[#00f2fe]/50 uppercase tracking-wider monospace">Execute Micro-Algorithmic Computational Contracts to Earn $BRAID</p>
+              <h2 class="text-lg font-bold tracking-tight text-primary-theme monospace" data-i18n="app_work.title">APP 16 // LEGENDRIAN ALGORITHM WORK GRID</h2>
+              <p class="text-xs text-muted-theme uppercase tracking-wider monospace mt-0.5">Execute Micro-Algorithmic Computational Contracts to Earn $BRAID</p>
             </div>
             <!-- Interactive Live balance ledger indicator -->
-            <div class="bg-[#020612] px-4 py-2 border border-[#00f2fe]/30 rounded text-right monospace">
-              <span class="text-[10px] text-[#00f2fe]/40 block uppercase" data-i18n="app_work.balance_lbl">LEDGER BALANCE ($BRAID)</span>
-              <span class="text-md font-bold text-amber-400 glow-amber" id="work-balance-val">$5,000.00</span>
+            <div class="bg-input-theme px-4 py-2 border border-theme rounded-lg text-right monospace">
+              <span class="text-[10px] text-muted-theme block uppercase font-bold" data-i18n="app_work.balance_lbl">LEDGER BALANCE ($BRAID)</span>
+              <span class="text-md font-bold text-amber-500" id="work-balance-val">$5,000.00</span>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <!-- Active Computational Directory Contract Selection -->
-            <div class="bg-[#040d21] border border-[#00f2fe]/20 rounded-lg p-5">
-              <h3 class="text-xs uppercase tracking-widest text-[#00f2fe]/80 font-bold monospace border-b border-[#00f2fe]/10 pb-2 mb-3" data-i18n="app_work.contracts_lbl">[AVAILABLE COMPUTATIONAL CONTRACTS]</h3>
+            <div class="lg:col-span-4 bg-panel-theme border border-theme rounded-xl p-5 shadow-sm">
+              <h3 class="text-xs uppercase tracking-wider text-primary-theme font-bold monospace border-b border-theme pb-2 mb-4" data-i18n="app_work.contracts_lbl">[AVAILABLE COMPUTATIONAL CONTRACTS]</h3>
               
-              <!-- Contracts Selector Directory -->
-              <div class="space-y-3" id="contracts-directory-list">
-                <!-- Contract Item 1 -->
-                <div data-job="JOB_A1" data-bounty="45.00" class="contract-card p-3 bg-[#020612] hover:bg-[#00f2fe]/5 border border-[#00f2fe]/20 rounded cursor-pointer transition duration-150 relative">
-                  <span class="absolute top-2 right-2 text-[10px] monospace text-emerald-400 font-bold uppercase">READY</span>
-                  <p class="text-xs font-bold monospace text-[#00f2fe] mb-1">MATRIX_RECONSTRUCT_01</p>
-                  <p class="text-[10px] text-slate-400 leading-relaxed mb-2">Repair fragmented osteComb Cylindrical matrix nodes. Re-align base density parameters.</p>
-                  <div class="flex justify-between text-[10px] monospace text-[#00f2fe]/50 border-t border-[#00f2fe]/5 pt-1.5">
-                    <span>COHERENCE: >92%</span>
-                    <span>BOUNTY: <span class="text-amber-400 font-bold">+$45.00</span></span>
+              <!-- Contracts Directory -->
+              <div class="space-y-3.5" id="contracts-directory-list">
+                <div data-job="JOB_A1" data-bounty="45.00" class="p-4 bg-input-theme border border-theme hover:border-brand rounded-lg cursor-pointer transition relative">
+                  <span class="absolute top-2 right-2 text-[9px] monospace text-success-theme font-bold uppercase bg-success-soft px-2 py-0.5 border border-theme rounded">READY</span>
+                  <p class="text-xs font-bold monospace text-primary-theme mb-1">MATRIX_RECONSTRUCT_01</p>
+                  <p class="text-[11px] text-muted-theme leading-relaxed mb-3">Repair fragmented osteComb cylindrical matrix nodes. Re-align base density parameters.</p>
+                  <div class="flex justify-between text-[9px] monospace text-muted-theme border-t border-theme pt-2 font-semibold">
+                    <span>COHERENCE: &gt;92%</span>
+                    <span>BOUNTY: <span class="text-amber-500 font-bold">+$45.00</span></span>
                   </div>
                 </div>
 
-                <!-- Contract Item 2 -->
-                <div data-job="JOB_B2" data-bounty="60.00" class="contract-card p-3 bg-[#020612] hover:bg-[#00f2fe]/5 border border-[#00f2fe]/20 rounded cursor-pointer transition duration-150 relative">
-                  <span class="absolute top-2 right-2 text-[10px] monospace text-emerald-400 font-bold uppercase">READY</span>
-                  <p class="text-xs font-bold monospace text-[#00f2fe] mb-1">ORBITAL_DECAY_CAL_54</p>
-                  <p class="text-[10px] text-slate-400 leading-relaxed mb-2">Evaluate Cydonia Braid Cruiser manifold velocity trajectory constraints under G stress.</p>
-                  <div class="flex justify-between text-[10px] monospace text-[#00f2fe]/50 border-t border-[#00f2fe]/5 pt-1.5">
+                <div data-job="JOB_B2" data-bounty="60.00" class="p-4 bg-input-theme border border-theme hover:border-brand rounded-lg cursor-pointer transition relative">
+                  <span class="absolute top-2 right-2 text-[9px] monospace text-success-theme font-bold uppercase bg-success-soft px-2 py-0.5 border border-theme rounded">READY</span>
+                  <p class="text-xs font-bold monospace text-primary-theme mb-1">ORBITAL_DECAY_CAL_54</p>
+                  <p class="text-[11px] text-muted-theme leading-relaxed mb-3">Evaluate Cydonia Braid Cruiser manifold velocity trajectory constraints under G stress.</p>
+                  <div class="flex justify-between text-[9px] monospace text-muted-theme border-t border-theme pt-2 font-semibold">
                     <span>STRESS: 3.5 G</span>
-                    <span>BOUNTY: <span class="text-amber-400 font-bold">+$60.00</span></span>
+                    <span>BOUNTY: <span class="text-amber-500 font-bold">+$60.00</span></span>
                   </div>
                 </div>
 
-                <!-- Contract Item 3 -->
-                <div data-job="JOB_C3" data-bounty="110.00" class="contract-card p-3 bg-[#020612] hover:bg-[#00f2fe]/5 border border-[#00f2fe]/20 rounded cursor-pointer transition duration-150 relative">
-                  <span class="absolute top-2 right-2 text-[10px] monospace text-emerald-400 font-bold uppercase">READY</span>
-                  <p class="text-xs font-bold monospace text-[#00f2fe] mb-1">COMPRESSOR_RE-INDEX_99</p>
-                  <p class="text-[10px] text-slate-400 leading-relaxed mb-2">Compress contributing JavaScript files. Minimize system entropy down to flat leakage.</p>
-                  <div class="flex justify-between text-[10px] monospace text-[#00f2fe]/50 border-t border-[#00f2fe]/5 pt-1.5">
+                <div data-job="JOB_C3" data-bounty="110.00" class="p-4 bg-input-theme border border-theme hover:border-brand rounded-lg cursor-pointer transition relative">
+                  <span class="absolute top-2 right-2 text-[9px] monospace text-success-theme font-bold uppercase bg-success-soft px-2 py-0.5 border border-theme rounded">READY</span>
+                  <p class="text-xs font-bold monospace text-primary-theme mb-1">COMPRESSOR_RE-INDEX_99</p>
+                  <p class="text-[11px] text-muted-theme leading-relaxed mb-3">Compress contributing JavaScript files. Minimize system entropy down to flat leakage.</p>
+                  <div class="flex justify-between text-[9px] monospace text-muted-theme border-t border-theme pt-2 font-semibold">
                     <span>SINTERING: TRUE</span>
-                    <span>BOUNTY: <span class="text-amber-400 font-bold">+$110.00</span></span>
+                    <span>BOUNTY: <span class="text-amber-500 font-bold">+$110.00</span></span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Workspace Editor & Simulation Logs Console -->
-            <div class="lg:col-span-2 bg-[#040d21] border border-[#00f2fe]/20 rounded-lg p-5 flex flex-col justify-between border-neon-cyan min-h-[400px]">
+            <!-- Workspace Editor -->
+            <div class="lg:col-span-8 bg-panel-theme border border-theme rounded-xl p-5 flex flex-col justify-between shadow-sm min-h-[420px]">
               
               <!-- Offline default view -->
               <div id="work-workspace-offline" class="flex-grow flex flex-col justify-center items-center text-center p-6 space-y-3">
                 <span class="text-4xl">💻</span>
-                <h4 class="text-md font-bold text-[#00f2fe]/80 monospace uppercase">[WORKSPACE TERMINAL OFFLINE]</h4>
-                <p class="text-xs text-slate-400 max-w-sm leading-relaxed" data-i18n="app_work.offline_desc">Select an active infrastructure contract from the directory to initialize the Legendrian Algorithm Workspace.</p>
+                <h4 class="text-sm font-bold text-primary-theme monospace uppercase">[WORKSPACE OFFLINE]</h4>
+                <p class="text-xs text-muted-theme max-w-sm leading-relaxed" data-i18n="app_work.offline_desc">Select an active infrastructure contract from the directory to initialize the Legendrian Algorithm Workspace.</p>
               </div>
 
               <!-- Active Contract Workspace container -->
-              <div id="work-workspace-active" class="hidden flex-grow flex flex-col space-y-3">
-                <div class="flex justify-between items-center border-b border-[#00f2fe]/10 pb-1.5">
-                  <span class="text-xs font-bold monospace text-[#00f2fe]" id="work-active-job-id">WORKSPACE: JOB_A1</span>
-                  <span class="text-[10px] bg-[#00f2fe]/15 text-[#00f2fe] px-1.5 py-0.5 rounded monospace" id="work-active-payout">Est. Bounty: $45.00</span>
+              <div id="work-workspace-active" class="hidden flex-grow flex flex-col space-y-4">
+                <div class="flex justify-between items-center border-b border-theme pb-2">
+                  <span class="text-xs font-bold monospace text-primary-theme flex items-center">
+                    <span class="w-2 h-2 rounded-full bg-blue-500 mr-2 animate-ping"></span>
+                    <span id="work-active-job-id">WORKSPACE: JOB_A1</span>
+                  </span>
+                  <span class="text-[10px] bg-brand-soft text-brand-theme px-2.5 py-1 border border-theme rounded-lg font-bold monospace" id="work-active-payout">Est. Bounty: $45.00</span>
                 </div>
 
-                <div class="flex-grow grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <!-- Coding Input textarea simulate -->
+                <div class="flex-grow grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <!-- Coding Input textarea -->
                   <div class="flex flex-col">
-                    <span class="text-[10px] text-[#00f2fe]/40 uppercase tracking-widest monospace mb-1">Compiler Code Block Input</span>
-                    <textarea id="work-compiler-textarea" class="flex-grow bg-[#020612] border border-[#00f2fe]/20 rounded p-2 text-xs text-[#00f2fe] focus:outline-none focus:border-[#00f2fe] monospace h-40 resize-none"></textarea>
+                    <span class="text-[10px] text-muted-theme uppercase tracking-wider font-bold monospace mb-1.5">Compiler Code Input</span>
+                    <textarea id="work-compiler-textarea" class="flex-grow bg-input-theme border border-theme rounded-lg p-3 text-xs text-primary-theme focus:outline-none focus:border-blue-500 monospace h-40 resize-none shadow-inner tracking-wider leading-relaxed"></textarea>
                   </div>
 
                   <!-- Live Compiler execution outputs -->
                   <div class="flex flex-col">
-                    <span class="text-[10px] text-[#00f2fe]/40 uppercase tracking-widest monospace mb-1">Live Execution Pipeline Logs</span>
-                    <div id="work-compilation-logs" class="flex-grow bg-[#020612] border border-[#00f2fe]/20 rounded p-2 text-[10px] text-slate-400 monospace overflow-y-auto space-y-1 h-40">
-                      <p class="text-[#00f2fe]/50">>> Waiting for compiler transmit instructions...</p>
+                    <span class="text-[10px] text-muted-theme uppercase tracking-wider font-bold monospace mb-1.5">Execution Log Output</span>
+                    <div id="work-compilation-logs" class="flex-grow bg-input-theme border border-theme rounded-lg p-3 text-[10.5px] text-muted-theme monospace overflow-y-auto space-y-1 h-40 shadow-inner">
+                      <p>&gt;&gt; Waiting for compiler transmit instructions...</p>
                     </div>
                   </div>
                 </div>
 
+                <!-- DIAGNOSTIC STEPS PANEL -->
+                <div id="work-diagnostic-steps" class="grid grid-cols-2 md:grid-cols-4 gap-2 bg-input-theme p-3 rounded-lg border border-theme text-[10px] monospace uppercase tracking-wider">
+                  <div class="flex items-center space-x-1.5 text-muted-theme" id="step-syntax">
+                    <span class="checkbox-ico font-bold">[ ]</span>
+                    <span>1. SYNTAX LEXT</span>
+                  </div>
+                  <div class="flex items-center space-x-1.5 text-muted-theme" id="step-density">
+                    <span class="checkbox-ico font-bold">[ ]</span>
+                    <span>2. MATH MATCH</span>
+                  </div>
+                  <div class="flex items-center space-x-1.5 text-muted-theme" id="step-coherence">
+                    <span class="checkbox-ico font-bold">[ ]</span>
+                    <span>3. COHERENCE SYNC</span>
+                  </div>
+                  <div class="flex items-center space-x-1.5 text-muted-theme" id="step-ledger">
+                    <span class="checkbox-ico font-bold">[ ]</span>
+                    <span>4. DISBURSE OK</span>
+                  </div>
+                </div>
+
                 <!-- Submit / Compile actions -->
-                <div class="pt-3 border-t border-[#00f2fe]/10 flex justify-between items-center">
-                  <span id="work-compile-status" class="text-xs font-bold uppercase monospace text-slate-400">STATUS: READY_TO_COMPILE</span>
-                  <button id="btn-transmit-compiler" class="px-5 py-2 bg-[#00f2fe]/20 hover:bg-[#00f2fe]/35 border border-[#00f2fe] text-[#00f2fe] rounded font-bold text-xs uppercase tracking-wider transition cursor-pointer monospace" data-i18n="app_work.compile_btn">
+                <div class="pt-3 border-t border-theme flex justify-between items-center">
+                  <span id="work-compile-status" class="text-xs font-bold uppercase monospace text-muted-theme">STATUS: READY_TO_COMPILE</span>
+                  <button id="btn-transmit-compiler" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-xs uppercase tracking-wider transition duration-150 cursor-pointer monospace active:scale-95 shadow-sm">
                     [TRANSMIT TO ORACLE CHECK]
                   </button>
                 </div>
@@ -542,52 +684,52 @@
 
         <!-- 🧬 APP 18: BIO BRIDGE RESONANCE TELEMETRY -->
         <div id="app-bio" class="tab-view hidden space-y-6">
-          <div class="border-b border-[#00f2fe]/20 pb-3">
-            <h2 class="text-xl font-bold tracking-widest text-[#00f2fe] glow-cyan monospace panel-header-bracket" data-i18n="app_bio.title">APP 18 // BIO-RESONANCE HARDWARE BRIDGE</h2>
-            <p class="text-xs text-[#00f2fe]/50 uppercase tracking-wider monospace">Sub-harmonic Physiological Signal Acquisition & Eye-Gaze Tracking</p>
+          <div class="border-b border-theme pb-3">
+            <h2 class="text-lg font-bold tracking-tight text-primary-theme monospace" data-i18n="app_bio.title">APP 18 // BIO-RESONANCE HARDWARE BRIDGE</h2>
+            <p class="text-xs text-muted-theme uppercase tracking-wider monospace mt-0.5">Sub-harmonic Physiological Signal Acquisition & Eye-Gaze Tracking</p>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Glowing PQRST continuous EKG Pulse Wave canvas -->
-            <div class="lg:col-span-2 bg-[#040d21] border border-[#00f2fe]/20 rounded-lg p-5 flex flex-col justify-center items-center min-h-[300px] relative border-neon-cyan">
-              <span class="absolute top-2 left-2 text-[10px] text-emerald-400 monospace flex items-center space-x-1.5">
-                <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-ping"></span>
+            <!-- EKG Pulse Wave canvas -->
+            <div class="lg:col-span-2 bg-panel-theme border border-theme rounded-xl p-5 flex flex-col justify-center items-center min-h-[320px] relative shadow-sm">
+              <span class="absolute top-2 left-2 text-[10px] text-success-theme monospace flex items-center space-x-2 font-bold uppercase">
+                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span>
                 <span>LIVE PHYSIOLOGICAL HEART PULSE (PQRST WAVE)</span>
               </span>
-              <canvas id="pulse-ekg-canvas" class="w-full h-[200px]"></canvas>
+              <canvas id="pulse-ekg-canvas" class="w-full h-[200px] rounded-lg bg-input-theme"></canvas>
             </div>
 
             <!-- Gaze coordinate mouse tracking visualizer and Sync controllers -->
-            <div class="bg-[#040d21] border border-[#00f2fe]/20 rounded-lg p-5 flex flex-col justify-between">
+            <div class="bg-panel-theme border border-theme rounded-xl p-5 flex flex-col justify-between shadow-sm">
               <div class="space-y-4">
-                <h3 class="text-xs uppercase tracking-widest text-[#00f2fe]/80 font-bold monospace border-b border-[#00f2fe]/10 pb-2">TELEMETRY SYNC PROFILE</h3>
+                <h3 class="text-xs uppercase tracking-wider text-primary-theme font-bold monospace border-b border-theme pb-2">TELEMETRY SYNC PROFILE</h3>
 
                 <!-- Telemetry 1: Eye-gaze coordinate tracker mouse region -->
                 <div class="flex flex-col">
-                  <span class="text-xs text-[#00f2fe]/60 monospace mb-1" data-i18n="app_bio.gaze_lbl">EYE-GAZE DEFLECTION COEFFICIENT</span>
-                  <div id="gaze-sensor-box" class="h-28 bg-[#020612] border border-[#00f2fe]/20 rounded flex flex-col justify-center items-center text-center p-2 relative cursor-crosshair">
-                    <span class="absolute top-1 right-2 text-[9px] monospace text-[#00f2fe]/30">TRACKING BOX</span>
-                    <p class="text-[10px] text-slate-400 mb-1 leading-relaxed">Hover mouse inside this box to simulate eye-gaze tracking coordinates natively.</p>
-                    <p id="label-gaze-coords" class="text-xs font-mono font-bold text-[#00f2fe] glow-cyan">X: 000 // Y: 000</p>
+                  <span class="text-xs text-muted-theme monospace mb-2 font-semibold" data-i18n="app_bio.gaze_lbl">EYE-GAZE DEFLECTION COEFFICIENT</span>
+                  <div id="gaze-sensor-box" class="h-28 bg-input-theme border border-theme hover:border-brand rounded-lg flex flex-col justify-center items-center text-center p-3 relative cursor-crosshair shadow-inner transition duration-150">
+                    <span class="absolute top-1.5 right-2.5 text-[9px] monospace text-muted-theme font-semibold">TRACKING BOX</span>
+                    <p class="text-[10px] text-muted-theme mb-2">Move cursor here to simulate gaze coordinates tracking.</p>
+                    <p id="label-gaze-coords" class="text-xs font-mono font-bold text-brand-theme tracking-wider">X: 000 // Y: 000</p>
                   </div>
                 </div>
 
                 <!-- Telemetry 2: Live heart rate feedback -->
-                <div class="flex justify-between text-xs monospace border-b border-[#00f2fe]/5 pb-2">
-                  <span data-i18n="app_bio.pulse_lbl" class="text-[#00f2fe]/60">PHYSIOLOGICAL HEART RATE (BPM)</span>
-                  <span id="label-live-bpm" class="text-emerald-400 font-bold glow-cyan">72 BPM</span>
+                <div class="flex justify-between items-center text-xs monospace bg-input-theme p-3 rounded-lg border border-theme">
+                  <span data-i18n="app_bio.pulse_lbl" class="text-muted-theme font-semibold">PHYSIOLOGICAL HEART RATE</span>
+                  <span id="label-live-bpm" class="text-success-theme font-extrabold text-sm">72 BPM</span>
                 </div>
 
                 <!-- Telemetry 3: Live heart rate variability index -->
-                <div class="flex justify-between text-xs monospace">
-                  <span data-i18n="app_bio.hrv_lbl" class="text-[#00f2fe]/60">HEART-RATE VARIABILITY</span>
-                  <span id="label-live-hrv" class="text-[#00f2fe] font-bold">1.00042</span>
+                <div class="flex justify-between items-center text-xs monospace bg-input-theme p-3 rounded-lg border border-theme">
+                  <span data-i18n="app_bio.hrv_lbl" class="text-muted-theme font-semibold">HEART-RATE VARIABILITY</span>
+                  <span id="label-live-hrv" class="text-brand-theme font-bold">1.00042</span>
                 </div>
               </div>
 
               <!-- Bluetooth sync GATT connection trigger -->
-              <div class="pt-4 border-t border-[#00f2fe]/10 mt-6">
-                <button id="btn-engage-ble" class="w-full py-2.5 bg-[#00f2fe]/10 hover:bg-[#00f2fe]/20 border border-[#00f2fe] text-[#00f2fe] rounded font-bold text-xs uppercase tracking-wider transition cursor-pointer monospace" data-i18n="app_bio.btn_sync">
+              <div class="pt-4 border-t border-theme mt-6">
+                <button id="btn-engage-ble" class="w-full py-2.5 bg-input-theme border border-theme text-primary-theme rounded-lg font-bold text-xs uppercase tracking-wider transition cursor-pointer monospace active:scale-95 hover:bg-muted-theme shadow-sm">
                   [ENGAGE BLE BIO SYNC]
                 </button>
               </div>
@@ -597,45 +739,45 @@
 
         <!-- 📦 APP 19: SINTER GRID / CODE PACKER -->
         <div id="app-sinter" class="tab-view hidden space-y-6">
-          <div class="border-b border-[#00f2fe]/20 pb-3">
-            <h2 class="text-xl font-bold tracking-widest text-[#00f2fe] glow-cyan monospace panel-header-bracket" data-i18n="app_sinter.title">APP 19 // PRODUCTION CODE SINTER-PACKER</h2>
-            <p class="text-xs text-[#00f2fe]/50 uppercase tracking-wider monospace">Compile and Pack Raw Code Strings to Eliminate System Entropy</p>
+          <div class="border-b border-theme pb-3">
+            <h2 class="text-lg font-bold tracking-tight text-primary-theme monospace" data-i18n="app_sinter.title">APP 19 // PRODUCTION CODE SINTER-PACKER</h2>
+            <p class="text-xs text-muted-theme uppercase tracking-wider monospace mt-0.5">Compile and Pack Raw Code Strings to Eliminate System Entropy</p>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Raw JavaScript Code area Compactor tools -->
-            <div class="lg:col-span-2 bg-[#040d21] border border-[#00f2fe]/20 rounded-lg p-5 flex flex-col justify-between border-neon-cyan h-[450px]">
+            <div class="lg:col-span-2 bg-panel-theme border border-theme rounded-xl p-5 flex flex-col justify-between h-[420px] shadow-sm">
               <div class="flex flex-col flex-grow">
-                <label class="text-xs uppercase tracking-widest text-[#00f2fe]/80 font-bold monospace mb-2 block" data-i18n="app_sinter.status">STATUS: COMPACTOR ONLINE</label>
-                <textarea id="sinter-input-code" placeholder="// Paste raw JavaScript / module functions to pack..." class="flex-grow w-full bg-[#020612] border border-[#00f2fe]/20 rounded p-4 text-xs text-[#00f2fe] focus:outline-none focus:border-[#00f2fe] monospace h-48 resize-none" data-i18n-placeholder="app_sinter.raw_placeholder"></textarea>
+                <label class="text-xs uppercase tracking-wider text-primary-theme font-bold monospace mb-2 block" data-i18n="app_sinter.status">STATUS: COMPACTOR ONLINE</label>
+                <textarea id="sinter-input-code" placeholder="// Paste raw JavaScript / module functions to pack..." class="flex-grow w-full bg-input-theme border border-theme rounded-lg p-3 text-xs text-primary-theme focus:outline-none focus:border-blue-500 monospace h-40 resize-none shadow-inner leading-relaxed" data-i18n-placeholder="app_sinter.raw_placeholder"></textarea>
               </div>
 
-              <div class="mt-4 pt-3 border-t border-[#00f2fe]/10 flex flex-wrap justify-between items-center gap-3">
+              <div class="mt-4 pt-3 border-t border-theme flex flex-wrap justify-between items-center gap-3">
                 <!-- Sintered performance metrics outputs -->
-                <div class="flex space-x-6 text-[10px] monospace text-[#00f2fe]/50">
-                  <span>RAW_SIZE: <span class="text-white" id="sinter-raw-size">0 bytes</span></span>
-                  <span>COMPACTED: <span class="text-emerald-400" id="sinter-packed-size">0 bytes</span></span>
-                  <span>ENTROPY REDUCTION: <span class="text-[#00f2fe] font-bold" id="sinter-yield">0.00%</span></span>
+                <div class="flex space-x-4 text-[10px] monospace text-muted-theme bg-input-theme px-4 py-2 rounded-lg border border-theme font-semibold">
+                  <span>RAW_SIZE: <span class="text-primary-theme font-bold" id="sinter-raw-size">0 bytes</span></span>
+                  <span>COMPACTED: <span class="text-success-theme font-bold" id="sinter-packed-size">0 bytes</span></span>
+                  <span>OPTIMIZATION: <span class="text-brand-theme font-extrabold" id="sinter-yield">0.00%</span></span>
                 </div>
 
-                <button id="btn-execute-sinter" class="px-6 py-2.5 bg-[#00f2fe]/20 hover:bg-[#00f2fe]/35 border border-[#00f2fe] text-[#00f2fe] rounded font-bold uppercase tracking-wider text-xs transition duration-150 cursor-pointer monospace" data-i18n="app_sinter.execute_btn">
+                <button id="btn-execute-sinter" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold uppercase tracking-wider text-xs transition duration-150 cursor-pointer monospace active:scale-95 shadow-sm">
                   [EXECUTE SINTER PACK]
                 </button>
               </div>
             </div>
 
             <!-- Live Active Operators list monitor streams -->
-            <div class="bg-[#040d21] border border-[#00f2fe]/20 rounded-lg p-5 flex flex-col h-[450px]">
-              <h3 class="text-xs uppercase tracking-widest text-[#00f2fe]/80 font-bold monospace border-b border-[#00f2fe]/10 pb-2 mb-3" data-i18n="app_sinter.contributors">LIVE OPERATOR ACTIVITY STREAM</h3>
+            <div class="bg-panel-theme border border-theme rounded-xl p-5 flex flex-col h-[420px] shadow-sm">
+              <h3 class="text-xs uppercase tracking-wider text-primary-theme font-bold monospace border-b border-theme pb-2 mb-3" data-i18n="app_sinter.contributors">LIVE OPERATOR ACTIVITY STREAM</h3>
               
               <!-- Stream logger items -->
-              <div class="flex-grow overflow-y-auto space-y-2 p-3 bg-[#020612] rounded border border-[#00f2fe]/10 monospace text-[11px]" id="sinter-stream-logs">
-                <p class="text-[#00f2fe]/40">>> Listening for network compaction triggers...</p>
-                <div class="p-2 border-b border-[#00f2fe]/5 text-emerald-400">
-                  <span class="text-[#00f2fe] font-bold">[Architect]</span> packed skeletal-retention.js // Raw: 1,442B // Sintered: 642B // Yield: 55.48%
+              <div class="flex-grow overflow-y-auto space-y-2 p-3 bg-input-theme rounded-lg border border-theme monospace text-[11px]" id="sinter-stream-logs">
+                <p class="text-muted-theme">&gt;&gt; Listening for network compaction triggers...</p>
+                <div class="p-2 border-b border-theme text-success-theme">
+                  <span class="text-brand-theme font-bold">[Architect]</span> packed skeletal-retention.js // Raw: 1,442B // Packed: 642B // Yield: 55.48%
                 </div>
-                <div class="p-2 border-b border-[#00f2fe]/5 text-emerald-400">
-                  <span class="text-amber-400 font-bold">[Sentinel_01]</span> packed ekg-acquisition.js // Raw: 4,120B // Sintered: 2,050B // Yield: 50.24%
+                <div class="p-2 border-b border-theme text-success-theme">
+                  <span class="text-amber-500 font-bold">[Sentinel_01]</span> packed ekg-acquisition.js // Raw: 4,120B // Packed: 2,050B // Yield: 50.24%
                 </div>
               </div>
             </div>
@@ -647,10 +789,10 @@
 
   </div>
 
-  <!-- FLOATING SYSTEM AUDIBLE TOAST NOTIFIER -->
+  <!-- FLOATING SYSTEM TOAST NOTIFIER -->
   <div id="toast-wrapper" class="fixed bottom-4 right-4 z-50 flex flex-col space-y-2 max-w-sm pointer-events-none"></div>
 
   <!-- MAIN ENTRY BOOTSTRAPPER INJECTION -->
-  <script src="main.js?v=94.66"></script>
+  <script src="main.js?v=94.75"></script>
 </body>
 </html>
