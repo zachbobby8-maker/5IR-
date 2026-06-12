@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matrix-Thread Loom — Standalone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #000;
+      --white: #fff;
+      --gray: #666;
+      --lgray: #f0f0f0;
+      --border: 1px solid #000;
+      --border2: 2px solid #000;
+      --dashed: 1px dashed #000;
+      --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+      --fs-xs: 9px;
+      --fs-sm: 11px;
+      --fs-md: 12px;
+      --fs-xl: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: var(--mono);
+      background: var(--white);
+      color: var(--black);
+      padding: 18px;
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      border: var(--border2);
+      padding: 18px;
+    }
+
+    .hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: var(--border2);
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hud-title {
+      font-size: var(--fs-xl);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+
+    .hud-sub {
+      margin-top: 4px;
+      font-size: var(--fs-xs);
+      color: var(--gray);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      border: var(--border);
+      padding: 3px 10px;
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .specs {
+      border: var(--border);
+      padding: 12px;
+      margin: 14px 0 18px;
+    }
+
+    .specs summary {
+      cursor: pointer;
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .specs .item {
+      border-top: var(--dashed);
+      margin-top: 10px;
+      padding-top: 10px;
+    }
+
+    .specs .it {
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .specs .ib {
+      margin-top: 4px;
+      font-size: var(--fs-sm);
+      color: var(--gray);
+      line-height: 1.55;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .sidebar { display: flex; flex-direction: column; gap: 8px; }
+
+    .micro {
+      font-size: var(--fs-xs);
+      color: var(--gray);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .tier-btn {
+      width: 100%;
+      padding: 10px 12px;
+      border: var(--border);
+      background: var(--white);
+      color: var(--black);
+      font-family: var(--mono);
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .tier-btn:hover { background: var(--lgray); }
+    .tier-btn.active { background: var(--black); color: var(--white); }
+
+    .telemetry {
+      border: var(--border);
+      padding: 12px;
+      margin-top: 10px;
+    }
+
+    .telemetry .head {
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-bottom: var(--dashed);
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+    }
+
+    .row { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; }
+    .sk { font-size: var(--fs-xs); color: var(--gray); letter-spacing: 0.08em; text-transform: uppercase; }
+    .sv { font-size: var(--fs-sm); font-weight: 700; text-transform: uppercase; }
+
+    .synd {
+      border: var(--border);
+      padding: 12px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: var(--border);
+      font-family: var(--mono);
+      font-size: var(--fs-sm);
+      outline: none;
+      background: var(--white);
+      color: var(--black);
+    }
+    input[type="text"]:focus, textarea:focus { background: var(--lgray); }
+    textarea { resize: none; min-height: 80px; line-height: 1.5; }
+
+    .main {
+      border: var(--border);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 340px;
+    }
+
+    .feed {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-right: 4px;
+      max-height: 260px;
+    }
+
+    .empty {
+      color: var(--gray);
+      font-style: italic;
+      font-size: var(--fs-sm);
+      text-align: center;
+      margin-top: 70px;
+      line-height: 1.5;
+    }
+
+    .msg { border-bottom: var(--dashed); padding-bottom: 8px; }
+    .mh { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 3px; }
+    .sender { font-size: var(--fs-xs); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+    .ts { font-size: var(--fs-xs); color: var(--gray); }
+    .meta { font-size: var(--fs-xs); color: var(--gray); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+    .content { font-size: var(--fs-sm); line-height: 1.5; word-break: break-word; }
+
+    .actions { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .ab {
+      border: var(--border);
+      background: var(--white);
+      color: var(--black);
+      font-family: var(--mono);
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+    .ab:hover { background: var(--lgray); }
+
+    .form { display: flex; gap: 8px; align-items: stretch; }
+    .composer { display: flex; gap: 8px; align-items: stretch; width: 100%; }
+
+    .send {
+      border: none;
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--mono);
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      padding: 10px 18px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+    .send:hover { opacity: 0.85; }
+
+    @media (max-width: 760px) {
+      body { padding: 12px; }
+      .wrap { padding: 14px; }
+      .grid { grid-template-columns: 1fr; }
+      .feed { max-height: 220px; }
+    }
+  </style>
+</head>
+<body>
+  <!--
+    Vercel copy/paste:
+    - Save this file as: index.html
+    - Deploy as a static site (no build step)
+  -->
+  <div class="wrap" id="app"></div>
+
+  <script>
+    const CHANNELS = [
+      { id: 'PRIVATE', label: '⌬ PRIVATE NODES (TELEGRAM)' },
+      { id: 'PUBLIC_FEED', label: '⌬ BROADCAST STRANDS (X_FEED)' },
+      { id: 'SYNDICATES', label: '⌬ SYNDICATE GROUPS (FB)' },
+    ];
+
+    const SEED = [
+      {
+        id: 'seed-1',
+        type: 'PUBLIC_FEED',
+        sender: 'MÖBIUS_BRAID',
+        content: 'V2 monochrome architecture deployment successfully finalized. Systems holding flat at 94.6%.',
+        timestamp: '04:55',
+        upvotes: 12,
+        interlaces: 2,
+      },
+      {
+        id: 'seed-2',
+        type: 'PRIVATE',
+        sender: 'KING_DROID',
+        content: 'WASP Security Probe is successfully capturing low-integrity 4iR drift vectors inside Hangar 04.',
+        timestamp: '04:58',
+      }
+    ];
+
+    let channelMode = 'PRIVATE';
+    let syndicateId = 'CORE_ARCHIVE';
+    let profileTag = '';
+    let comms = SEED.slice();
+    const seen = new Set(comms.map(m => m.id));
+
+    function esc(s){
+      return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function nowTS(){
+      return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+    }
+
+    function vortexMinify(text){
+      return String(text ?? '')
+        .replace(/\r\n/g,'\n')
+        .split('\n')
+        .map(l => l.trim())
+        .filter(Boolean)
+        .join(' ')
+        .replace(/\s+/g,' ')
+        .trim();
+    }
+
+    function makeId(){
+      try { return crypto.randomUUID(); } catch { return `pkt-${Date.now()}-${Math.random().toString(16).slice(2)}`; }
+    }
+
+    let bc = null;
+    function initStream(){
+      if (bc) return;
+      try {
+        bc = new BroadcastChannel('loom_stream_v1');
+        bc.onmessage = (evt) => {
+          const p = evt?.data;
+          if (!p || p.kind !== 'loom_packet' || !p.packet?.id) return;
+          if (seen.has(p.packet.id)) return;
+          seen.add(p.packet.id);
+          comms = [p.packet, ...comms].slice(0, 500);
+          render();
+        };
+      } catch {
+        bc = null;
+      }
+
+      const teardown = () => {
+        try { bc?.close?.(); } catch {}
+        bc = null;
+        comms = [];
+        seen.clear();
+      };
+      window.addEventListener('pagehide', teardown);
+      window.addEventListener('beforeunload', teardown);
+    }
+
+    function broadcast(packet){
+      if (!bc) return;
+      try { bc.postMessage({ kind: 'loom_packet', packet, sentAt: performance.now() }); } catch {}
+    }
+
+    function placeholder(){
+      if (channelMode === 'PRIVATE') return 'Transmit encrypted secret packet...';
+      if (channelMode === 'PUBLIC_FEED') return 'Broadcast thought stream straight to the global feed...';
+      return 'Draft long-form syndicate profile log entry...';
+    }
+
+    function render(){
+      const app = document.getElementById('app');
+      const filtered = comms.filter(m => m.type === channelMode);
+
+      app.innerHTML = `
+        <div class="hud">
+          <div>
+            <div class="hud-title">[APP_05] THE MATRIX-THREAD LOOM</div>
+            <div class="hud-sub">HIGH-SPEED MULTI-LAYER INSTANT COMMUNICATIONS INTERFACE</div>
+          </div>
+          <div class="badge">CHANNEL_ISOLATION: ON</div>
+        </div>
+
+        <details class="specs">
+          <summary>LOOM_OPERATING_DIRECTIVES // CHANNEL_STACK</summary>
+          <div class="item">
+            <div class="it">⌬ 1. ZERO-RESIDUAL PRIVATE NODES (TRANSIENT RAM)</div>
+            <div class="ib">Packets live in transient memory arrays only. Text is VORTEX-minified and self-destructs on tab close: zero residual footprint.</div>
+          </div>
+          <div class="item">
+            <div class="it">⌬ 2. WHATSAPP-GRADE HIGH-CONCURRENCY STREAMING (GROUP NODES)</div>
+            <div class="ib">Group channels stream through an un-throttled real-time frame (no polling drag). Lookup latency cap: 0.0002 ms. Thermal dissipation: dQ_leak/dt = 0.00 Watts.</div>
+          </div>
+          <div class="item">
+            <div class="it">⌬ 3. X-STYLE PUBLIC BROADCAST STRINGS & THREADS (FEED LAYER)</div>
+            <div class="ib">Switch to PUBLIC_FEED to emit sovereign thread strings across the Node Mesh. Other nodes can INTERLACE (re-broadcast) or UPVOTE to boost visibility ranking.</div>
+          </div>
+          <div class="item">
+            <div class="it">⌬ 4. FACEBOOK-GRADE SYNDICATES & LONG-FORM PROFILES</div>
+            <div class="ib">SYNDICATES aggregate strands into structured long-form logs: documentation, community ops, and technical asset records for massive work-unit execution.</div>
+          </div>
+        </details>
+
+        <div class="grid">
+          <div class="sidebar">
+            <div class="micro">// MATRIX_ROUTING_TIERS</div>
+            ${CHANNELS.map(ch => `
+              <button class="tier-btn ${ch.id === channelMode ? 'active' : ''}" type="button" data-ch="${ch.id}">${esc(ch.label)}</button>
+            `).join('')}
+
+            <div class="telemetry">
+              <div class="head">LOOM_SIGNALS</div>
+              <div class="row"><span class="sk">COMMS_CLOCK</span><span class="sv">39,420 Hz</span></div>
+              <div class="row"><span class="sk">LATENCY_CAP</span><span class="sv">0.0002 ms</span></div>
+              <div class="row"><span class="sk">STREAM_FRAME</span><span class="sv">${bc ? 'ACTIVE' : 'UNAVAILABLE'}</span></div>
+              <div class="row"><span class="sk">TRAFFIC_LOAD</span><span class="sv">${filtered.length} ACTIVE_STRANDS</span></div>
+            </div>
+
+            <div class="synd" id="synd">
+              <div class="micro" style="margin-bottom:8px;">SYNDICATE_CONFIG</div>
+              <div class="micro" style="margin-top:8px;">SYNDICATE_ID</div>
+              <input type="text" id="sid" value="${esc(syndicateId)}" maxlength="48" />
+              <div class="micro" style="margin-top:10px;">PROFILE_TAG</div>
+              <input type="text" id="pt" value="${esc(profileTag)}" maxlength="64" />
+            </div>
+          </div>
+
+          <div class="main">
+            <div class="feed" id="feed" aria-live="polite">
+              ${filtered.length ? filtered.map(msg => {
+                const meta = msg.type === 'SYNDICATES'
+                  ? `<div class="meta">SYNDICATE: ${esc(msg.syndicateId || '---')} // PROFILE: ${esc(msg.profileTag || '—')}</div>`
+                  : '';
+
+                const actions = msg.type === 'PUBLIC_FEED' ? `
+                  <div class="actions" role="group" aria-label="Public feed actions">
+                    <button class="ab" type="button" data-action="upvote" data-id="${esc(msg.id)}">▲ UPVOTE <span>${msg.upvotes ?? 0}</span></button>
+                    <button class="ab" type="button" data-action="interlace" data-id="${esc(msg.id)}">⟲ INTERLACE <span>${msg.interlaces ?? 0}</span></button>
+                  </div>
+                ` : '';
+
+                return `
+                  <div class="msg">
+                    <div class="mh">
+                      <span class="sender">@${esc(msg.sender)}</span>
+                      <span class="ts">${esc(msg.timestamp)}</span>
+                    </div>
+                    ${meta}
+                    <div class="content">${esc(msg.content)}</div>
+                    ${actions}
+                  </div>
+                `;
+              }).join('') : `<div class="empty">// No active data strands running inside this matrix tier channel...</div>`}
+            </div>
+
+            <form class="form" id="form" autocomplete="off">
+              <div class="composer" id="composer">
+                ${channelMode === 'SYNDICATES'
+                  ? `<textarea id="inp" rows="3" placeholder="${esc(placeholder())}" aria-label="Message input" maxlength="2000"></textarea>`
+                  : `<input id="inp" type="text" placeholder="${esc(placeholder())}" aria-label="Message input" maxlength="500" />`
+                }
+                <button class="send" type="submit">[LOOM_PULSE]</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      `;
+
+      // show/hide syndicate box
+      const synd = document.getElementById('synd');
+      synd.style.display = channelMode === 'SYNDICATES' ? 'block' : 'none';
+
+      // bind buttons
+      document.querySelectorAll('button[data-ch]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          channelMode = btn.getAttribute('data-ch');
+          render();
+        });
+      });
+
+      const sid = document.getElementById('sid');
+      const pt  = document.getElementById('pt');
+      sid?.addEventListener('input', () => syndicateId = (sid.value.trim().toUpperCase() || 'CORE_ARCHIVE'));
+      pt?.addEventListener('input', () => profileTag = pt.value.trim());
+
+      const feed = document.getElementById('feed');
+      feed.addEventListener('click', (e) => {
+        const btn = e.target?.closest?.('button[data-action]');
+        if (!btn) return;
+        const id = btn.getAttribute('data-id');
+        const action = btn.getAttribute('data-action');
+        const idx = comms.findIndex(m => m.id === id);
+        if (idx < 0) return;
+        const msg = comms[idx];
+        if (msg.type !== 'PUBLIC_FEED') return;
+
+        if (action === 'upvote') {
+          msg.upvotes = (msg.upvotes ?? 0) + 1;
+          render();
+          return;
+        }
+
+        if (action === 'interlace') {
+          msg.interlaces = (msg.interlaces ?? 0) + 1;
+          const packet = {
+            id: makeId(),
+            type: 'PUBLIC_FEED',
+            sender: 'LOCAL_ARCHITECT',
+            content: `INTERLACE(@${msg.sender}): ${msg.content}` ,
+            timestamp: nowTS(),
+            upvotes: 0,
+            interlaces: 0,
+          };
+          seen.add(packet.id);
+          comms = [packet, ...comms].slice(0, 500);
+          broadcast(packet);
+          render();
+        }
+      });
+
+      document.getElementById('form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const inp = document.getElementById('inp');
+        const content = vortexMinify(inp.value);
+        if (!content) return;
+
+        const packet = {
+          id: makeId(),
+          type: channelMode,
+          sender: 'LOCAL_ARCHITECT',
+          content,
+          timestamp: nowTS(),
+        };
+
+        if (channelMode === 'SYNDICATES') {
+          packet.syndicateId = syndicateId;
+          packet.profileTag = profileTag || '—';
+        }
+
+        if (channelMode === 'PUBLIC_FEED') {
+          packet.upvotes = 0;
+          packet.interlaces = 0;
+        }
+
+        seen.add(packet.id);
+        comms = [packet, ...comms].slice(0, 500);
+        broadcast(packet);
+
+        inp.value = '';
+        render();
+      });
+    }
+
+    initStream();
+    render();
+  </script>
+</body>
+</html>
