@@ -1,0 +1,84 @@
+{
+  "system": {
+    "title": "Braid Command Suite",
+    "ping": "SYSTEM SECURE // COHERENCE OVERWATCH",
+    "frequency": "FREQUENCY STATUS",
+    "thermal": "THERMAL PROFILE",
+    "active_mesh": "ACTIVE MESH NODES",
+    "coherence": "LATTICE COHERENCE",
+    "clearance": "SECURITY CLEARANCE",
+    "clearance_val": "SOVEREIGN LEVEL-1 [ARCHITECT]",
+    "guest_clearance_val": "GUEST LEVEL-0 [DEMO_NODE]",
+    "lead": "Sovereign Lead",
+    "query_id": "QUERY SIGNATURE"
+  },
+  "gateway": {
+    "btn_sovereign": "[VERIFY_SOVEREIGN_CREDENTIALS]",
+    "btn_demo": "⚡ [ENGAGE_PUBLIC_DEMO_NODE] (ONE-CLICK ACCESS)",
+    "verification_needed": "VERIFYING CRYPTOGRAPHIC SYSTEM MATRIX...",
+    "subtext": "Sovereign Web Access Terminal // Cydonia Tactical Division"
+  },
+  "dashboard": {
+    "title": "STAGING HUB & CENTRAL COCKPIT",
+    "system_status": "INTEGRATED NODE STATUS",
+    "alerts": "REAL-TIME BROADCAST STREAM",
+    "diagnostics": "ACTIVE CORE RE-SHAPE TELEMETRY",
+    "mesh_label": "Synchronized Nodes",
+    "vortex_velocity": "Vortex Flow Velocity",
+    "entropy_leakage": "System Entropy Leakage",
+    "log_calibrated": "[ONLINE] Scanner core calibrated to 39,420 Hz.",
+    "system_alert": "[ALARM] System tracking stable. 0.00 Watts Flat leakage.",
+    "user_handle": "Operator Handle"
+  },
+  "app_retain": {
+    "title": "APP 01 // VORTEX-RETAIN SKELETAL SIMULATOR",
+    "age_lbl": "SUBJECT AGE (YEARS)",
+    "exercise_lbl": "EXERCISE FREQUENCY (HOURS/WEEK)",
+    "gravity_lbl": "GRAVITATIONAL FORCE (G-FORCE)",
+    "export_btn": "[EXPORT_SKELETAL_RETENTION_REPORT]",
+    "diagnostic": "Microscopy Scan: confocal scan at 39,420 Hz // Density Coherence: {density}%",
+    "brittle_warn": "[ALERT: CRITICAL BRITTLE SEGMENT FRACTURE RISK DETECTED]"
+  },
+  "app_ai": {
+    "title": "APP 04 // VORTEX-AI COHERENCE ORACLE",
+    "placeholder": "Command the Oracle (e.g. 'Synthesize grid parameters')...",
+    "submit": "SEND",
+    "system_msg": "Connected to Oracle Core. DeepSeek Flash operational.",
+    "preset_1": "Query System Resonance",
+    "preset_2": "Request Lattice Optimization",
+    "preset_3": "Report Mars Weather Telemetry"
+  },
+  "app_resonance": {
+    "title": "APP 08 // SUPERFLUID RESONANCE SYSTEM",
+    "carrier_lbl": "CARRIER FREQUENCY HARMONIC (Hz)",
+    "decay_lbl": "SUB-HARMONIC DECAY COEFFICIENT",
+    "convergence_lbl": "CONVERGENCE PARITY RATIO",
+    "sweep_ch_04": "[CALIBRATE CHANNEL 04]",
+    "sweep_lunar": "[CALIBRATE LUNAR SWEEP]",
+    "telemetry": "Active sweep vectors configured. Synthesis feedback active."
+  },
+  "app_work": {
+    "title": "APP 16 // LEGENDRIAN ALGORITHM WORK GRID",
+    "contracts_lbl": "[AVAILABLE COMPUTATIONAL CONTRACTS]",
+    "compile_btn": "[TRANSMIT TO ORACLE CHECK]",
+    "success_lbl": "SYNTAX COMPLIES. CONTRACT REWARDED!",
+    "offline_desc": "Select a computational ledger contract from the list to begin.",
+    "payout_lbl": "Est. Bounty",
+    "balance_lbl": "LEDGER BALANCE ($BRAID)"
+  },
+  "app_bio": {
+    "title": "APP 18 // BIO-RESONANCE HARDWARE BRIDGE",
+    "btn_sync": "[ENGAGE BLE BIO SYNC]",
+    "btn_sync_active": "[BLE BIO SYNC ACTIVE]",
+    "gaze_lbl": "EYE-GAZE DEFLECTION COEFFICIENT",
+    "hrv_lbl": "HEART-RATE VARIABILITY",
+    "pulse_lbl": "PHYSIOLOGICAL HEART RATE (BPM)"
+  },
+  "app_sinter": {
+    "title": "APP 19 // PRODUCTION CODE SINTER-PACKER",
+    "raw_placeholder": "// Paste raw JavaScript / module functions to pack...",
+    "execute_btn": "[EXECUTE SINTER PACK]",
+    "status": "STATUS: COMPACTOR ONLINE",
+    "contributors": "LIVE OPERATOR ACTIVITY STREAM"
+  }
+}
