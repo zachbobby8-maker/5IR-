@@ -1,149 +1,149 @@
 /*
- * Braid Command Suite Custom Holographic Styling Sheet
- * High-fidelity 0.00 Watts Flat Thermal Footprint CRT Display Theme
+ * Braid Command Suite V2.1 Custom Layout Sheet
+ * High-Resolution Flat Modern UI Design (No Neon Glows, No CRT Scanlines)
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 :root {
-  --color-neon-cyan: #00f2fe;
-  --color-neon-blue: #0066ff;
-  --color-neon-magenta: #ff0055;
-  --color-neon-amber: #ffaa00;
-  --color-cyber-navy: #040d21;
-  --color-cyber-deep: #020612;
-  --color-grid-overlay: rgba(0, 242, 254, 0.05);
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 body {
-  font-family: 'Rajdhani', sans-serif;
-  background-color: var(--color-cyber-deep);
-  color: #e2e8f0;
-  overflow-x: hidden;
-  height: 100vh;
+  font-family: var(--font-sans);
   margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .monospace {
-  font-family: 'Share Tech Mono', monospace;
+  font-family: var(--font-mono);
 }
 
-/* Custom Scanlines Overlay */
-.crt-screen {
-  position: relative;
-  overflow: hidden;
+/* -------------------------------------------------------------
+ * 1. THEME MATRIX CONFIGURATIONS
+ * Ultra premium, high-resolution flat colors (NO retro neon glows)
+ * ------------------------------------------------------------- */
+
+/* Default: Black Theme */
+body.theme-black {
+  background-color: #000000;
+  color: #f4f4f5;
+  --bg-app: #000000;
+  --bg-panel: #09090b;
+  --bg-panel-muted: #18181b;
+  --bg-input: #121214;
+  --text-main: #f4f4f5;
+  --text-muted: #a1a1aa;
+  --text-dim: #52525b;
+  --border-main: #27272a;
+  --border-strong: #3f3f46;
+  --brand: #3b82f6;        /* Dynamic Cobalt Blue */
+  --brand-hover: #2563eb;
+  --brand-bg: rgba(59, 130, 246, 0.1);
+  --success: #10b981;      /* Crisp Emerald Green */
+  --success-bg: rgba(16, 185, 129, 0.1);
+  --warning: #f59e0b;      /* High-Res Amber */
+  --warning-bg: rgba(245, 158, 11, 0.1);
+  --error: #ef4444;        /* Crimson Red */
+  --error-bg: rgba(239, 68, 68, 0.15);
 }
 
-.crt-screen::before {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  z-index: 40;
-  background-size: 100% 4px, 6px 100%;
-  pointer-events: none;
+/* White Theme */
+body.theme-white {
+  background-color: #f8fafc;
+  color: #0f172a;
+  --bg-app: #f8fafc;
+  --bg-panel: #ffffff;
+  --bg-panel-muted: #f1f5f9;
+  --bg-input: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --text-dim: #94a3b8;
+  --border-main: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --brand: #2563eb;        /* Solid Deep Blue */
+  --brand-hover: #1d4ed8;
+  --brand-bg: rgba(37, 99, 235, 0.08);
+  --success: #16a34a;      /* Pure Forest Green */
+  --success-bg: rgba(22, 163, 74, 0.08);
+  --warning: #ca8a04;      /* Strong Ochre Gold */
+  --warning-bg: rgba(202, 138, 4, 0.08);
+  --error: #dc2626;        /* Bold Red */
+  --error-bg: rgba(220, 38, 38, 0.08);
 }
 
-/* Cyber Matrix Background Grid */
-.cyber-grid-bg {
-  background-image: 
-    linear-gradient(rgba(0, 242, 254, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 242, 254, 0.04) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
+/* -------------------------------------------------------------
+ * 2. STRUCTURAL THEMING UTILITIES
+ * ------------------------------------------------------------- */
+.bg-app-theme { background-color: var(--bg-app); }
+.bg-panel-theme { background-color: var(--bg-panel); }
+.bg-muted-theme { background-color: var(--bg-panel-muted); }
+.bg-input-theme { background-color: var(--bg-input); }
 
-/* Glowing Neon Classes */
-.glow-cyan {
-  text-shadow: 0 0 8px rgba(0, 242, 254, 0.8), 0 0 20px rgba(0, 242, 254, 0.3);
-}
+.text-primary-theme { color: var(--text-main); }
+.text-muted-theme { color: var(--text-muted); }
+.text-dim-theme { color: var(--text-dim); }
 
-.glow-magenta {
-  text-shadow: 0 0 8px rgba(255, 0, 85, 0.8), 0 0 20px rgba(255, 0, 85, 0.3);
-}
+.border-theme { border-color: var(--border-main); }
+.border-strong-theme { border-color: var(--border-strong); }
 
-.glow-amber {
-  text-shadow: 0 0 8px rgba(255, 170, 0, 0.8), 0 0 20px rgba(255, 170, 0, 0.3);
-}
+.text-brand-theme { color: var(--brand); }
+.bg-brand-soft { background-color: var(--brand-bg); }
+.border-brand { border-color: var(--brand); }
 
-.border-neon-cyan {
-  border: 1px solid var(--color-neon-cyan);
-  box-shadow: 0 0 10px rgba(0, 242, 254, 0.15), inset 0 0 10px rgba(0, 242, 254, 0.1);
-}
+.text-success-theme { color: var(--success); }
+.bg-success-soft { background-color: var(--success-bg); }
 
-.border-neon-magenta {
-  border: 1px solid var(--color-neon-magenta);
-  box-shadow: 0 0 10px rgba(255, 0, 85, 0.15), inset 0 0 10px rgba(255, 0, 85, 0.1);
-}
+.text-warning-theme { color: var(--warning); }
+.bg-warning-soft { background-color: var(--warning-bg); }
 
-.border-neon-amber {
-  border: 1px solid var(--color-neon-amber);
-  box-shadow: 0 0 10px rgba(255, 170, 0, 0.15), inset 0 0 10px rgba(255, 170, 0, 0.1);
-}
+.text-error-theme { color: var(--error); }
+.bg-error-soft { background-color: var(--error-bg); }
 
-/* Custom Scrollbars */
+/* Custom premium scrollbar styling */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-cyber-deep);
+  background: var(--bg-app);
 }
 ::-webkit-scrollbar-thumb {
-  background: #00f2fe;
-  border-radius: 3px;
+  background: var(--border-strong);
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff0055;
+  background: var(--brand);
 }
 
-/* Continuous Pulse Animation */
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.8; filter: brightness(1); }
-  50% { opacity: 1; filter: brightness(1.3); }
-}
-
-.pulse-glow {
-  animation: pulseGlow 2s infinite ease-in-out;
-}
-
-/* Matrix Noise Grid Effect */
-@keyframes flicker {
-  0% { opacity: 0.9782; }
-  50% { opacity: 1; }
-  100% { opacity: 0.9821; }
-}
-.flicker-overlay {
-  animation: flicker 0.15s infinite;
-}
-
-/* Active tab selection indicator */
+/* Tab active layout indicator */
 .tab-active {
-  background: linear-gradient(90deg, rgba(0, 242, 254, 0.15), rgba(0, 102, 255, 0.02));
-  border-left: 3px solid var(--color-neon-cyan);
-  color: var(--color-neon-cyan);
+  background-color: var(--brand-bg);
+  border-left: 3px solid var(--brand);
+  color: var(--brand);
 }
 
-/* Floating HUD panel header style */
-.panel-header-bracket::before {
-  content: "[";
-  color: var(--color-neon-cyan);
-  margin-right: 6px;
-  font-weight: bold;
-}
-.panel-header-bracket::after {
-  content: "]";
-  color: var(--color-neon-cyan);
-  margin-left: 6px;
-  font-weight: bold;
+/* Custom premium input/button elements styling */
+input, textarea {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Terminal Line Typing Indicator */
-@keyframes blink {
-  50% { border-color: transparent; }
-}
-.cursor-blink {
-  border-right: 2px solid var(--color-neon-cyan);
-  animation: blink 1s step-end infinite;
+/* Grid overlay background mapping */
+.flat-grid-overlay {
+  background-image: radial-gradient(var(--border-main) 1px, transparent 1px);
+  background-size: 16px 16px;
 }
 
+/* Interactive custom card borders */
+.interactive-card {
+  border: 1px solid var(--border-main);
+  background-color: var(--bg-panel);
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.interactive-card:hover {
+  border-color: var(--brand);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
