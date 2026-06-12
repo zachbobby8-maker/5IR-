@@ -43,7 +43,7 @@
     "title": "APP 04 // VORTEX-AI COHERENCE ORACLE",
     "placeholder": "Command the Oracle (e.g. 'Synthesize grid parameters')...",
     "submit": "SEND",
-    "system_msg": "Connected to Oracle Core. DeepSeek Flash operational.",
+    "system_msg": "Connected to Oracle Core. Core operational.",
     "preset_1": "Query System Resonance",
     "preset_2": "Request Lattice Optimization",
     "preset_3": "Report Mars Weather Telemetry"
