@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>5iR SINTER OS // V2.0 (Vercel Ready)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+/*
+  Vercel copy/paste:
+  - Copy ALL of this file into: index.html
+  - Copy api/gemini.js into: api/gemini.js
+  - In Vercel → Project Settings → Environment Variables:
+      GEMINI_API_KEY = <your key>
+      GEMINI_MODEL = gemini-1.5-flash (optional; Flash-only enforced)
+  - Deploy as a static site (no build step)
+  - No platform SDK required
+*/
+
+/* ═══════════════════════════════════════════
+   5iR SINTER OS CORE V2 — B&W MINIMALIST
+═══════════════════════════════════════════ */
+:root {
+  --black:   #000000;
+  --white:   #ffffff;
+  --gray:    #666666;
+  --lgray:   #f0f0f0;
+  --border:  1px solid #000000;
+  --border2: 2px solid #000000;
+  --dashed:  1px dashed #000000;
+  --mono:    'JetBrains Mono', 'Courier New', monospace;
+  --fs-xs:   9px;
+  --fs-sm:   11px;
+  --fs-md:   12px;
+  --fs-lg:   13px;
+  --fs-xl:   28px;
+}
+
+/* ── DARK MODE OVERRIDES ── */
+body.dark {
+  --black:   #ffffff;
+  --white:   #000000;
+  --gray:    #999999;
+  --lgray:   #111111;
+  --border:  1px solid #ffffff;
+  --border2: 2px solid #ffffff;
+  --dashed:  1px dashed #ffffff;
+}
+body.dark { background: #000000; color: #ffffff; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--mono);
+  background: var(--white);
+  color: var(--black);
+  min-height: 100vh;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* ═══════════════════════════════════════════
+   SECURE LOGIN PORTAL // ISOLATED_GATE
+═══════════════════════════════════════════ */
+#gate {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  padding: 20px;
+  position: relative;
+}
+
+.gate-card {
+  border: var(--border2);
+  padding: 40px;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.gate-eyebrow {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  margin-bottom: 4px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.gate-subtitle {
+  font-size: var(--fs-xs);
+  color: var(--gray);
+  text-align: center;
+  letter-spacing: 0.1em;
+  margin-bottom: 22px;
+  text-transform: uppercase;
+}
+
+.gate-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.gate-label {
+  font-size: var(--fs-xs);
+  color: var(--gray);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+#gate .gate-card input[type="text"],
+#gate .gate-card input[type="password"] {
+  width: 100%;
+  padding: 14px 12px;
+  border: var(--border2) !important;
+  font-family: var(--mono);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  outline: none;
+  background: var(--white);
+  color: var(--black);
+  transition: background 0.1s;
+  appearance: none;
+}
+#gate .gate-card input:focus { background: var(--lgray); }
+#gate .gate-card input::placeholder { color: #aaa; font-weight: 400; letter-spacing: 0.04em; }
+
+.btn-demo {
+  width: 100%;
+  padding: 12px;
+  border: var(--border);
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  transition: background 0.15s;
+}
+.btn-demo:hover  { background: var(--lgray); }
+.btn-demo:active { opacity: 0.7; }
+
+.btn-handshake {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: opacity 0.15s;
+}
+.btn-handshake:hover  { opacity: 0.82; }
+.btn-handshake:active { opacity: 0.65; }
+.btn-handshake:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.gate-msg {
+  margin-top: 12px;
+  font-size: var(--fs-xs);
+  color: var(--gray);
+  line-height: 1.5;
+  min-height: 18px;
+  letter-spacing: 0.04em;
+}
+.gate-msg.denied { color: var(--black); font-weight: 700; }
+.gate-msg.info   { color: var(--gray); }
+
+/* ── Gate scan bar animation ── */
+.gate-scan-bar {
+  width: 100%;
+  height: 3px;
+  background: var(--lgray);
+  overflow: hidden;
+  margin-bottom: 18px;
+  position: relative;
+}
+
+.gate-scan-line {
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 40%;
+  height: 100%;
+  background: var(--gray);
+  opacity: 0.4;
+}
+
+.gate-scan-bar.scanning .gate-scan-line {
+  animation: braid-scan 0.85s ease-in-out forwards;
+}
+
+@keyframes braid-scan {
+  0%   { left: -40%; opacity: 0.5; }
+  60%  { left: 120%;  opacity: 1;   background: var(--black); }
+  100% { left: 120%;  opacity: 0;   }
+}
+
+/* Gate footer telemetry strip */
+.gate-footer {
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--fs-xs);
+  color: var(--gray);
+  letter-spacing: 0.06em;
+  border-top: var(--dashed);
+  padding-top: 10px;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* ═══════════════════════════════════════════
+   OS SHELL
+═══════════════════════════════════════════ */
+#os { display: none; min-height: 100vh; background: var(--white); }
+
+/* HUD */
+.os-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 40px 40px 20px;
+  border-bottom: var(--border2);
+  margin-bottom: 35px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.hud-title {
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.hud-sub {
+  font-size: var(--fs-sm);
+  color: var(--gray);
+  margin-top: 4px;
+  letter-spacing: 0.04em;
+}
+
+.hud-right {
+  text-align: right;
+  font-size: var(--fs-sm);
+  color: var(--gray);
+  line-height: 1.6;
+  letter-spacing: 0.03em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+/* Tab nav */
+.tab-nav {
+  display: flex;
+  gap: 5px;
+  padding: 0 40px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  background: var(--white);
+  color: var(--black);
+  border: var(--border);
+  padding: 8px 24px;
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.12s, color 0.12s;
+  white-space: nowrap;
+}
+.tab-btn:hover:not(.active) { background: var(--lgray); }
+.tab-btn.active {
+  background: var(--black);
+  color: var(--white);
+}
+
+/* Viewport */
+.viewport {
+  padding: 0 40px 20px;
+}
+
+.viewport-frame {
+  border: var(--border2);
+  padding: 30px;
+  background: var(--white);
+}
+
+/* App title */
+.app-title {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Two-col layout */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+/* Vortex gets slightly wider left column */
+.vortex-col {
+  grid-template-columns: 1.2fr 1fr;
+}
+
+.col-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-micro {
+  font-size: var(--fs-xs);
+  color: var(--gray);
+  letter-spacing: 0.14em;
+  display: block;
+  text-transform: uppercase;
+}
+
+textarea {
+  width: 100%;
+  height: 180px;
+  border: var(--border);
+  padding: 12px;
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  outline: none;
+  resize: none;
+  background: var(--white);
+  color: var(--black);
+  line-height: 1.6;
+  transition: background 0.1s;
+}
+textarea:focus { background: var(--lgray); }
+textarea::placeholder { color: #ccc; }
+
+input[type="text"],
+input[type="password"],
+select {
+  width: 100%;
+  padding: 12px;
+  border: var(--border);
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  outline: none;
+  background: var(--white);
+  color: var(--black);
+  appearance: none;
+  transition: background 0.1s;
+}
+input[type="text"]:focus,
+input[type="password"]:focus,
+select:focus { background: var(--lgray); }
+input::placeholder { color: #bbb; }
+
+select { cursor: pointer; }
+
+/* ── Formula hint ── */
+.formula-hint {
+  font-size: var(--fs-xs);
+  color: var(--gray);
+  letter-spacing: 0.06em;
+  padding: 2px 0 4px;
+  font-style: italic;
+}
+
+/* Signal box */
+.signal-box {
+  border: var(--border);
+  padding: 20px;
+  font-size: var(--fs-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.signal-head {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.signal-head.dashed {
+  border-bottom: var(--dashed);
+}
+
+/* Italic idle placeholder */
+.signal-idle {
+  color: var(--gray);
+  font-style: italic;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+
+.signal-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding: 3px 0;
+}
+
+.sk {
+  font-size: var(--fs-xs);
+  color: var(--gray);
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.sv {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  text-align: right;
+  word-break: break-all;
+}
+
+/* Exec button */
+.btn-exec {
+  width: 100%;
+  padding: 12px;
+  background: var(--black);
+  color: var(--white);
+  border: none;
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 4px;
+  transition: opacity 0.15s;
+}
+.btn-exec:hover  { opacity: 0.82; }
+.btn-exec:active { opacity: 0.65; }
+.btn-exec:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* AI button variant */
+.btn-ai {
+  background: var(--white);
+  color: var(--black);
+  border: var(--border);
+  margin-top: 0;
+}
+.btn-ai:hover  { background: var(--lgray); opacity: 1; }
+.btn-ai:active { opacity: 0.65; }
+
+/* WASP checkbox row */
+.wasp-check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  cursor: pointer;
+  padding: 6px 0;
+}
+.wasp-check-row input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  cursor: pointer;
+  border: var(--border);
+  accent-color: var(--black);
+  padding: 0;
+}
+.wasp-check-row label { cursor: pointer; }
+
+/* Output */
+.output-wrap {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.code-out {
+  border: var(--border);
+  padding: 12px;
+  font-size: 10px;
+  color: var(--gray);
+  line-height: 1.6;
+  word-break: break-all;
+  max-height: 90px;
+  overflow-y: auto;
+  background: var(--lgray);
+}
+
+.code-out.ai-out {
+  max-height: 220px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--black);
+}
+
+/* App log */
+.app-log {
+  margin-top: 18px;
+  font-size: var(--fs-sm);
+  padding: 12px 16px;
+  border-left: 3px solid var(--black);
+  background: var(--lgray);
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+}
+.app-log.pass { border-left-color: var(--black); }
+.app-log.fail { border-left-color: var(--gray); color: var(--gray); }
+.app-log.warn { border-left-color: var(--black); color: var(--black); }
+
+/* ── APP 03: LATTICE ── */
+.metrics-quad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.metric-cell {
+  border: var(--border);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mc-label {
+  font-size: var(--fs-xs);
+  color: var(--gray);
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.mc-val {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-top: 4px;
+  text-transform: uppercase;
+  word-break: break-word;
+}
+
+/* History section */
+.history-section {
+  margin-top: 24px;
+}
+
+.history-divider {
+  margin-bottom: 10px;
+}
+
+.history-empty {
+  font-size: var(--fs-sm);
+  color: var(--gray);
+  font-style: italic;
+  padding: 12px 0;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.btn-clear {
+  background: var(--white);
+  color: var(--black);
+  border: var(--border);
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  padding: 4px 10px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+}
+.btn-clear:hover { background: var(--lgray); }
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.history-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 60px 1fr 70px;
+  gap: 8px;
+  font-size: var(--fs-xs);
+  padding: 6px 8px;
+  border: var(--border);
+  align-items: center;
+  letter-spacing: 0.03em;
+}
+
+.hr-idx   { color: var(--gray); }
+.hr-id    { font-weight: 700; }
+.hr-ratio { color: var(--gray); }
+.hr-class { font-style: italic; }
+.hr-time  { color: var(--gray); text-align: right; }
+
+/* ── APP 04: WASP hit list ── */
+.wasp-hit-list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wasp-hit {
+  display: grid;
+  grid-template-columns: 36px 80px 1fr 30px 1fr;
+  gap: 8px;
+  font-size: var(--fs-xs);
+  padding: 6px 10px;
+  border: var(--border);
+  align-items: center;
+}
+
+.wasp-hit-id    { font-weight: 700; color: var(--gray); }
+.wasp-hit-sev   { font-weight: 700; }
+.wasp-hit-label { font-weight: 700; }
+.wasp-hit-count { color: var(--gray); text-align: center; }
+.wasp-hit-desc  { color: var(--gray); font-style: italic; }
+
+.sev-critical .wasp-hit-sev { color: var(--black); }
+.sev-high     .wasp-hit-sev { color: var(--black); }
+.sev-medium   .wasp-hit-sev { color: var(--gray); }
+.sev-low      .wasp-hit-sev { color: var(--gray); }
+
+.sv.wasp-verdict-compromised { color: var(--black); font-weight: 700; }
+.sv.wasp-verdict-flagged     { color: var(--black); }
+.sv.wasp-verdict-caution     { color: var(--gray); }
+.sv.wasp-verdict-clean       { color: var(--black); }
+
+/* ═══════════════════════════════════════════
+   APP 05: THE MATRIX-THREAD LOOM
+═══════════════════════════════════════════ */
+
+.loom-subhead {
+  font-size: var(--fs-xs);
+  color: var(--gray);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.loom-isolation-badge {
+  display: inline-block;
+  border: var(--border);
+  padding: 3px 10px;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* Protocol brief */
+.loom-specs {
+  border: var(--border);
+  padding: 12px;
+  margin-bottom: 20px;
+  background: var(--white);
+}
+
+.loom-specs-summary {
+  cursor: pointer;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.loom-specs-body {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.loom-spec-item {
+  border-top: var(--dashed);
+  padding-top: 10px;
+}
+
+.loom-spec-title {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.loom-spec-text {
+  margin-top: 4px;
+  font-size: var(--fs-sm);
+  color: var(--gray);
+  line-height: 1.55;
+}
+
+.loom-grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* Sidebar */
+.loom-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.loom-syndicate {
+  border: var(--border);
+  padding: 12px;
+  margin-top: 16px;
+}
+
+.loom-syndicate input[type="text"] {
+  margin-top: 6px;
+}
+
+.loom-tier-btn {
+  width: 100%;
+  padding: 10px 12px;
+  border: var(--border);
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.12s, color 0.12s;
+  background: var(--white);
+  color: var(--black);
+}
+.loom-tier-btn:hover {
+  background: var(--lgray) !important;
+  color: var(--black) !important;
+}
+
+.loom-tier-btn.active {
+  background: var(--black);
+  color: var(--white);
+}
+
+.loom-telemetry {
+  border: var(--border);
+  padding: 12px;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Main feed area */
+.loom-main {
+  border: var(--border);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 300px;
+}
+
+.loom-feed {
+  flex: 1;
+  height: 220px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+}
+
+.loom-empty {
+  color: var(--gray);
+  font-style: italic;
+  font-size: var(--fs-sm);
+  text-align: center;
+  margin-top: 70px;
+  line-height: 1.5;
+}
+
+.loom-msg {
+  border-bottom: var(--dashed);
+  padding-bottom: 8px;
+  line-height: 1.5;
+}
+
+.loom-meta {
+  font-size: var(--fs-xs);
+  color: var(--gray);
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.loom-msg-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 3px;
+}
+
+.loom-sender {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.loom-ts {
+  font-size: var(--fs-xs);
+  color: var(--gray);
+  font-weight: 400;
+}
+
+.loom-content {
+  font-size: var(--fs-sm);
+  color: var(--black);
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.loom-actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.loom-action-btn {
+  background: var(--white);
+  color: var(--black);
+  border: var(--border);
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  padding: 4px 8px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.loom-action-btn:hover {
+  background: var(--lgray);
+}
+
+.loom-action-count {
+  font-weight: 700;
+}
+
+/* Input form */
+.loom-form {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.loom-composer {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.loom-textarea {
+  resize: none;
+  min-height: 76px;
+  line-height: 1.5;
+}
+
+.loom-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: var(--border);
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  outline: none;
+  background: var(--white);
+  color: var(--black);
+  transition: background 0.1s;
+}
+.loom-input:focus { background: var(--lgray); }
+.loom-input::placeholder { color: var(--gray); font-weight: 400; }
+
+.loom-send {
+  width: auto;
+  white-space: nowrap;
+  padding: 10px 18px;
+  margin-top: 0;
+  flex-shrink: 0;
+}
+
+/* Mobile */
+@media (max-width: 760px) {
+  .loom-grid {
+    grid-template-columns: 1fr;
+  }
+  .loom-feed {
+    height: 180px;
+  }
+}
+
+/* ── OS FOOTER ── */
+.os-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 40px;
+  border-top: var(--dashed);
+  font-size: var(--fs-xs);
+  color: var(--gray);
+  letter-spacing: 0.05em;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 30px;
+}
+
+/* ── THEME TOGGLE BUTTON ── */
+.btn-theme {
+  background: var(--white);
+  color: var(--black);
+  border: var(--border2);
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 7px 14px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-theme:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+/* Gate-level theme toggle (top-right corner) */
+.gate-theme-wrap {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 760px) {
+  .os-hud        { padding: 24px 20px 16px; margin-bottom: 24px; }
+  .tab-nav       { padding: 0 20px; margin-bottom: 20px; gap: 4px; }
+  .viewport      { padding: 0 20px 20px; }
+  .viewport-frame{ padding: 20px; }
+  .two-col,
+  .vortex-col    { grid-template-columns: 1fr; gap: 20px; }
+  .metrics-quad  { grid-template-columns: repeat(2, 1fr); }
+  .hud-title     { font-size: 20px; }
+  textarea       { height: 140px; }
+  .os-footer     { padding: 14px 20px; }
+  .wasp-hit      { grid-template-columns: 36px 70px 1fr; }
+  .wasp-hit-count,
+  .wasp-hit-desc { display: none; }
+}
+
+@media (max-width: 420px) {
+  .metrics-quad  { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tab-btn       { padding: 8px 12px; font-size: 10px; }
+  .viewport-frame{ padding: 14px; }
+  .history-row   { grid-template-columns: 32px 1fr 50px 70px; }
+  .hr-class      { display: none; }
+}
+
+/* Small helper for disabled / info labels */
+.inline-note {
+  font-size: var(--fs-xs);
+  color: var(--gray);
+  letter-spacing: 0.06em;
+  margin-top: 6px;
+  line-height: 1.45;
+}
+  </style>
+</head>
+<body>
+
+  <!-- ══ SECURE LOGIN PORTAL // ISOLATED_GATE ══ -->
+  <div id="gate">
+    <div class="gate-theme-wrap">
+      <button id="btn-theme-gate" class="btn-theme" type="button" aria-label="Toggle dark/light mode">[ ◐ MODE ]</button>
+    </div>
+    <div class="gate-card">
+      <div class="gate-eyebrow">5iR_SINTER_OS // SYSTEM_GATE</div>
+      <div class="gate-subtitle">BIOMETRIC_SIGNAL_GATE // BRAID_ENCRYPTED</div>
+
+      <div class="gate-scan-bar" id="gate-scan-bar" aria-hidden="true">
+        <div class="gate-scan-line"></div>
+      </div>
+
+      <div class="gate-field">
+        <label class="gate-label" for="input-handle">NEURAL_SIGNATURE // OPERATOR_ID</label>
+        <input id="input-handle" type="text" autocomplete="off"
+          placeholder="TRANSMIT_NEURAL_SIGNATURE" aria-label="Neural signature operator ID" />
+      </div>
+
+      <div class="gate-field">
+        <label class="gate-label" for="input-key">CRYPTOGRAPHIC_BRAID_KEY // SHA∞</label>
+        <input id="input-key" type="password" autocomplete="off"
+          placeholder="ENTER_BRAID_CIPHER_SEQUENCE" aria-label="Cryptographic braid key" />
+      </div>
+
+      <button id="btn-demo" class="btn-demo" type="button">[ LOAD_DEMO_SIGNAL // MOBIUS_ACCESS ]</button>
+      <button id="btn-handshake" class="btn-handshake" type="button">INITIATE_CRYPTOGRAPHIC_HANDSHAKE</button>
+
+      <div id="gate-msg" class="gate-msg"></div>
+
+      <div class="gate-footer">
+        <span>SYS_FREQ: 39,420 Hz</span>
+        <span>COHERENCE: 94.6%</span>
+        <span>BRAID_CIPHER: ACTIVE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SINTER OS INTERFACE ══ -->
+  <div id="os">
+
+    <!-- HUD header -->
+    <header class="os-hud">
+      <div class="hud-left">
+        <div class="hud-title">SINTER_OS // REVISION_2.0</div>
+        <div class="hud-sub" id="hud-sub">OPERATOR_NODE: @— // PROTECTION: ACTIVE</div>
+      </div>
+      <div class="hud-right">
+        <button id="btn-theme-os" class="btn-theme" type="button" aria-label="Toggle dark/light mode">[ ◐ MODE ]</button>
+        <div>CLOCK_SYNC: 39,420 HZ</div>
+        <div>THERMAL_LOSS: dQ_leak/dt = 0.00W</div>
+        <div>COHERENCE: 94.6% LOCKED</div>
+      </div>
+    </header>
+
+    <!-- Tab nav -->
+    <nav class="tab-nav" role="tablist">
+      <button class="tab-btn active" data-tab="VORTEX_AI"       role="tab" aria-selected="true" >APP_01 // VORTEX_AI</button>
+      <button class="tab-btn"        data-tab="LEGENDRIAN_MATH" role="tab" aria-selected="false">APP_02 // LEGENDRIAN_MATH</button>
+      <button class="tab-btn"        data-tab="LATTICE_MONITOR" role="tab" aria-selected="false">APP_03 // LATTICE_MONITOR</button>
+      <button class="tab-btn"        data-tab="WASP"            role="tab" aria-selected="false">APP_04 // WASP</button>
+      <button class="tab-btn"        data-tab="LOOM"            role="tab" aria-selected="false">APP_05 // LOOM</button>
+    </nav>
+
+    <!-- Viewport wrapper -->
+    <main class="viewport">
+      <div class="viewport-frame">
+
+        <!-- ══ APP 01: VORTEX AI MINIFIER + WASP SCANNER ══ -->
+        <section id="tab-VORTEX_AI" class="app-panel" role="tabpanel">
+          <h3 class="app-title">[ APP_01 // VORTEX_AI_MINIFIER &amp; WASP_SECURITY_SCANNER ]</h3>
+          <div class="two-col vortex-col">
+
+            <div class="col-input">
+              <label class="field-micro" for="vortex-code">RAW_SOURCE_CODE</label>
+              <textarea id="vortex-code"
+                placeholder="// Paste code string layouts here to compress and scan..."
+                aria-label="Raw source code"></textarea>
+
+              <div class="wasp-check-row">
+                <input type="checkbox" id="wasp-check" aria-label="Engage WASP defensive protocol" />
+                <label for="wasp-check">ENGAGE WASP DEFENSIVE PROTOCOL (SCAN FOR 4iR INSECURE INFRASTRUCTURE PATTERNS)</label>
+              </div>
+
+              <button id="btn-vortex" class="btn-exec" type="button">RUN_VORTEX_SINTER_SCAN</button>
+              <button id="btn-vortex-ai" class="btn-exec btn-ai" type="button">RUN_AI_ANALYSIS ✦</button>
+              <div class="inline-note">AI: uses <code>/api/gemini</code> (set <b>GEMINI_API_KEY</b> in Vercel). Fallback: local heuristic.</div>
+            </div>
+
+            <div class="signal-box" id="vortex-signals">
+              <div class="signal-head dashed">SECURITY_ANALYSIS_SIGNALS</div>
+              <div id="vortex-idle" class="signal-idle">// Awaiting raw code buffers for analysis...</div>
+              <div id="vortex-data" style="display:none">
+                <div class="signal-row"><span class="sk">BLOCK_ID</span>      <span class="sv" id="v-blockid">---</span></div>
+                <div class="signal-row"><span class="sk">COMP_RATIO</span>    <span class="sv" id="v-ratio">0.0%</span></div>
+                <div class="signal-row"><span class="sk">STREAM_CLASS</span>  <span class="sv" id="v-complexity">---</span></div>
+                <div class="signal-row"><span class="sk">WASP_STATUS</span>   <span class="sv" id="v-wasp">---</span></div>
+                <div class="signal-row"><span class="sk">THREAT_SCORE</span>  <span class="sv" id="v-threat">---</span></div>
+                <div class="signal-row"><span class="sk">COHERENCE</span>     <span class="sv" id="v-integrity">---</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- sintered output -->
+          <div id="vortex-out-wrap" class="output-wrap" style="display:none">
+            <div class="field-micro">SINTER_OUTPUT</div>
+            <div id="vortex-output" class="code-out"></div>
+          </div>
+
+          <!-- analysis output -->
+          <div id="ai-out-wrap" class="output-wrap" style="display:none">
+            <div class="field-micro">VORTEX_ANALYSIS ✦</div>
+            <div id="ai-output" class="code-out ai-out"></div>
+          </div>
+
+          <div id="vortex-log" class="app-log" style="display:none"></div>
+        </section>
+
+        <!-- ══ APP 02: LEGENDRIAN MATH TUNER ══ -->
+        <section id="tab-LEGENDRIAN_MATH" class="app-panel" role="tabpanel" style="display:none">
+          <h3 class="app-title">[ APP_02 // LEGENDRIAN_MATH_TUNER ]</h3>
+          <div class="two-col">
+
+            <div class="col-input">
+              <label class="field-micro" for="math-task">SELECT_FORMULA</label>
+              <select id="math-task" aria-label="Select formula"></select>
+
+              <div class="formula-hint" id="formula-hint"></div>
+
+              <label class="field-micro" for="math-val">INPUT_EQUATION_SOLUTION</label>
+              <input id="math-val" type="text" autocomplete="off"
+                placeholder="INPUT_EQUATION_SOLUTION" aria-label="Equation solution value" />
+
+              <button id="btn-math" class="btn-exec" type="button">VALIDATE_WORK_UNIT</button>
+            </div>
+
+            <div class="signal-box" id="math-signals">
+              <div class="signal-head dashed">WAVE_HARMONIC_SIGNALS</div>
+              <div id="math-idle" class="signal-idle">// Awaiting numerical parameters...</div>
+              <div id="math-data" style="display:none">
+                <div class="signal-row"><span class="sk">SYNC_STATUS</span>  <span class="sv" id="m-status">---</span></div>
+                <div class="signal-row"><span class="sk">RESONANCE</span>    <span class="sv" id="m-resonance">---</span></div>
+                <div class="signal-row"><span class="sk">DRIFT_CHECK</span>  <span class="sv" id="m-drift">---</span></div>
+                <div class="signal-row"><span class="sk">TARGET_VAL</span>   <span class="sv" id="m-target">---</span></div>
+              </div>
+            </div>
+          </div>
+          <div id="math-log" class="app-log" style="display:none"></div>
+        </section>
+
+        <!-- ══ APP 03: LATTICE DEEP STORAGE MONITOR ══ -->
+        <section id="tab-LATTICE_MONITOR" class="app-panel" role="tabpanel" style="display:none">
+          <h3 class="app-title">[ APP_03 // LATTICE_DEEP_STORAGE_MONITOR ]</h3>
+
+          <div class="metrics-quad">
+            <div class="metric-cell"><span class="mc-label">TOTAL_NODES_ACTIVE</span>       <span class="mc-val" id="l-nodes">1,446,720</span></div>
+            <div class="metric-cell"><span class="mc-label">COHERENCE_PARITY_FLOOR</span>   <span class="mc-val" id="l-coherence">94.6% LOCKED</span></div>
+            <div class="metric-cell"><span class="mc-label">LATTICE_MONITOR_STATE</span>    <span class="mc-val" id="l-state">NOMINAL_STATIC</span></div>
+            <div class="metric-cell"><span class="mc-label">CLOCK_REFERENCE_TICK</span>     <span class="mc-val">39,420 Hz</span></div>
+            <div class="metric-cell"><span class="mc-label">THERMAL_OVERHEAD</span>         <span class="mc-val" id="l-thermal">0.0000 W [SUPERCONDUCTING]</span></div>
+            <div class="metric-cell"><span class="mc-label">ENTROPY_COEFFICIENT</span>      <span class="mc-val">STATIC_ZERO</span></div>
+            <div class="metric-cell"><span class="mc-label">WASP_SECURITY_AUDITS_RUN</span> <span class="mc-val" id="l-audits">0 SCANS</span></div>
+            <div class="metric-cell"><span class="mc-label">SINTERED_BLOCKS_COUNT</span>    <span class="mc-val" id="l-blocks">0 RECS</span></div>
+          </div>
+
+          <div class="history-section">
+            <div class="history-divider field-micro">PERSISTENT_BLOCK_HISTORY // sinter_block_history (localStorage)</div>
+            <div id="lattice-history-container"></div>
+          </div>
+        </section>
+
+        <!-- ══ APP 04: WASP SECURITY PROBE ══ -->
+        <section id="tab-WASP" class="app-panel" role="tabpanel" style="display:none"></section>
+
+        <!-- ══ APP 05: THE MATRIX-THREAD LOOM ══ -->
+        <section id="tab-LOOM" class="app-panel" role="tabpanel" style="display:none"></section>
+
+      </div>
+    </main>
+
+    <footer class="os-footer">
+      <span>5iR_SINTER_OS_V2 // VERCEL_EXPORT</span>
+      <span>STORAGE: localStorage (theme + lattice history)</span>
+      <span>LOOM: transient RAM + BroadcastChannel (same-origin)</span>
+    </footer>
+  </div>
+
+  <script>
+  (function(){
+    'use strict';
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Minimal i18n helper (keeps the original key-based calls working)
+    // ─────────────────────────────────────────────────────────────────────────
+    const STR = {
+      gate_denied: "[ BRAID_SEQUENCE_REJECTED ]: Cryptographic signature invalid. Neural mismatch detected.",
+      gate_no_handle: "[ SIGNAL_ABSENT ]: NEURAL_SIGNATURE required to establish biometric session.",
+      gate_no_key: "[ CIPHER_ABSENT ]: BRAID_KEY required. Format: 1319_BRAID or variant.",
+      gate_demo_loaded: "[ DEMO_SIGNAL_LOADED ]: MOBIUS credentials injected. Initiate handshake to enter.",
+      app1_err: "[ ERR ]: EMPTY_INPUT_VECTOR — paste source code to begin scan.",
+      app2_pass: "[ LOCKED ] // SYNC_STATUS: {status} // RESONANCE: {resonance} // PARITY_ACHIEVED",
+      app2_fail: "[ DRIFT_ALERT ] // SYNC_STATUS: {status} // RESONANCE: {resonance} // LOCK_PENDING",
+      app5_empty: "// No active data strands running inside this matrix tier channel...",
+      app5_send: "[LOOM_PULSE]",
+      app5_ch_private: "⌬ PRIVATE NODES (TELEGRAM)",
+      app5_ch_public: "⌬ BROADCAST STRANDS (X_FEED)",
+      app5_ch_syndicate: "⌬ SYNDICATE GROUPS (FB)",
+      app5_placeholder_private: "Transmit encrypted secret packet...",
+      app5_placeholder_public: "Broadcast thought stream straight to the global feed...",
+      app5_placeholder_syndicates: "Draft long-form syndicate profile log entry...",
+      app5_aria_message: "Message input",
+      app5_aria_actions: "Public feed actions",
+    };
+
+    function t(key, vals){
+      let s = STR[key] ?? key;
+      if (vals && typeof vals === 'object') {
+        for (const [k, v] of Object.entries(vals)) {
+          s = s.replaceAll(`{${k}}`, String(v));
+        }
+      }
+      return s;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Safe storage wrapper (Vercel/any static host)
+    // ─────────────────────────────────────────────────────────────────────────
+    const storage = {
+      getItem(key){
+        try { return window.localStorage.getItem(key); } catch { return null; }
+      },
+      setItem(key, val){
+        try { window.localStorage.setItem(key, val); } catch {}
+      },
+      removeItem(key){
+        try { window.localStorage.removeItem(key); } catch {}
+      }
+    };
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Core engines (ported from sinterCore.js)
+    // ─────────────────────────────────────────────────────────────────────────
+    const LEGENDRIAN_TASKS = [
+      { id: 'T1', title: 'LIE_BRACKET_CONVERGENCE_FACTOR',    target: '39420', drift: '0.001%' },
+      { id: 'T2', title: 'THERMAL_FLUX_INVARIANT_CALIBRATOR', target: '0.00',  drift: '0.000%' },
+      { id: 'T3', title: 'SUB_HARMONIC_24_BRAID_ALIGNMENT',   target: '24',    drift: '0.002%' },
+      { id: 'T4', title: 'MOBIUS_PHASE_LOCK_RESONATOR',       target: '0.946', drift: '0.003%' }
+    ];
+
+    function executeVortexDefensiveScan(rawCodeString, enableWaspScanner){
+      if (!rawCodeString || !rawCodeString.trim()) {
+        return { error: 'EMPTY_INPUT_VECTOR', ratio: '0.00%', integrity: 0.00 };
+      }
+
+      const noComments = rawCodeString.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '');
+      const minified = noComments.replace(/\s+/g, ' ').trim();
+
+      const originalLength = rawCodeString.length;
+      const ratioValue = originalLength > 0
+        ? ((originalLength - minified.length) / originalLength * 100)
+        : 0;
+
+      const blockHash = '0x' + Array.from(minified.substring(0, 10))
+        .reduce((acc, char) => (acc * 33) ^ char.charCodeAt(0), 5381)
+        .toString(16).toUpperCase().substring(0, 6);
+
+      let waspSignal      = 'WASP_SCANNER_IDLE';
+      let threatScore     = '0.00 [SECURE_NODE]';
+      let systemIntegrity = minified.includes('39420') ? 0.946 : 0.712;
+
+      if (enableWaspScanner) {
+        const hasEval    = minified.includes('eval(');
+        const hasInner   = minified.includes('innerHTML');
+        const hasSecret  = /secret|password/i.test(minified);
+
+        if (hasEval || hasInner || hasSecret) {
+          waspSignal      = 'VULNERABILITY_DETECTED // 4iR_DRIFT_RISK';
+          threatScore     = hasEval ? '0.85 [CRITICAL_RISK]' : '0.52 [MEDIUM_RISK]';
+          systemIntegrity = 0.42;
+        } else {
+          waspSignal  = 'NO_INSECURE_PATTERNS_FOUND';
+          threatScore = '0.00 [OPTIMAL_COHERENCE]';
+        }
+      }
+
+      return {
+        sinteredCode:    minified,
+        ratio:           `${ratioValue.toFixed(1)}%`,
+        blockId:         `BLK_${blockHash}`,
+        integrity:       systemIntegrity,
+        waspSignal,
+        threatScore,
+        complexityClass: enableWaspScanner ? 'SECURITY_AUDITED_STREAM' : 'LINEAR_STRAND'
+      };
+    }
+
+    function validateMath(taskId, solution){
+      const task = LEGENDRIAN_TASKS.find(tt => tt.id === taskId);
+      if (!task) return { success: false, status: '[ ERR ]', resonance: 0, drift: '---' };
+      const success = String(solution ?? '').includes(task.target);
+      return {
+        success,
+        status:    success ? '[ LOCKED ]' : '[ DRIFT_ALERT ]',
+        resonance: success ? 0.946 : 0.420,
+        drift:     task.drift
+      };
+    }
+
+    function computeLiveLatticeTelemetry(totalStoredBlocks, totalAuditsRun){
+      const baseNodes = 1446720;
+      return {
+        nodesActive:    (baseNodes + (totalStoredBlocks * 3)).toLocaleString(),
+        thermalMetric:  totalStoredBlocks > 0
+          ? `${(totalStoredBlocks * 0.0012).toFixed(4)} W`
+          : '0.0000 W [SUPERCONDUCTING]',
+        coherenceIndex: '94.6% LOCKED',
+        systemState:    totalAuditsRun > 0
+          ? `SECURITY_AUDIT_ACTIVE (${totalAuditsRun} SCANS)`
+          : 'NOMINAL_STATIC'
+      };
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Lattice history (localStorage)
+    // ─────────────────────────────────────────────────────────────────────────
+    const HISTORY_KEY = 'sinter_block_history';
+
+    function loadBlockHistory(){
+      try {
+        const raw = storage.getItem(HISTORY_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveBlockRecord(record){
+      const existing = loadBlockHistory();
+      const updated = [record, ...existing].slice(0, 50);
+      try {
+        storage.setItem(HISTORY_KEY, JSON.stringify(updated));
+      } catch {
+        // Try smaller
+        try {
+          storage.setItem(HISTORY_KEY, JSON.stringify(updated.slice(0, 20)));
+        } catch {}
+      }
+      return updated;
+    }
+
+    function clearBlockHistory(){
+      storage.removeItem(HISTORY_KEY);
+    }
+
+    function renderLatticeHistory(history, container, onClear){
+      if (!container) return;
+
+      if (!history || history.length === 0) {
+        container.innerHTML = `<div class="history-empty">// No sintered blocks in persistent lattice storage.</div>`;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="history-header">
+          <span class="field-micro">SINTERED_BLOCK_HISTORY // ${history.length} RECORDS</span>
+          <button id="btn-clear-history" class="btn-clear" type="button" aria-label="Clear block history">PURGE_RECORDS</button>
+        </div>
+        <div class="history-list">
+          ${history.map((rec, i) => `
+            <div class="history-row">
+              <span class="hr-idx">#${String(history.length - i).padStart(3, '0')}</span>
+              <span class="hr-id">${(rec.blockId || '---')}</span>
+              <span class="hr-ratio">${(rec.ratio || '0%')}</span>
+              <span class="hr-class">${(rec.complexityClass || '---')}</span>
+              <span class="hr-time">${rec.timestamp ? new Date(rec.timestamp).toLocaleTimeString() : '---'}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      const clearBtn = container.querySelector('#btn-clear-history');
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          clearBlockHistory();
+          onClear?.();
+        });
+      }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // APP 04: WASP scanner (ported from ui/wasp-view.js, no i18n)
+    // ─────────────────────────────────────────────────────────────────────────
+    const WASP_RULES = [
+      { id: 'W01', pattern: /\beval\s*\(/g,              label: 'EVAL_EXEC',         severity: 'CRITICAL',  desc: 'Dynamic code execution via eval()' },
+      { id: 'W02', pattern: /innerHTML\s*=/g,            label: 'INNER_HTML_WRITE',  severity: 'HIGH',      desc: 'Direct innerHTML assignment — XSS vector' },
+      { id: 'W03', pattern: /document\.write\s*\(/g,     label: 'DOC_WRITE',         severity: 'HIGH',      desc: 'document.write() injects raw HTML' },
+      { id: 'W04', pattern: /password|secret|api[_-]?key|token/gi, label: 'HARDCODED_SECRET', severity: 'HIGH', desc: 'Possible hardcoded credential or key' },
+      { id: 'W05', pattern: /new\s+Function\s*\(/g,      label: 'DYNAMIC_FUNCTION',  severity: 'CRITICAL',  desc: 'new Function() — equivalent to eval' },
+      { id: 'W06', pattern: /setTimeout\s*\(\s*['"`]/g,  label: 'STRING_TIMEOUT',    severity: 'MEDIUM',    desc: 'setTimeout with string arg — eval risk' },
+      { id: 'W07', pattern: /setInterval\s*\(\s*['"`]/g, label: 'STRING_INTERVAL',   severity: 'MEDIUM',    desc: 'setInterval with string arg — eval risk' },
+      { id: 'W08', pattern: /Math\.random\s*\(\s*\)/g,   label: 'WEAK_RANDOM',       severity: 'LOW',       desc: 'Math.random() — not cryptographically safe' },
+      { id: 'W09', pattern: /console\.(log|warn|error)\s*\(/g, label: 'DEBUG_LEAK',  severity: 'LOW',       desc: 'Console output left in production code' },
+      { id: 'W10', pattern: /http:\/\//g,                label: 'INSECURE_HTTP',     severity: 'MEDIUM',    desc: 'Plain HTTP URL — use HTTPS' },
+      { id: 'W11', pattern: /\.exec\s*\(/g,              label: 'SHELL_EXEC_SIGNAL', severity: 'MEDIUM',    desc: '.exec() call detected — verify context' },
+      { id: 'W12', pattern: /dangerouslySetInnerHTML/g,  label: 'REACT_XSS_PROP',    severity: 'HIGH',      desc: 'React dangerouslySetInnerHTML — XSS risk' },
+    ];
+    const SEV_ORDER = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3 };
+
+    function runWaspScan(code){
+      if (!code || !code.trim()) return { hits: [], threatScore: 0, verdict: 'CLEAN' };
+
+      const hits = [];
+      for (const rule of WASP_RULES) {
+        const matches = code.match(rule.pattern);
+        if (matches) hits.push({ ...rule, count: matches.length });
+      }
+      hits.sort((a, b) => SEV_ORDER[a.severity] - SEV_ORDER[b.severity]);
+
+      const score = hits.reduce((acc, h) => {
+        const weight = { CRITICAL: 40, HIGH: 20, MEDIUM: 10, LOW: 3 }[h.severity] || 0;
+        return acc + weight * h.count;
+      }, 0);
+
+      const capped = Math.min(score, 100);
+      const verdict = capped >= 60 ? 'COMPROMISED' : capped >= 20 ? 'FLAGGED' : capped > 0 ? 'CAUTION' : 'CLEAN';
+      return { hits, threatScore: capped, verdict };
+    }
+
+    function initWaspView({ onScan } = {}){
+      const panel = document.getElementById('tab-WASP');
+      if (!panel) return;
+
+      panel.innerHTML = `
+        <h3 class="app-title">[ APP_04 // WASP_SECURITY_PROBE ]</h3>
+        <div class="two-col wasp-col">
+          <div class="col-input">
+            <label class="field-micro" for="wasp-code">PASTE_SOURCE_FOR_SCAN</label>
+            <textarea id="wasp-code" placeholder="// Paste source code to run WASP defensive pattern scan..." aria-label="Source code to scan"></textarea>
+            <button id="btn-wasp" class="btn-exec" type="button">RUN_WASP_SCAN</button>
+          </div>
+
+          <div class="signal-box" id="wasp-signals">
+            <div class="signal-head dashed">THREAT_PROBE_SIGNALS</div>
+            <div id="wasp-idle" class="signal-idle">// Awaiting code stream for threat analysis...</div>
+            <div id="wasp-data" style="display:none">
+              <div class="signal-row"><span class="sk">THREAT_SCORE</span>    <span class="sv" id="w-score">0</span></div>
+              <div class="signal-row"><span class="sk">VERDICT</span>         <span class="sv" id="w-verdict">CLEAN</span></div>
+              <div class="signal-row"><span class="sk">FLAGS_DETECTED</span>  <span class="sv" id="w-flags">0</span></div>
+              <div class="signal-row"><span class="sk">CRITICAL_HITS</span>   <span class="sv" id="w-critical">0</span></div>
+              <div class="signal-row"><span class="sk">HIGH_HITS</span>       <span class="sv" id="w-high">0</span></div>
+              <div class="signal-row"><span class="sk">MEDIUM_HITS</span>     <span class="sv" id="w-medium">0</span></div>
+              <div class="signal-row"><span class="sk">LOW_HITS</span>        <span class="sv" id="w-low">0</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="wasp-hit-list" class="wasp-hit-list" style="display:none"></div>
+        <div id="wasp-log" class="app-log" style="display:none"></div>
+      `;
+
+      const codeEl    = panel.querySelector('#wasp-code');
+      const btnWasp   = panel.querySelector('#btn-wasp');
+      const waspIdle  = panel.querySelector('#wasp-idle');
+      const waspData  = panel.querySelector('#wasp-data');
+      const wScore    = panel.querySelector('#w-score');
+      const wVerdict  = panel.querySelector('#w-verdict');
+      const wFlags    = panel.querySelector('#w-flags');
+      const wCritical = panel.querySelector('#w-critical');
+      const wHigh     = panel.querySelector('#w-high');
+      const wMedium   = panel.querySelector('#w-medium');
+      const wLow      = panel.querySelector('#w-low');
+      const hitList   = panel.querySelector('#wasp-hit-list');
+      const waspLog   = panel.querySelector('#wasp-log');
+
+      btnWasp.addEventListener('click', () => {
+        const code = codeEl.value;
+        if (!code.trim()) {
+          waspLog.textContent = '[ ERR ]: EMPTY_INPUT_VECTOR — paste source code to scan.';
+          waspLog.className   = 'app-log fail';
+          waspLog.style.display = 'block';
+          return;
+        }
+
+        const { hits, threatScore, verdict } = runWaspScan(code);
+
+        waspIdle.style.display = 'none';
+        waspData.style.display = 'block';
+
+        wScore.textContent   = `${threatScore}/100`;
+        wVerdict.textContent = verdict;
+        wFlags.textContent   = `${hits.length} PATTERNS`;
+        wCritical.textContent = hits.filter(h => h.severity === 'CRITICAL').length;
+        wHigh.textContent     = hits.filter(h => h.severity === 'HIGH').length;
+        wMedium.textContent   = hits.filter(h => h.severity === 'MEDIUM').length;
+        wLow.textContent      = hits.filter(h => h.severity === 'LOW').length;
+
+        wVerdict.className = `sv wasp-verdict-${verdict.toLowerCase()}`;
+
+        if (hits.length === 0) {
+          hitList.style.display = 'none';
+          waspLog.textContent   = '[ CLEAN ]: No threat patterns detected. Code stream nominal.';
+          waspLog.className     = 'app-log pass';
+          waspLog.style.display = 'block';
+        } else {
+          hitList.innerHTML = hits.map(h => `
+            <div class="wasp-hit sev-${h.severity.toLowerCase()}">
+              <span class="wasp-hit-id">${h.id}</span>
+              <span class="wasp-hit-sev">[${h.severity}]</span>
+              <span class="wasp-hit-label">${h.label}</span>
+              <span class="wasp-hit-count">×${h.count}</span>
+              <span class="wasp-hit-desc">${h.desc}</span>
+            </div>
+          `).join('');
+          hitList.style.display = 'block';
+          waspLog.textContent   = `[ ${verdict} ]: ${hits.length} threat pattern(s) detected. Score: ${threatScore}/100.`;
+          waspLog.className     = verdict === 'COMPROMISED' ? 'app-log fail' : 'app-log warn';
+          waspLog.style.display = 'block';
+        }
+
+        onScan?.({ verdict, threatScore, hits });
+      });
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // APP 05: LOOM (transient RAM + BroadcastChannel)
+    // ─────────────────────────────────────────────────────────────────────────
+    const LOOM_CHANNELS = [
+      { id: 'PRIVATE', label: t('app5_ch_private') },
+      { id: 'PUBLIC_FEED', label: t('app5_ch_public') },
+      { id: 'SYNDICATES', label: t('app5_ch_syndicate') },
+    ];
+
+    const LOOM_SEED = [
+      {
+        id: 'seed-1',
+        type: 'PUBLIC_FEED',
+        sender: 'MÖBIUS_BRAID',
+        content: 'V2 monochrome architecture deployment successfully finalized. Systems holding flat at 94.6%.',
+        timestamp: '04:55',
+        upvotes: 12,
+        interlaces: 2,
+      },
+      {
+        id: 'seed-2',
+        type: 'PRIVATE',
+        sender: 'KING_DROID',
+        content: 'WASP Security Probe is successfully capturing low-integrity 4iR drift vectors inside Hangar 04.',
+        timestamp: '04:58',
+      }
+    ];
+
+    let loomChannelMode = 'PRIVATE';
+    let loomSyndicateId = 'CORE_ARCHIVE';
+    let loomProfileTag = '';
+    let loomComms = LOOM_SEED.slice();
+    const loomSeen = new Set(loomComms.map(m => m.id));
+
+    function esc(s){
+      return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function loomNowTS(){
+      return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+    }
+
+    function vortexMinifyPacket(text){
+      return String(text ?? '')
+        .replace(/\r\n/g,'\n')
+        .split('\n')
+        .map(l => l.trim())
+        .filter(Boolean)
+        .join(' ')
+        .replace(/\s+/g,' ')
+        .trim();
+    }
+
+    function makeId(){
+      try { return crypto.randomUUID(); } catch { return `pkt-${Date.now()}-${Math.random().toString(16).slice(2)}`; }
+    }
+
+    let loomBC = null;
+    let loomTeardownBound = false;
+
+    function initLoomStreamFrame(){
+      if (loomBC) return;
+      try {
+        loomBC = new BroadcastChannel('sinter_loom_stream_v1');
+        loomBC.onmessage = (evt) => {
+          const payload = evt?.data;
+          if (!payload || payload.kind !== 'loom_packet') return;
+          if (!payload.packet || !payload.packet.id) return;
+          if (loomSeen.has(payload.packet.id)) return;
+
+          loomSeen.add(payload.packet.id);
+          loomComms = [payload.packet, ...loomComms].slice(0, 500);
+
+          const panel = document.getElementById('tab-LOOM');
+          if (panel) renderLoom(panel);
+        };
+      } catch {
+        loomBC = null;
+      }
+
+      // Aggressive teardown on close: RAM self-destruct.
+      if (!loomTeardownBound) {
+        loomTeardownBound = true;
+        const teardown = () => {
+          try { loomBC?.close?.(); } catch {}
+          loomBC = null;
+          loomComms = [];
+          loomSeen.clear();
+        };
+        window.addEventListener('pagehide', teardown);
+        window.addEventListener('beforeunload', teardown);
+      }
+    }
+
+    function loomBroadcast(packet){
+      if (!loomBC) return;
+      try {
+        loomBC.postMessage({ kind: 'loom_packet', packet, sentAt: performance.now() });
+      } catch {}
+    }
+
+    function loomPlaceholder(){
+      if (loomChannelMode === 'PRIVATE') return t('app5_placeholder_private');
+      if (loomChannelMode === 'PUBLIC_FEED') return t('app5_placeholder_public');
+      return t('app5_placeholder_syndicates');
+    }
+
+    function renderLoom(panel){
+      const filtered = loomComms.filter(m => m.type === loomChannelMode);
+
+      panel.innerHTML = `
+        <h3 class="app-title">[ APP_05 // THE_MATRIX-THREAD_LOOM ]</h3>
+        <div class="loom-subhead">HIGH-SPEED MULTI-LAYER INSTANT COMMUNICATIONS INTERFACE</div>
+        <div class="loom-isolation-badge">CHANNEL_ISOLATION: ON</div>
+
+        <details class="loom-specs">
+          <summary class="loom-specs-summary">LOOM_OPERATING_DIRECTIVES // CHANNEL_STACK</summary>
+          <div class="loom-specs-body">
+            <div class="loom-spec-item">
+              <div class="loom-spec-title">⌬ 1. ZERO-RESIDUAL PRIVATE NODES (TRANSIENT RAM)</div>
+              <div class="loom-spec-text">Packets live in transient memory arrays only. Text is VORTEX-minified and completely self-destructs from local RAM the exact frame the observer closes the tab window, ensuring a perfect zero residual footprint.</div>
+            </div>
+            <div class="loom-spec-item">
+              <div class="loom-spec-title">⌬ 2. WHATSAPP-GRADE HIGH-CONCURRENCY STREAMING (FRICTIONLESS GROUP NODES)</div>
+              <div class="loom-spec-text">Group chats operate as high-performance distributed channel blocks. Instead of standard notification polling which causes system drag, data updates stream through an un-throttled real-time connection frame, dropping lookup latency down to 0.0002 ms and maintaining absolute flat thermal energy dissipation (dQ_leak/dt = 0.00 Watts).</div>
+            </div>
+            <div class="loom-spec-item">
+              <div class="loom-spec-title">⌬ 3. X-STYLE PUBLIC BROADCAST STRINGS & THREADS (THE FEED LAYER)</div>
+              <div class="loom-spec-text">Nodes can change their visibility setting to Public Broadcast Mode. This turns their chat channel into a sovereign global thread stream that can be cited and shared across the entire 1.4M Node Mesh. Other nodes can INTERLACE (Retweet) or UPVOTE the content to boost its global visibility ranking.</div>
+            </div>
+            <div class="loom-spec-item">
+              <div class="loom-spec-title">⌬ 4. FACEBOOK-GRADE GROUP SYNDICATES & LONG-FORM PROFILES</div>
+              <div class="loom-spec-text">Architects can group individual chat strands to build complex Syndicates. This acts as a highly organized space for long-form documentation, community management, and technical asset logs, allowing teams to pool computational power to handle massive work-unit tasks.</div>
+            </div>
+          </div>
+        </details>
+
+        <div class="loom-grid">
+          <div class="loom-sidebar">
+            <div class="field-micro" style="margin-bottom:8px;">// MATRIX_ROUTING_TIERS</div>
+            ${LOOM_CHANNELS.map(ch => `
+              <button class="loom-tier-btn ${ch.id === loomChannelMode ? 'active' : ''}" type="button" data-ch="${esc(ch.id)}">${esc(ch.label)}</button>
+            `).join('')}
+
+            <div class="loom-telemetry">
+              <div class="signal-head dashed">LOOM_SIGNALS</div>
+              <div class="signal-row"><span class="sk">COMMS_CLOCK</span><span class="sv">39,420 Hz</span></div>
+              <div class="signal-row"><span class="sk">LATENCY_CAP</span><span class="sv">0.0002 ms</span></div>
+              <div class="signal-row"><span class="sk">STREAM_FRAME</span><span class="sv">${loomBC ? 'ACTIVE' : 'UNAVAILABLE'}</span></div>
+              <div class="signal-row"><span class="sk">TRAFFIC_LOAD</span><span class="sv">${filtered.length} ACTIVE_STRANDS</span></div>
+            </div>
+
+            <div class="loom-syndicate" id="loom-synd-box" style="display:${loomChannelMode === 'SYNDICATES' ? 'block' : 'none'}">
+              <div class="signal-head dashed">SYNDICATE_CONFIG</div>
+              <label class="field-micro" for="loom-sid">SYNDICATE_ID</label>
+              <input id="loom-sid" type="text" value="${esc(loomSyndicateId)}" maxlength="48" />
+              <label class="field-micro" for="loom-pt" style="margin-top:10px;">PROFILE_TAG</label>
+              <input id="loom-pt" type="text" value="${esc(loomProfileTag)}" maxlength="64" />
+            </div>
+          </div>
+
+          <div class="loom-main">
+            <div id="loom-feed" class="loom-feed" aria-live="polite">
+              ${filtered.length ? filtered.map(msg => {
+                const meta = msg.type === 'SYNDICATES'
+                  ? `<div class="loom-meta">SYNDICATE: ${esc(msg.syndicateId || '---')} // PROFILE: ${esc(msg.profileTag || '—')}</div>`
+                  : '';
+
+                const actions = msg.type === 'PUBLIC_FEED' ? `
+                  <div class="loom-actions" role="group" aria-label="${esc(t('app5_aria_actions'))}">
+                    <button class="loom-action-btn" type="button" data-action="upvote" data-id="${esc(msg.id)}">▲ UPVOTE <span class="loom-action-count">${msg.upvotes ?? 0}</span></button>
+                    <button class="loom-action-btn" type="button" data-action="interlace" data-id="${esc(msg.id)}">⟲ INTERLACE <span class="loom-action-count">${msg.interlaces ?? 0}</span></button>
+                  </div>
+                ` : '';
+
+                return `
+                  <div class="loom-msg">
+                    <div class="loom-msg-header">
+                      <span class="loom-sender">@${esc(msg.sender)}</span>
+                      <span class="loom-ts">${esc(msg.timestamp)}</span>
+                    </div>
+                    ${meta}
+                    <div class="loom-content">${esc(msg.content)}</div>
+                    ${actions}
+                  </div>
+                `;
+              }).join('') : `<div class="loom-empty">${esc(t('app5_empty'))}</div>`}
+            </div>
+
+            <form id="loom-form" class="loom-form" autocomplete="off">
+              <div class="loom-composer">
+                ${loomChannelMode === 'SYNDICATES'
+                  ? `<textarea id="loom-input" class="loom-input loom-textarea" rows="3" placeholder="${esc(loomPlaceholder())}" aria-label="${esc(t('app5_aria_message'))}" maxlength="2000"></textarea>`
+                  : `<input id="loom-input" type="text" class="loom-input" placeholder="${esc(loomPlaceholder())}" aria-label="${esc(t('app5_aria_message'))}" maxlength="500" />`
+                }
+                <button class="btn-exec loom-send" type="submit">${esc(t('app5_send'))}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      `;
+
+      // Bind channel switches
+      panel.querySelectorAll('button[data-ch]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          loomChannelMode = btn.getAttribute('data-ch');
+          renderLoom(panel);
+        });
+      });
+
+      // Bind syndicate config
+      const sid = panel.querySelector('#loom-sid');
+      const pt = panel.querySelector('#loom-pt');
+      sid?.addEventListener('input', () => { loomSyndicateId = sid.value.trim().toUpperCase() || 'CORE_ARCHIVE'; });
+      pt?.addEventListener('input', () => { loomProfileTag = pt.value.trim(); });
+
+      // Bind public feed actions
+      const feed = panel.querySelector('#loom-feed');
+      feed?.addEventListener('click', (e) => {
+        const btn = e.target?.closest?.('button[data-action]');
+        if (!btn) return;
+        const id = btn.getAttribute('data-id');
+        const action = btn.getAttribute('data-action');
+        const idx = loomComms.findIndex(m => m.id === id);
+        if (idx < 0) return;
+        const msg = loomComms[idx];
+        if (msg.type !== 'PUBLIC_FEED') return;
+
+        if (action === 'upvote') {
+          msg.upvotes = (msg.upvotes ?? 0) + 1;
+          renderLoom(panel);
+          return;
+        }
+
+        if (action === 'interlace') {
+          msg.interlaces = (msg.interlaces ?? 0) + 1;
+          const packet = {
+            id: makeId(),
+            type: 'PUBLIC_FEED',
+            sender: 'LOCAL_ARCHITECT',
+            content: `INTERLACE(@${msg.sender}): ${msg.content}`,
+            timestamp: loomNowTS(),
+            upvotes: 0,
+            interlaces: 0,
+          };
+          if (!loomSeen.has(packet.id)) {
+            loomSeen.add(packet.id);
+            loomComms = [packet, ...loomComms].slice(0, 500);
+            loomBroadcast(packet);
+            renderLoom(panel);
+          }
+        }
+      });
+
+      // Bind send
+      const form = panel.querySelector('#loom-form');
+      form?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const input = panel.querySelector('#loom-input');
+        const raw = input?.value ?? '';
+        const content = vortexMinifyPacket(raw);
+        if (!content) return;
+
+        const packet = {
+          id: makeId(),
+          type: loomChannelMode,
+          sender: 'LOCAL_ARCHITECT',
+          content,
+          timestamp: loomNowTS(),
+        };
+
+        if (loomChannelMode === 'SYNDICATES') {
+          packet.syndicateId = loomSyndicateId;
+          packet.profileTag = loomProfileTag || '—';
+        }
+
+        if (loomChannelMode === 'PUBLIC_FEED') {
+          packet.upvotes = 0;
+          packet.interlaces = 0;
+        }
+
+        loomSeen.add(packet.id);
+        loomComms = [packet, ...loomComms].slice(0, 500);
+        loomBroadcast(packet);
+
+        input.value = '';
+        renderLoom(panel);
+      });
+
+      // Feed: newest at top, keep top
+      const feedEl = panel.querySelector('#loom-feed');
+      if (feedEl) feedEl.scrollTop = 0;
+    }
+
+    function initLoomView(){
+      const panel = document.getElementById('tab-LOOM');
+      if (!panel) return;
+      initLoomStreamFrame();
+      renderLoom(panel);
+    }
+
+    function refreshLoomView(){
+      const panel = document.getElementById('tab-LOOM');
+      if (panel) renderLoom(panel);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // AI analysis
+    // - Primary: /api/gemini (Vercel serverless, env: GEMINI_API_KEY)
+    // - Fallback: local heuristic (no network)
+    // ─────────────────────────────────────────────────────────────────────────
+    async function geminiVortexAnalysis(code){
+      const snippet = String(code ?? '').slice(0, 18000);
+      const system = [
+        'You are Vortex AI: a concise code security and quality scanner.',
+        'Output plain text only (no markdown).',
+        'Use short labeled lines. Be decisive; avoid long explanations.'
+      ].join('\n');
+      const prompt = [
+        'Analyze this code buffer:',
+        '',
+        'Return 8-12 lines in this format:',
+        'LANGUAGE_DETECTED: ...',
+        'STRUCTURE_CLASS: ...',
+        'RISK_VECTORS: ...',
+        'THREAT_SCORE: 0-100 ...',
+        'PRIMARY_FINDINGS: ...',
+        'REFACTOR_SIGNAL: ...',
+        'SAFE_REWRITE_HINT: ...',
+        'COHERENCE_VERDICT: PASS|FLAG ...',
+        '',
+        'CODE:',
+        snippet
+      ].join('\n');
+
+      const r = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ prompt, system, temperature: 0.15, maxOutputTokens: 700 })
+      });
+      if (!r.ok) {
+        const detail = await r.text().catch(() => '');
+        throw new Error(`GEMINI_HTTP_${r.status}${detail ? `: ${detail.slice(0, 160)}` : ''}`);
+      }
+      const data = await r.json();
+      const text = String(data?.text ?? '').trim();
+      if (!text) throw new Error('GEMINI_EMPTY_RESPONSE');
+      return text;
+    }
+
+    function localVortexAnalysis(code){
+      const src = String(code ?? '');
+      const s = src.slice(0, 5000);
+
+      const looksJS = /\b(function|const|let|var|=>|import\s|export\s|document\.|window\.)\b/.test(s);
+      const looksHTML = /<\s*html|<\s*div|<\s*script|<!doctype/i.test(s);
+      const looksCSS = /\{\s*[^}]*:\s*[^}]*\}/.test(s) && /\b(color|display|grid|flex|font)\b/.test(s);
+
+      const language = looksHTML ? 'HTML' : looksCSS ? 'CSS' : looksJS ? 'JAVASCRIPT' : 'UNKNOWN';
+
+      const hasClass = /\bclass\s+\w+/.test(s);
+      const hasFn = /\bfunction\b|=>/.test(s);
+      const structure = hasClass && hasFn ? 'MIXED' : hasClass ? 'OOP' : hasFn ? 'FUNCTIONAL' : 'DECLARATIVE';
+
+      const flags = [];
+      if (/\basync\b|\bawait\b/.test(s)) flags.push('ASYNC');
+      if (/\brecurs/i.test(s)) flags.push('RECURSION');
+      if (/\bclosure\b/i.test(s)) flags.push('CLOSURES');
+      if (/\bset(State|Timeout|Interval)\b/.test(s)) flags.push('SIDE_EFFECTS');
+      if (!flags.length) flags.push('NONE');
+
+      const risks = [];
+      if (/\beval\s*\(/.test(s) || /new\s+Function\s*\(/.test(s)) risks.push('EVAL_USAGE');
+      if (/innerHTML\s*=/.test(s) || /dangerouslySetInnerHTML/.test(s)) risks.push('XSS_VECTOR');
+      if (/password|secret|api[_-]?key|token/i.test(s)) risks.push('HARDCODED_SECRET');
+      if (/\bMath\.random\s*\(/.test(s)) risks.push('WEAK_RANDOM');
+      if (!risks.length) risks.push('NONE');
+
+      const verdict = risks.includes('EVAL_USAGE') || risks.includes('XSS_VECTOR') ? 'FLAG' : 'PASS';
+      const reason = verdict === 'PASS' ? 'NO_HIGH_RISK_VECTORS' : 'RISK_VECTORS_DETECTED';
+
+      const refactor = verdict === 'PASS'
+        ? 'CONSIDER_SPLITTING_LONG_FUNCTIONS_AND_ADDING_TEST_VECTORS'
+        : 'REMOVE_DYNAMIC_EXECUTION_AND_AVOID_RAW_HTML_INJECTION';
+
+      return [
+        `LANGUAGE_DETECTED: ${language}`,
+        `STRUCTURE_CLASS: ${structure}`,
+        `PATTERN_FLAGS: ${flags.join(', ')}`,
+        `RISK_VECTORS: ${risks.join(', ')}`,
+        `REFACTOR_SIGNAL: ${refactor}`,
+        `COHERENCE_VERDICT: ${verdict} // ${reason}`,
+      ].join('\n');
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Theme toggle
+    // ─────────────────────────────────────────────────────────────────────────
+    function applyTheme(dark) {
+      document.body.classList.toggle('dark', dark);
+      const label = dark ? '[ ● DARK ]' : '[ ○ LIGHT ]';
+      document.querySelectorAll('.btn-theme').forEach(b => b.textContent = label);
+    }
+
+    function toggleTheme() {
+      const isDark = document.body.classList.toggle('dark');
+      applyTheme(isDark);
+      storage.setItem('sinter_theme', isDark ? 'dark' : 'light');
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Main bootstrap (ported from main.js)
+    // ─────────────────────────────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      // Theme
+      document.querySelectorAll('.btn-theme').forEach(b => b.addEventListener('click', toggleTheme));
+      if (storage.getItem('sinter_theme') === 'dark') applyTheme(true);
+
+      // DOM refs
+      const gate         = document.getElementById('gate');
+      const os           = document.getElementById('os');
+      const inputHandle  = document.getElementById('input-handle');
+      const inputKey     = document.getElementById('input-key');
+      const gateMsg      = document.getElementById('gate-msg');
+      const btnDemo      = document.getElementById('btn-demo');
+      const btnHandshake = document.getElementById('btn-handshake');
+      const hudSub       = document.getElementById('hud-sub');
+
+      // Tabs
+      const tabBtns   = Array.from(document.querySelectorAll('.tab-btn'));
+      const tabPanels = Array.from(document.querySelectorAll('.app-panel'));
+
+      // App 01
+      const vortexCode    = document.getElementById('vortex-code');
+      const waspCheck     = document.getElementById('wasp-check');
+      const btnVortex     = document.getElementById('btn-vortex');
+      const btnVortexAi   = document.getElementById('btn-vortex-ai');
+      const vortexIdle    = document.getElementById('vortex-idle');
+      const vortexData    = document.getElementById('vortex-data');
+      const vBlockId      = document.getElementById('v-blockid');
+      const vRatio        = document.getElementById('v-ratio');
+      const vComplexity   = document.getElementById('v-complexity');
+      const vWasp         = document.getElementById('v-wasp');
+      const vThreat       = document.getElementById('v-threat');
+      const vIntegrity    = document.getElementById('v-integrity');
+      const vortexOutWrap = document.getElementById('vortex-out-wrap');
+      const vortexOutput  = document.getElementById('vortex-output');
+      const aiOutWrap     = document.getElementById('ai-out-wrap');
+      const aiOutput      = document.getElementById('ai-output');
+      const vortexLog     = document.getElementById('vortex-log');
+
+      // App 02
+      const mathTask    = document.getElementById('math-task');
+      const mathVal     = document.getElementById('math-val');
+      const formulaHint = document.getElementById('formula-hint');
+      const btnMath     = document.getElementById('btn-math');
+      const mathIdle    = document.getElementById('math-idle');
+      const mathData    = document.getElementById('math-data');
+      const mStatus     = document.getElementById('m-status');
+      const mResonance  = document.getElementById('m-resonance');
+      const mDrift      = document.getElementById('m-drift');
+      const mTarget     = document.getElementById('m-target');
+      const mathLog     = document.getElementById('math-log');
+
+      // App 03
+      const lNodes    = document.getElementById('l-nodes');
+      const lCoherence= document.getElementById('l-coherence');
+      const lState    = document.getElementById('l-state');
+      const lThermal  = document.getElementById('l-thermal');
+      const lAudits   = document.getElementById('l-audits');
+      const lBlocks   = document.getElementById('l-blocks');
+      const latticeHistoryContainer = document.getElementById('lattice-history-container');
+
+      // State
+      let storedBlocks = 0;
+      let totalAudits  = 0;
+
+      function refreshLattice(){
+        const tel = computeLiveLatticeTelemetry(storedBlocks, totalAudits);
+        lNodes.textContent     = tel.nodesActive;
+        lCoherence.textContent = tel.coherenceIndex;
+        lState.textContent     = tel.systemState;
+        lThermal.textContent   = tel.thermalMetric;
+        lAudits.textContent    = `${totalAudits} SCANS`;
+        lBlocks.textContent    = `${storedBlocks} RECS`;
+      }
+
+      function refreshHistory(){
+        const history = loadBlockHistory();
+        storedBlocks = history.length;
+        renderLatticeHistory(history, latticeHistoryContainer, () => {
+          storedBlocks = 0;
+          totalAudits = 0;
+          refreshLattice();
+          refreshHistory();
+        });
+        refreshLattice();
+      }
+
+      function buildFormulaSelect(){
+        mathTask.innerHTML = LEGENDRIAN_TASKS.map(f => `<option value="${f.id}">${f.title}</option>`).join('');
+        updateFormulaHint();
+      }
+
+      function updateFormulaHint(){
+        const task = LEGENDRIAN_TASKS.find(tt => tt.id === mathTask.value);
+        if (task && formulaHint) {
+          formulaHint.textContent = `TARGET: ${task.target} // DRIFT_TOLERANCE: ${task.drift}`;
+        }
+      }
+
+      function validateBraidKey(handle, key){
+        const h = String(handle ?? '').trim().toUpperCase();
+        const k = String(key ?? '').trim().toUpperCase();
+        return h.includes('MOBIUS') && k.includes('1319') && k.includes('BRAID');
+      }
+
+      btnDemo.addEventListener('click', () => {
+        inputHandle.value = 'MOBIUS';
+        inputKey.value = '1319_BRAID';
+        gateMsg.className = 'gate-msg info';
+        gateMsg.textContent = t('gate_demo_loaded');
+      });
+
+      btnHandshake.addEventListener('click', async () => {
+        const handle = inputHandle.value.trim();
+        const key = inputKey.value.trim();
+
+        if (!handle) {
+          gateMsg.className = 'gate-msg denied';
+          gateMsg.textContent = t('gate_no_handle');
+          return;
+        }
+        if (!key) {
+          gateMsg.className = 'gate-msg denied';
+          gateMsg.textContent = t('gate_no_key');
+          return;
+        }
+
+        const scanBar = document.getElementById('gate-scan-bar');
+        scanBar?.classList.add('scanning');
+        btnHandshake.disabled = true;
+        btnHandshake.textContent = 'VERIFYING_BRAID_SEQUENCE...';
+
+        await new Promise(r => setTimeout(r, 900));
+        scanBar?.classList.remove('scanning');
+
+        if (validateBraidKey(handle, key)) {
+          hudSub.textContent = `OPERATOR_NODE: @${handle.toUpperCase()} // BRAID_LOCK: ACTIVE`;
+          gate.style.display = 'none';
+          os.style.display = 'block';
+
+          buildFormulaSelect();
+          refreshHistory();
+          initWaspView({
+            onScan: ({ verdict, threatScore }) => {
+              totalAudits++;
+              refreshLattice();
+            }
+          });
+          initLoomView();
+        } else {
+          btnHandshake.disabled = false;
+          btnHandshake.textContent = 'INITIATE_CRYPTOGRAPHIC_HANDSHAKE';
+          gateMsg.className = 'gate-msg denied';
+          gateMsg.textContent = t('gate_denied');
+        }
+      });
+
+      [inputHandle, inputKey].forEach(el =>
+        el.addEventListener('keydown', e => { if (e.key === 'Enter') btnHandshake.click(); })
+      );
+
+      // Tabs
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = btn.dataset.tab;
+          tabBtns.forEach(b => {
+            b.classList.toggle('active', b === btn);
+            b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+          });
+          tabPanels.forEach(panel => {
+            panel.style.display = panel.id === `tab-${target}` ? '' : 'none';
+          });
+          if (target === 'LATTICE_MONITOR') refreshHistory();
+          if (target === 'LOOM') refreshLoomView();
+        });
+      });
+
+      // App 01: Vortex scan
+      btnVortex.addEventListener('click', () => {
+        const code = vortexCode.value;
+        const useWasp = waspCheck.checked;
+
+        if (!code.trim()) {
+          vortexOutWrap.style.display = 'none';
+          vortexLog.textContent = t('app1_err');
+          vortexLog.className = 'app-log fail';
+          vortexLog.style.display = 'block';
+          return;
+        }
+
+        const r = executeVortexDefensiveScan(code, useWasp);
+        if (r.error) {
+          vortexLog.textContent = `[ ERR ]: ${r.error}`;
+          vortexLog.className = 'app-log fail';
+          vortexLog.style.display = 'block';
+          vortexOutWrap.style.display = 'none';
+          vortexIdle.style.display = 'block';
+          vortexData.style.display = 'none';
+          return;
+        }
+
+        vortexIdle.style.display = 'none';
+        vortexData.style.display = 'block';
+
+        vBlockId.textContent = r.blockId;
+        vRatio.textContent = r.ratio;
+        vComplexity.textContent = r.complexityClass;
+        vWasp.textContent = r.waspSignal;
+        vThreat.textContent = r.threatScore;
+        vIntegrity.textContent = Number(r.integrity).toFixed(3);
+
+        vortexOutput.textContent = r.sinteredCode;
+        vortexOutWrap.style.display = 'block';
+        vortexLog.style.display = 'none';
+
+        if (useWasp) totalAudits++;
+
+        // Persist block
+        saveBlockRecord({
+          blockId: r.blockId,
+          ratio: r.ratio,
+          complexityClass: r.complexityClass,
+          waspSignal: r.waspSignal,
+          threatScore: r.threatScore,
+          timestamp: Date.now(),
+        });
+        storedBlocks = loadBlockHistory().length;
+        refreshLattice();
+      });
+
+      // App 01: AI analysis (Gemini → fallback)
+      btnVortexAi.addEventListener('click', async () => {
+        const code = vortexCode.value;
+        if (!code.trim()) {
+          aiOutWrap.style.display = 'none';
+          vortexLog.textContent = t('app1_err');
+          vortexLog.className = 'app-log fail';
+          vortexLog.style.display = 'block';
+          return;
+        }
+
+        btnVortexAi.disabled = true;
+        btnVortexAi.textContent = 'ANALYZING... ✦';
+        aiOutput.textContent = '// GEMINI_ANALYSIS_RUNNING... ✦';
+        aiOutWrap.style.display = 'block';
+
+        try {
+          const report = await geminiVortexAnalysis(code);
+          aiOutput.textContent = report;
+        } catch (err) {
+          const fallback = localVortexAnalysis(code);
+          aiOutput.textContent = `[ AI_FALLBACK ]: ${(err && err.message) ? err.message : String(err)}\n\n${fallback}`;
+        } finally {
+          btnVortexAi.disabled = false;
+          btnVortexAi.textContent = 'RUN_AI_ANALYSIS ✦';
+        }
+      });
+
+      // App 02: validate math
+      btnMath.addEventListener('click', () => {
+        const result = validateMath(mathTask.value, mathVal.value);
+        const task = LEGENDRIAN_TASKS.find(tt => tt.id === mathTask.value);
+
+        mathIdle.style.display = 'none';
+        mathData.style.display = 'block';
+
+        mStatus.textContent = result.status;
+        mResonance.textContent = result.resonance;
+        mDrift.textContent = result.drift;
+        mTarget.textContent = task ? task.target : '---';
+
+        if (result.success) {
+          mathLog.textContent = t('app2_pass', { status: result.status, resonance: result.resonance });
+          mathLog.className = 'app-log pass';
+        } else {
+          mathLog.textContent = t('app2_fail', { status: result.status, resonance: result.resonance });
+          mathLog.className = 'app-log fail';
+        }
+        mathLog.style.display = 'block';
+      });
+
+      mathTask.addEventListener('change', () => {
+        updateFormulaHint();
+        mathIdle.style.display = 'block';
+        mathData.style.display = 'none';
+        mathLog.style.display = 'none';
+        mathVal.value = '';
+      });
+    });
+  })();
+  </script>
+</body>
+</html>
